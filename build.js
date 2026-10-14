@@ -14,7 +14,7 @@ mkdirSync('dist', { recursive: true });
 const ctx = await esbuild.context({
   entryPoints: ['src/tesla-card.js'],
   bundle: true,
-  outfile: 'dist/tesla-card.js',
+  outfile: 'dist/jaecoo-card.js',
   format: 'esm',
   target: 'es2020',
   minify: !watch,
@@ -96,7 +96,7 @@ if (watch) {
     for (const f of readdirSync(dir)) {
       const p = join(dir, f);
       if (statSync(p).isDirectory()) countFiles(p);
-      else if (f !== 'tesla-card.js') imgCount++;
+      else if (f !== 'jaecoo-card.js') imgCount++;
     }
   }
   countFiles('dist');

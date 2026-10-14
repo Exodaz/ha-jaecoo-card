@@ -1,5 +1,18 @@
 # Changelog
 
+
+## [Unreleased] — Jaecoo fork
+
+### Added
+- `integration: carlinko` (now the default) for Jaecoo / Chery cars via elad-bar/ha-carlinko; entities are resolved by `translation_key` per device, no entity IDs needed
+- Vehicle picker in the visual editor; car pictures from CarLinko image entities
+- Charging info rows and Stop Charging; seat ventilation, quick cool/heat, windshield heat, air purify, sunroof
+- Switch-based steering wheel heater support
+
+### Changed
+- Card renamed to `custom:jaecoo-card` (`dist/jaecoo-card.js`) so it can be installed alongside the Tesla card
+- Controls/climate buttons are hidden when their entity does not exist
+
 ## [1.0.3] - 2026-03-20
 
 ### Added

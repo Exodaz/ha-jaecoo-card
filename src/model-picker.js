@@ -300,4 +300,4 @@ class TeslaModelPicker extends LitElement {
   }
 }
 
-customElements.define('tesla-model-picker', TeslaModelPicker);
+customElements.define('jaecoo-model-picker', TeslaModelPicker);

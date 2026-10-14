@@ -207,7 +207,184 @@ const CUSTOM = {
   ROUTE:                null,
 };
 
-const INTEGRATIONS = { fleet: FLEET, custom: CUSTOM };
+// elad-bar/ha-carlinko (Jaecoo / Chery / Omoda) integration.
+// CarLinko entity IDs are derived from the plate number and the HA language,
+// so these templates carry the integration's translation_key ('{domain}.@{key}')
+// and are looked up in hass.entities by device instead of string-substituted.
+const CARLINKO = {
+  // Sensors
+  BATTERY_LEVEL:        'sensor.@battery',
+  BATTERY_RANGE:        'sensor.@range',
+  CHARGE_RATE:          'sensor.@charge_power',
+  CHARGE_LIMIT:         null,
+  CHARGING_STATE:       'sensor.@charge_state',
+  CHARGE_MODE:          'sensor.@charge_mode',
+  CHARGE_MINUTES_LEFT:  'sensor.@charge_remaining',
+  ENERGY_LEFT:          'sensor.@energy_left',
+  TEMPERATURE_INSIDE:   null,
+  TEMPERATURE_OUTSIDE:  null,
+  SPEED:                'sensor.@speed',
+  ODOMETER:             'sensor.@odometer',
+
+  // Binary sensors
+  CHARGING:             'binary_sensor.@charging',
+  PLUGGED_IN:           null,
+  PARKING_BRAKE:        null,
+  FRUNK:                null,
+  TRUNK:                null,
+  DOORS:                null,
+  WINDOWS:              null,
+  LOCKED:               null,
+  ONLINE:               'binary_sensor.@online',
+  SENTRY_MODE:          null,
+
+  // Individual door sensors
+  DOOR_DRIVER_FRONT:      'binary_sensor.@door_driver',
+  DOOR_DRIVER_REAR:       'binary_sensor.@door_rear_left',
+  DOOR_PASSENGER_FRONT:   'binary_sensor.@door_passenger',
+  DOOR_PASSENGER_REAR:    'binary_sensor.@door_rear_right',
+  WINDOW_DRIVER_FRONT:    null,
+  WINDOW_DRIVER_REAR:     null,
+  WINDOW_PASSENGER_FRONT: null,
+  WINDOW_PASSENGER_REAR:  null,
+
+  // Locks
+  DOOR_LOCK:            'lock.@lock',
+
+  // Switches
+  CHARGER_SWITCH:       null,
+  SENTRY_MODE_SWITCH:   null,
+  DEFROST_SWITCH:       'switch.@defrost_cmd',
+  CAMP_MODE:            null,
+  DOG_MODE:             null,
+  AIR_PURIFY:           'switch.@purify',
+  WINDSHIELD_HEAT:      'switch.@windshield_heat',
+
+  CABIN_OVERHEAT:       null,
+
+  // Select entities — seat heat / ventilation (options: off, l1, l2, l3)
+  HEATED_SEAT_LEFT:         'select.@seat_heat_l',
+  HEATED_SEAT_RIGHT:        'select.@seat_heat_r',
+  HEATED_SEAT_REAR_LEFT:    'select.@seat_heat_lr',
+  HEATED_SEAT_REAR_CENTER:  null,
+  HEATED_SEAT_REAR_RIGHT:   'select.@seat_heat_rr',
+  VENT_SEAT_LEFT:           'select.@seat_vent_l',
+  VENT_SEAT_RIGHT:          'select.@seat_vent_r',
+
+  // Steering wheel heater (on/off switch, not a level select)
+  STEERING_WHEEL_HEATER:      'switch.@steer_heat',
+  AUTO_STEERING_WHEEL_HEATER: null,
+
+  // Climate
+  CLIMATE:              'climate.@climate',
+  QUICK_COOL:           'button.@quick_cool',
+  QUICK_HEAT:           'button.@quick_heat',
+
+  // Numbers
+  CHARGE_LIMIT_NUMBER:  null,
+  CHARGING_AMPS_NUMBER: null,
+
+  // Buttons
+  CHARGE_PORT_OPEN:     null,
+  CHARGE_PORT_CLOSE:    null,
+  CHARGE_STOP:          'button.@charge_stop',
+  HORN:                 null,
+  FLASH_LIGHTS:         'button.@find',
+  REMOTE_START:         null,
+  OPEN_FRUNK:           null,
+  OPEN_TRUNK:           'cover.@liftgate',
+  FORCE_UPDATE:         null,
+  WINDOWS_VENT:         'button.@windows_vent',
+
+  // Covers
+  WINDOWS_COVER:        'cover.@windows',
+  SUNROOF_COVER:        'cover.@sunroof',
+  FRUNK_COVER:          null,
+  CHARGER_DOOR:         null,
+
+  ENERGY_ADDED:         null,
+
+  // Tyre pressure
+  TYRE_FL:              'sensor.@tyre_fl',
+  TYRE_FR:              'sensor.@tyre_fr',
+  TYRE_RL:              'sensor.@tyre_rl',
+  TYRE_RR:              'sensor.@tyre_rr',
+
+  TIME_TO_FULL_CHARGE:  null,
+  DISTANCE_TO_ARRIVAL:  null,
+  TIME_TO_ARRIVAL:      null,
+
+  // Device tracker
+  LOCATION:             'device_tracker.@location',
+  ROUTE:                null,
+
+  // Vehicle renders from the CarLinko cloud (colour-matched to the car)
+  IMAGE_FRONT:          'image.@vehicle_front',
+  IMAGE_SIDE:           'image.@vehicle_side',
+  IMAGE_TOP:            'image.@vehicle_top',
+};
+
+const INTEGRATIONS = { fleet: FLEET, custom: CUSTOM, carlinko: CARLINKO };
+
+export const CARLINKO_PLATFORM = 'carlinko';
+
+/** True when the template is a CarLinko translation_key lookup. */
+export function isCarlinkoTemplate(template) {
+  return typeof template === 'string' && template.includes('.@');
+}
+
+// hass.entities is replaced (not mutated) when the registry changes,
+// so it is a safe cache key.
+const _carlinkoIndexCache = new WeakMap();
+
+function _carlinkoIndex(entities) {
+  let index = _carlinkoIndexCache.get(entities);
+  if (index) return index;
+  index = new Map();   // device_id → Map('domain.translation_key' → entity_id)
+  for (const ent of Object.values(entities)) {
+    if (ent.platform !== CARLINKO_PLATFORM || !ent.translation_key || !ent.device_id) continue;
+    if (!index.has(ent.device_id)) index.set(ent.device_id, new Map());
+    const domain = ent.entity_id.split('.')[0];
+    index.get(ent.device_id).set(`${domain}.${ent.translation_key}`, ent.entity_id);
+  }
+  _carlinkoIndexCache.set(entities, index);
+  return index;
+}
+
+/**
+ * List CarLinko vehicles (HA devices) as [{ id, name }], sorted by name.
+ * @param {object} hass
+ */
+export function carlinkoDevices(hass) {
+  if (!hass?.entities) return [];
+  return [..._carlinkoIndex(hass.entities).keys()]
+    .map(id => {
+      const dev = hass.devices?.[id];
+      return { id, name: dev?.name_by_user || dev?.name || id };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * Resolve a CarLinko template to an entity ID for one vehicle.
+ * Without a deviceId the first CarLinko vehicle is used.
+ * @param {string} template — e.g. 'sensor.@battery'
+ * @param {object} hass
+ * @param {string} [deviceId]
+ * @param {object} [overrides] — e.g. { BATTERY_LEVEL: 'sensor.my_battery' }
+ * @returns {string|null}
+ */
+export function resolveCarlinkoId(template, hass, deviceId, overrides) {
+  if (!template) return null;
+  if (overrides) {
+    const key = CARLINKO_REVERSE[template];
+    if (key && overrides[key]) return overrides[key];
+  }
+  if (!hass?.entities) return null;
+  const [domain, tk] = template.split('.@');
+  const id = deviceId || carlinkoDevices(hass)[0]?.id;
+  return _carlinkoIndex(hass.entities).get(id)?.get(`${domain}.${tk}`) ?? null;
+}
 
 // ── Entity groups for the custom entities editor ────────────────────────────
 // Each group has a label and an array of { key, label, domain } entries.
@@ -308,6 +485,11 @@ for (const [k, v] of Object.entries(FLEET)) {
 // Second pass: fill in any missing (non-canonical) templates
 for (const [k, v] of Object.entries(FLEET)) {
   if (v && !FLEET_REVERSE[v]) FLEET_REVERSE[v] = k;
+}
+
+const CARLINKO_REVERSE = {};
+for (const [k, v] of Object.entries(CARLINKO)) {
+  if (v && (CANONICAL_KEYS.has(k) || !CARLINKO_REVERSE[v])) CARLINKO_REVERSE[v] = k;
 }
 
 /**

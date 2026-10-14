@@ -170,10 +170,10 @@
   L('Module script started');
 
   try {
-    await import('../dist/tesla-card.js');
-    L('dist/tesla-card.js imported', 'ok');
+    await import('../dist/jaecoo-card.js');
+    L('dist/jaecoo-card.js imported', 'ok');
   } catch (e) {
-    L('FAILED to import dist/tesla-card.js: ' + (e.stack || e.message), 'err');
+    L('FAILED to import dist/jaecoo-card.js: ' + (e.stack || e.message), 'err');
     throw e;
   }
 
@@ -298,7 +298,7 @@
   };
 
   function pushHass() {
-    const c = document.querySelector('tesla-card');
+    const c = document.querySelector('jaecoo-card');
     if (c) c.hass = { ...hass, states: { ...states } };
   }
 
@@ -306,16 +306,16 @@
     L('Waiting for tesla-card to be defined...');
 
     await Promise.race([
-      customElements.whenDefined('tesla-card'),
+      customElements.whenDefined('jaecoo-card'),
       new Promise((_, rej) => setTimeout(() => rej(new Error(
         'Timed out waiting for tesla-card.\n' +
-        'dist/tesla-card.js likely has an error — check browser console (F12).'
+        'dist/jaecoo-card.js likely has an error — check browser console (F12).'
       )), 5000)),
     ]);
 
-    L('tesla-card defined', 'ok');
+    L('jaecoo-card defined', 'ok');
 
-    const card = document.createElement('tesla-card');
+    const card = document.createElement('jaecoo-card');
     card.setConfig({
       car_name:    CAR,
       car_model:   '3',

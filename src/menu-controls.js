@@ -38,13 +38,23 @@ class TeslaMenuControls extends TeslaBase {
 
     const frunkOpen     = this._val(this.E.FRUNK_COVER) === 'open'
                        || this._val(this.E.FRUNK)        === 'on';
-    const trunkOpen     = this._val(this.E.TRUNK) === 'on';
+    const trunkOpen     = this._val(this.E.TRUNK) === 'on'
+                       || this._val(this.E.OPEN_TRUNK) === 'open';
+    const hasFrunk      = !!this._state(this.E.FRUNK_COVER);
+    const hasTrunk      = !!this._state(this.E.OPEN_TRUNK);
+    const hasPort       = !!(this._state(this.E.CHARGE_PORT_OPEN) || this._state(this.E.CHARGER_DOOR));
+    const hasSunroof    = !!this._state(this.E.SUNROOF_COVER);
+    const sunroofOpen   = this._val(this.E.SUNROOF_COVER) === 'open';
 
     const pluggedIn     = this._val(this.E.PLUGGED_IN) === 'on';
     const chargerDoorOpen = this._val(this.E.CHARGER_DOOR) === 'open' || pluggedIn;
 
     const windowsOpen   = this._val(this.E.WINDOWS_COVER) === 'open';
+    const hasWindows    = !!(this._state(this.E.WINDOWS_COVER) || this._state(this.E.WINDOWS_VENT));
     const bgFile = pluggedIn ? 'controls-bg-charging.png' : 'controls-bg.png';
+    const bgSrc  = this._isCarlinko
+      ? (this._picture(this.E.IMAGE_TOP) ?? this.config.image_top ?? '')
+      : this._imgUrl(bgFile);
 
     // Tyre pressure — only show toggle if entities exist
     const hasTyres   = !!this._state(this.E.TYRE_FL);
@@ -70,7 +80,7 @@ class TeslaMenuControls extends TeslaBase {
         </div>
         <div class="ctrl-car-area">
           <img class="ctrl-car-bg"
-            src="${this._imgUrl(bgFile)}"
+            src="${bgSrc}"
             alt="Car top view" />
           ${this._hasCustomOverlay ? html`
             <div style="${this._customOverlayStyleFor(bgFile)}"></div>` : ''}
@@ -95,53 +105,66 @@ class TeslaMenuControls extends TeslaBase {
             </div>
           ` : html`
             <!-- Frunk — text only, top centre (open only, must be closed physically) -->
+            ${hasFrunk ? html`
             <button class="ctrl-zone ctrl-frunk"
               @click=${() => this._activate(this.E.FRUNK_COVER)}
               ?disabled=${frunkOpen}>
               ${frunkOpen ? 'Open' : 'Open'}
-            </button>
+            </button>` : ''}
             <!-- Lock — icon only, car centre -->
             <button class="ctrl-zone ctrl-lock"
               @click=${() => this._svc('lock', isLocked ? 'unlock' : 'lock', this.E.DOOR_LOCK)}>
               <span class="icon">${unsafeHTML(isLocked ? ICONS.lock : ICONS.unlock)}</span>
             </button>
             <!-- Trunk — text only, bottom centre -->
+            ${hasTrunk ? html`
             <button class="ctrl-zone ctrl-trunk"
               @click=${() => this._activate(this.E.OPEN_TRUNK)}>
               ${trunkOpen ? 'Close' : 'Open'}
-            </button>
+            </button>` : ''}
             <!-- Charge port — icon only, bottom left -->
+            ${hasPort ? html`
             <button class="ctrl-zone ctrl-port ${chargerDoorOpen ? 'port-open' : ''}"
               @click=${() => this._openClose(this.E.CHARGE_PORT_OPEN, this.E.CHARGE_PORT_CLOSE, chargerDoorOpen)}>
               <span class="icon">${unsafeHTML(ICONS['charge-bolt'])}</span>
-            </button>
+            </button>` : ''}
           `}
         </div>
         <div class="ctrl-actions">
+          ${this._state(this.E.FLASH_LIGHTS) ? html`
           <button class="ctrl-action-btn"
             @click=${() => this._svc('button', 'press', this.E.FLASH_LIGHTS)}>
             <span class="icon">${unsafeHTML(ICONS['flash-lights'])}</span>
-            <span>Flash</span>
-          </button>
+            <span>${this._isCarlinko ? 'Find' : 'Flash'}</span>
+          </button>` : ''}
+          ${this._state(this.E.HORN) ? html`
           <button class="ctrl-action-btn"
             @click=${() => this._svc('button', 'press', this.E.HORN)}>
             <span class="icon">${unsafeHTML(ICONS.horn)}</span>
             <span>Horn</span>
-          </button>
+          </button>` : ''}
+          ${this._state(this.E.REMOTE_START) ? html`
           <button class="ctrl-action-btn"
             @click=${() => this._svc('button', 'press', this.E.REMOTE_START)}>
             <span class="icon">${unsafeHTML(ICONS['remote-start'])}</span>
             <span>Start</span>
-          </button>
+          </button>` : ''}
+          ${hasSunroof ? html`
           <button class="ctrl-action-btn"
-            @click=${() => this._svc('cover', windowsOpen ? 'close_cover' : 'open_cover', this.E.WINDOWS_COVER)}>
+            @click=${() => this._svc('cover', sunroofOpen ? 'close_cover' : 'open_cover', this.E.SUNROOF_COVER)}>
+            <span class="icon">${unsafeHTML(ICONS['vent-open'])}</span>
+            <span>${sunroofOpen ? 'Close roof' : 'Sunroof'}</span>
+          </button>` : ''}
+          ${hasWindows ? html`
+          <button class="ctrl-action-btn"
+            @click=${() => this._toggleWindows(windowsOpen)}>
             <span class="icon">${unsafeHTML(windowsOpen ? ICONS['vent-close'] : ICONS['vent-open'])}</span>
             <span>${windowsOpen ? 'Close' : 'Vent'}</span>
-          </button>
+          </button>` : ''}
         </div>
       </div>
     `;
   }
 }
 
-customElements.define('tesla-menu-controls', TeslaMenuControls);
+customElements.define('jaecoo-menu-controls', TeslaMenuControls);

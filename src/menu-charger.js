@@ -84,6 +84,28 @@ class TeslaMenuCharger extends TeslaBase {
 
     const addedRange = this._attr(this.E.ENERGY_ADDED, 'added_range');
 
+    const hasLimit   = !!this._state(this.E.CHARGE_LIMIT_NUMBER);
+    const hasAmps    = !!this._state(this.E.CHARGING_AMPS_NUMBER);
+    const hasPort    = !!(this._state(this.E.CHARGE_PORT_OPEN) || this._state(this.E.CHARGER_DOOR));
+    const charging   = this._val(this.E.CHARGING) === 'on';
+
+    // Read-only info rows — only those whose entity exists and has a value
+    const withUnit = (t) => {
+      const v = this._val(t);
+      if (v == null || v === 'unknown' || v === 'unavailable') return null;
+      const u = this._attr(t, 'unit_of_measurement');
+      return u ? `${v} ${u}` : this._fmt(t);
+    };
+    const minsLeft = Number(this._val(this.E.CHARGE_MINUTES_LEFT));
+    const infoRows = !this._isCarlinko ? [] : [
+      ['Status',         this._state(this.E.CHARGING_STATE) ? this._fmt(this.E.CHARGING_STATE) : null],
+      ['Power',          charging ? withUnit(this.E.CHARGE_RATE) : null],
+      ['Charger',        charging ? withUnit(this.E.CHARGE_MODE) : null],
+      ['Time to full',   charging && isFinite(minsLeft) && minsLeft > 0
+                           ? `${Math.floor(minsLeft / 60)}h ${Math.round(minsLeft % 60)}m` : null],
+      ['Energy in battery', withUnit(this.E.ENERGY_LEFT)],
+    ].filter(([, v]) => v != null && v !== 'unknown' && v !== 'unavailable');
+
     return html`
       <div class="charger-menu${this.layout === 'landscape' ? ' landscape' : ''}">
 
@@ -98,7 +120,17 @@ class TeslaMenuCharger extends TeslaBase {
           </div>
         </div>
 
+        ${infoRows.length ? html`
+          <div class="chg-card">
+            ${infoRows.map(([label, value]) => html`
+              <div class="chg-info-row">
+                <span class="chg-info-label">${label}</span>
+                <span class="chg-info-value">${value}</span>
+              </div>`)}
+          </div>` : ''}
+
         <!-- Charge limit card + amps stepper -->
+        ${hasLimit || hasAmps ? html`
         <div class="chg-card">
           <div class="chg-limit-header">
             <span class="chg-limit-title">Charge limit: ${limitVal}%</span>
@@ -126,17 +158,24 @@ class TeslaMenuCharger extends TeslaBase {
               <span class="icon">${unsafeHTML(ICONS['chevron-right'])}</span>
             </button>
           </div>
-        </div>
+        </div>` : ''}
 
         <!-- Open / Close Charge Port — plain text link -->
+        ${hasPort ? html`
         <button class="chg-port-btn"
           @click=${() => this._openClose(this.E.CHARGE_PORT_OPEN, this.E.CHARGE_PORT_CLOSE, chargerDoorOpen)}>
           ${chargerDoorOpen ? 'Close Charge Port' : 'Open Charge Port'}
-        </button>
+        </button>` : ''}
+
+        ${charging && this._state(this.E.CHARGE_STOP) ? html`
+        <button class="chg-port-btn"
+          @click=${() => this._svc('button', 'press', this.E.CHARGE_STOP)}>
+          Stop Charging
+        </button>` : ''}
 
       </div>
     `;
   }
 }
 
-customElements.define('tesla-menu-charger', TeslaMenuCharger);
+customElements.define('jaecoo-menu-charger', TeslaMenuCharger);

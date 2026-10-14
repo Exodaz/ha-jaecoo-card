@@ -1,7 +1,7 @@
 {
-  "name": "tesla-card",
+  "name": "jaecoo-card",
   "version": "1.0.4",
-  "description": "HACS custom Lovelace card for Tesla vehicles in Home Assistant",
+  "description": "HACS custom Lovelace card for Jaecoo (CarLinko) and Tesla vehicles in Home Assistant",
   "type": "module",
   "scripts": {
     "build": "node build.js",

@@ -1,6 +1,6 @@
-var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,configurable:!0,writable:!0,value:e}):r[t]=e;var Et=(r,t,e)=>ms(r,typeof t!="symbol"?t+"":t,e);var yt=globalThis,xt=yt.ShadowRoot&&(yt.ShadyCSS===void 0||yt.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,Gt=Symbol(),Ee=new WeakMap,et=class{constructor(t,e,s){if(this._$cssResult$=!0,s!==Gt)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o,e=this.t;if(xt&&t===void 0){let s=e!==void 0&&e.length===1;s&&(t=Ee.get(e)),t===void 0&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),s&&Ee.set(e,t))}return t}toString(){return this.cssText}},ye=r=>new et(typeof r=="string"?r:r+"",void 0,Gt),k=(r,...t)=>{let e=r.length===1?r[0]:t.reduce((s,i,a)=>s+(n=>{if(n._$cssResult$===!0)return n.cssText;if(typeof n=="number")return n;throw Error("Value passed to 'css' function must be a 'css' function result: "+n+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+r[a+1],r[0]);return new et(e,r,Gt)},xe=(r,t)=>{if(xt)r.adoptedStyleSheets=t.map(e=>e instanceof CSSStyleSheet?e:e.styleSheet);else for(let e of t){let s=document.createElement("style"),i=yt.litNonce;i!==void 0&&s.setAttribute("nonce",i),s.textContent=e.cssText,r.appendChild(s)}},zt=xt?r=>r:r=>r instanceof CSSStyleSheet?(t=>{let e="";for(let s of t.cssRules)e+=s.cssText;return ye(e)})(r):r;var{is:us,defineProperty:_s,getOwnPropertyDescriptor:gs,getOwnPropertyNames:fs,getOwnPropertySymbols:bs,getPrototypeOf:vs}=Object,T=globalThis,ke=T.trustedTypes,Es=ke?ke.emptyScript:"",ys=T.reactiveElementPolyfillSupport,st=(r,t)=>r,Ft={toAttribute(r,t){switch(t){case Boolean:r=r?Es:null;break;case Object:case Array:r=r==null?r:JSON.stringify(r)}return r},fromAttribute(r,t){let e=r;switch(t){case Boolean:e=r!==null;break;case Number:e=r===null?null:Number(r);break;case Object:case Array:try{e=JSON.parse(r)}catch{e=null}}return e}},Ae=(r,t)=>!us(r,t),we={attribute:!0,type:String,converter:Ft,reflect:!1,useDefault:!1,hasChanged:Ae};Symbol.metadata??(Symbol.metadata=Symbol("metadata")),T.litPropertyMetadata??(T.litPropertyMetadata=new WeakMap);var R=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??(this.l=[])).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=we){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){let s=Symbol(),i=this.getPropertyDescriptor(t,s,e);i!==void 0&&_s(this.prototype,t,i)}}static getPropertyDescriptor(t,e,s){let{get:i,set:a}=gs(this.prototype,t)??{get(){return this[e]},set(n){this[e]=n}};return{get:i,set(n){let p=i?.call(this);a?.call(this,n),this.requestUpdate(t,p,s)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??we}static _$Ei(){if(this.hasOwnProperty(st("elementProperties")))return;let t=vs(this);t.finalize(),t.l!==void 0&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(st("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(st("properties"))){let e=this.properties,s=[...fs(e),...bs(e)];for(let i of s)this.createProperty(i,e[i])}let t=this[Symbol.metadata];if(t!==null){let e=litPropertyMetadata.get(t);if(e!==void 0)for(let[s,i]of e)this.elementProperties.set(s,i)}this._$Eh=new Map;for(let[e,s]of this.elementProperties){let i=this._$Eu(e,s);i!==void 0&&this._$Eh.set(i,e)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){let e=[];if(Array.isArray(t)){let s=new Set(t.flat(1/0).reverse());for(let i of s)e.unshift(zt(i))}else t!==void 0&&e.push(zt(t));return e}static _$Eu(t,e){let s=e.attribute;return s===!1?void 0:typeof s=="string"?s:typeof t=="string"?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??(this._$EO=new Set)).add(t),this.renderRoot!==void 0&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){let t=new Map,e=this.constructor.elementProperties;for(let s of e.keys())this.hasOwnProperty(s)&&(t.set(s,this[s]),delete this[s]);t.size>0&&(this._$Ep=t)}createRenderRoot(){let t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return xe(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??(this.renderRoot=this.createRenderRoot()),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,s){this._$AK(t,s)}_$ET(t,e){let s=this.constructor.elementProperties.get(t),i=this.constructor._$Eu(t,s);if(i!==void 0&&s.reflect===!0){let a=(s.converter?.toAttribute!==void 0?s.converter:Ft).toAttribute(e,s.type);this._$Em=t,a==null?this.removeAttribute(i):this.setAttribute(i,a),this._$Em=null}}_$AK(t,e){let s=this.constructor,i=s._$Eh.get(t);if(i!==void 0&&this._$Em!==i){let a=s.getPropertyOptions(i),n=typeof a.converter=="function"?{fromAttribute:a.converter}:a.converter?.fromAttribute!==void 0?a.converter:Ft;this._$Em=i;let p=n.fromAttribute(e,a.type);this[i]=p??this._$Ej?.get(i)??p,this._$Em=null}}requestUpdate(t,e,s,i=!1,a){if(t!==void 0){let n=this.constructor;if(i===!1&&(a=this[t]),s??(s=n.getPropertyOptions(t)),!((s.hasChanged??Ae)(a,e)||s.useDefault&&s.reflect&&a===this._$Ej?.get(t)&&!this.hasAttribute(n._$Eu(t,s))))return;this.C(t,e,s)}this.isUpdatePending===!1&&(this._$ES=this._$EP())}C(t,e,{useDefault:s,reflect:i,wrapped:a},n){s&&!(this._$Ej??(this._$Ej=new Map)).has(t)&&(this._$Ej.set(t,n??e??this[t]),a!==!0||n!==void 0)||(this._$AL.has(t)||(this.hasUpdated||s||(e=void 0),this._$AL.set(t,e)),i===!0&&this._$Em!==t&&(this._$Eq??(this._$Eq=new Set)).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(e){Promise.reject(e)}let t=this.scheduleUpdate();return t!=null&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??(this.renderRoot=this.createRenderRoot()),this._$Ep){for(let[i,a]of this._$Ep)this[i]=a;this._$Ep=void 0}let s=this.constructor.elementProperties;if(s.size>0)for(let[i,a]of s){let{wrapped:n}=a,p=this[i];n!==!0||this._$AL.has(i)||p===void 0||this.C(i,void 0,a,p)}}let t=!1,e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(s=>s.hostUpdate?.()),this.update(e)):this._$EM()}catch(s){throw t=!1,this._$EM(),s}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(e=>e.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&(this._$Eq=this._$Eq.forEach(e=>this._$ET(e,this[e]))),this._$EM()}updated(t){}firstUpdated(t){}};R.elementStyles=[],R.shadowRootOptions={mode:"open"},R[st("elementProperties")]=new Map,R[st("finalized")]=new Map,ys?.({ReactiveElement:R}),(T.reactiveElementVersions??(T.reactiveElementVersions=[])).push("2.1.2");var at=globalThis,Re=r=>r,kt=at.trustedTypes,$e=kt?kt.createPolicy("lit-html",{createHTML:r=>r}):void 0,Le="$lit$",O=`lit$${Math.random().toFixed(9).slice(2)}$`,Ne="?"+O,xs=`<${Ne}>`,G=document,rt=()=>G.createComment(""),nt=r=>r===null||typeof r!="object"&&typeof r!="function",Kt=Array.isArray,ks=r=>Kt(r)||typeof r?.[Symbol.iterator]=="function",Bt=`[ 	
-\f\r]`,it=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,Ce=/-->/g,Se=/>/g,U=RegExp(`>|${Bt}(?:([^\\s"'>=/]+)(${Bt}*=${Bt}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`,"g"),Te=/'/g,Oe=/"/g,Ie=/^(?:script|style|textarea|title)$/i,qt=r=>(t,...e)=>({_$litType$:r,strings:t,values:e}),o=qt(1),Qs=qt(2),Ws=qt(3),$=Symbol.for("lit-noChange"),f=Symbol.for("lit-nothing"),Me=new WeakMap,P=G.createTreeWalker(G,129);function De(r,t){if(!Kt(r)||!r.hasOwnProperty("raw"))throw Error("invalid template strings array");return $e!==void 0?$e.createHTML(t):t}var ws=(r,t)=>{let e=r.length-1,s=[],i,a=t===2?"<svg>":t===3?"<math>":"",n=it;for(let p=0;p<e;p++){let h=r[p],_,u,m=-1,g=0;for(;g<h.length&&(n.lastIndex=g,u=n.exec(h),u!==null);)g=n.lastIndex,n===it?u[1]==="!--"?n=Ce:u[1]!==void 0?n=Se:u[2]!==void 0?(Ie.test(u[2])&&(i=RegExp("</"+u[2],"g")),n=U):u[3]!==void 0&&(n=U):n===U?u[0]===">"?(n=i??it,m=-1):u[1]===void 0?m=-2:(m=n.lastIndex-u[2].length,_=u[1],n=u[3]===void 0?U:u[3]==='"'?Oe:Te):n===Oe||n===Te?n=U:n===Ce||n===Se?n=it:(n=U,i=void 0);let b=n===U&&r[p+1].startsWith("/>")?" ":"";a+=n===it?h+xs:m>=0?(s.push(_),h.slice(0,m)+Le+h.slice(m)+O+b):h+O+(m===-2?p:b)}return[De(r,a+(r[e]||"<?>")+(t===2?"</svg>":t===3?"</math>":"")),s]},ot=class r{constructor({strings:t,_$litType$:e},s){let i;this.parts=[];let a=0,n=0,p=t.length-1,h=this.parts,[_,u]=ws(t,e);if(this.el=r.createElement(_,s),P.currentNode=this.el.content,e===2||e===3){let m=this.el.content.firstChild;m.replaceWith(...m.childNodes)}for(;(i=P.nextNode())!==null&&h.length<p;){if(i.nodeType===1){if(i.hasAttributes())for(let m of i.getAttributeNames())if(m.endsWith(Le)){let g=u[n++],b=i.getAttribute(m).split(O),x=/([.?@])?(.*)/.exec(g);h.push({type:1,index:a,name:x[2],strings:b,ctor:x[1]==="."?jt:x[1]==="?"?Qt:x[1]==="@"?Wt:Q}),i.removeAttribute(m)}else m.startsWith(O)&&(h.push({type:6,index:a}),i.removeAttribute(m));if(Ie.test(i.tagName)){let m=i.textContent.split(O),g=m.length-1;if(g>0){i.textContent=kt?kt.emptyScript:"";for(let b=0;b<g;b++)i.append(m[b],rt()),P.nextNode(),h.push({type:2,index:++a});i.append(m[g],rt())}}}else if(i.nodeType===8)if(i.data===Ne)h.push({type:2,index:a});else{let m=-1;for(;(m=i.data.indexOf(O,m+1))!==-1;)h.push({type:7,index:a}),m+=O.length-1}a++}}static createElement(t,e){let s=G.createElement("template");return s.innerHTML=t,s}};function j(r,t,e=r,s){if(t===$)return t;let i=s!==void 0?e._$Co?.[s]:e._$Cl,a=nt(t)?void 0:t._$litDirective$;return i?.constructor!==a&&(i?._$AO?.(!1),a===void 0?i=void 0:(i=new a(r),i._$AT(r,e,s)),s!==void 0?(e._$Co??(e._$Co=[]))[s]=i:e._$Cl=i),i!==void 0&&(t=j(r,i._$AS(r,t.values),i,s)),t}var Vt=class{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){let{el:{content:e},parts:s}=this._$AD,i=(t?.creationScope??G).importNode(e,!0);P.currentNode=i;let a=P.nextNode(),n=0,p=0,h=s[0];for(;h!==void 0;){if(n===h.index){let _;h.type===2?_=new lt(a,a.nextSibling,this,t):h.type===1?_=new h.ctor(a,h.name,h.strings,this,t):h.type===6&&(_=new Yt(a,this,t)),this._$AV.push(_),h=s[++p]}n!==h?.index&&(a=P.nextNode(),n++)}return P.currentNode=G,i}p(t){let e=0;for(let s of this._$AV)s!==void 0&&(s.strings!==void 0?(s._$AI(t,s,e),e+=s.strings.length-2):s._$AI(t[e])),e++}},lt=class r{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,s,i){this.type=2,this._$AH=f,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=s,this.options=i,this._$Cv=i?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode,e=this._$AM;return e!==void 0&&t?.nodeType===11&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=j(this,t,e),nt(t)?t===f||t==null||t===""?(this._$AH!==f&&this._$AR(),this._$AH=f):t!==this._$AH&&t!==$&&this._(t):t._$litType$!==void 0?this.$(t):t.nodeType!==void 0?this.T(t):ks(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==f&&nt(this._$AH)?this._$AA.nextSibling.data=t:this.T(G.createTextNode(t)),this._$AH=t}$(t){let{values:e,_$litType$:s}=t,i=typeof s=="number"?this._$AC(t):(s.el===void 0&&(s.el=ot.createElement(De(s.h,s.h[0]),this.options)),s);if(this._$AH?._$AD===i)this._$AH.p(e);else{let a=new Vt(i,this),n=a.u(this.options);a.p(e),this.T(n),this._$AH=a}}_$AC(t){let e=Me.get(t.strings);return e===void 0&&Me.set(t.strings,e=new ot(t)),e}k(t){Kt(this._$AH)||(this._$AH=[],this._$AR());let e=this._$AH,s,i=0;for(let a of t)i===e.length?e.push(s=new r(this.O(rt()),this.O(rt()),this,this.options)):s=e[i],s._$AI(a),i++;i<e.length&&(this._$AR(s&&s._$AB.nextSibling,i),e.length=i)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){let s=Re(t).nextSibling;Re(t).remove(),t=s}}setConnected(t){this._$AM===void 0&&(this._$Cv=t,this._$AP?.(t))}},Q=class{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,s,i,a){this.type=1,this._$AH=f,this._$AN=void 0,this.element=t,this.name=e,this._$AM=i,this.options=a,s.length>2||s[0]!==""||s[1]!==""?(this._$AH=Array(s.length-1).fill(new String),this.strings=s):this._$AH=f}_$AI(t,e=this,s,i){let a=this.strings,n=!1;if(a===void 0)t=j(this,t,e,0),n=!nt(t)||t!==this._$AH&&t!==$,n&&(this._$AH=t);else{let p=t,h,_;for(t=a[0],h=0;h<a.length-1;h++)_=j(this,p[s+h],e,h),_===$&&(_=this._$AH[h]),n||(n=!nt(_)||_!==this._$AH[h]),_===f?t=f:t!==f&&(t+=(_??"")+a[h+1]),this._$AH[h]=_}n&&!i&&this.j(t)}j(t){t===f?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}},jt=class extends Q{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===f?void 0:t}},Qt=class extends Q{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==f)}},Wt=class extends Q{constructor(t,e,s,i,a){super(t,e,s,i,a),this.type=5}_$AI(t,e=this){if((t=j(this,t,e,0)??f)===$)return;let s=this._$AH,i=t===f&&s!==f||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,a=t!==f&&(s===f||i);i&&this.element.removeEventListener(this.name,this,s),a&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){typeof this._$AH=="function"?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}},Yt=class{constructor(t,e,s){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=s}get _$AU(){return this._$AM._$AU}_$AI(t){j(this,t)}};var As=at.litHtmlPolyfillSupport;As?.(ot,lt),(at.litHtmlVersions??(at.litHtmlVersions=[])).push("3.3.2");var He=(r,t,e)=>{let s=e?.renderBefore??t,i=s._$litPart$;if(i===void 0){let a=e?.renderBefore??null;s._$litPart$=i=new lt(t.insertBefore(rt(),a),a,void 0,e??{})}return i._$AI(r),i};var ct=globalThis,E=class extends R{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){var e;let t=super.createRenderRoot();return(e=this.renderOptions).renderBefore??(e.renderBefore=t.firstChild),t}update(t){let e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=He(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return $}};E._$litElement$=!0,E.finalized=!0,ct.litElementHydrateSupport?.({LitElement:E});var Rs=ct.litElementPolyfillSupport;Rs?.({LitElement:E});(ct.litElementVersions??(ct.litElementVersions=[])).push("4.2.2");var Ue={ATTRIBUTE:1,CHILD:2,PROPERTY:3,BOOLEAN_ATTRIBUTE:4,EVENT:5,ELEMENT:6},Pe=r=>(...t)=>({_$litDirective$:r,values:t}),wt=class{constructor(t){}get _$AU(){return this._$AM._$AU}_$AT(t,e,s){this._$Ct=t,this._$AM=e,this._$Ci=s}_$AS(t,e){return this.update(t,e)}update(t,e){return this.render(...e)}};var ht=class extends wt{constructor(t){if(super(t),this.it=f,t.type!==Ue.CHILD)throw Error(this.constructor.directiveName+"() can only be used in child bindings")}render(t){if(t===f||t==null)return this._t=void 0,this.it=t;if(t===$)return t;if(typeof t!="string")throw Error(this.constructor.directiveName+"() called with a non-string value");if(t===this.it)return this._t;this.it=t;let e=[t];return e.raw=e,this._t={_$litType$:this.constructor.resultType,strings:e,values:[]}}};ht.directiveName="unsafeHTML",ht.resultType=1;var c=Pe(ht);var M=k`
+var ks=Object.defineProperty;var As=(n,t,e)=>t in n?ks(n,t,{enumerable:!0,configurable:!0,writable:!0,value:e}):n[t]=e;var Nt=(n,t,e)=>As(n,typeof t!="symbol"?t+"":t,e);var It=globalThis,Mt=It.ShadowRoot&&(It.ShadyCSS===void 0||It.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,qt=Symbol(),Oe=new WeakMap,dt=class{constructor(t,e,s){if(this._$cssResult$=!0,s!==qt)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o,e=this.t;if(Mt&&t===void 0){let s=e!==void 0&&e.length===1;s&&(t=Oe.get(e)),t===void 0&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),s&&Oe.set(e,t))}return t}toString(){return this.cssText}},Ne=n=>new dt(typeof n=="string"?n:n+"",void 0,qt),C=(n,...t)=>{let e=n.length===1?n[0]:t.reduce((s,i,a)=>s+(o=>{if(o._$cssResult$===!0)return o.cssText;if(typeof o=="number")return o;throw Error("Value passed to 'css' function must be a 'css' function result: "+o+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+n[a+1],n[0]);return new dt(e,n,qt)},Ie=(n,t)=>{if(Mt)n.adoptedStyleSheets=t.map(e=>e instanceof CSSStyleSheet?e:e.styleSheet);else for(let e of t){let s=document.createElement("style"),i=It.litNonce;i!==void 0&&s.setAttribute("nonce",i),s.textContent=e.cssText,n.appendChild(s)}},Zt=Mt?n=>n:n=>n instanceof CSSStyleSheet?(t=>{let e="";for(let s of t.cssRules)e+=s.cssText;return Ne(e)})(n):n;var{is:xs,defineProperty:ws,getOwnPropertyDescriptor:Cs,getOwnPropertyNames:Ts,getOwnPropertySymbols:$s,getPrototypeOf:Ss}=Object,H=globalThis,Me=H.trustedTypes,Os=Me?Me.emptyScript:"",Ns=H.reactiveElementPolyfillSupport,pt=(n,t)=>n,Xt={toAttribute(n,t){switch(t){case Boolean:n=n?Os:null;break;case Object:case Array:n=n==null?n:JSON.stringify(n)}return n},fromAttribute(n,t){let e=n;switch(t){case Boolean:e=n!==null;break;case Number:e=n===null?null:Number(n);break;case Object:case Array:try{e=JSON.parse(n)}catch{e=null}}return e}},De=(n,t)=>!xs(n,t),Le={attribute:!0,type:String,converter:Xt,reflect:!1,useDefault:!1,hasChanged:De};Symbol.metadata??(Symbol.metadata=Symbol("metadata")),H.litPropertyMetadata??(H.litPropertyMetadata=new WeakMap);var I=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??(this.l=[])).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=Le){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){let s=Symbol(),i=this.getPropertyDescriptor(t,s,e);i!==void 0&&ws(this.prototype,t,i)}}static getPropertyDescriptor(t,e,s){let{get:i,set:a}=Cs(this.prototype,t)??{get(){return this[e]},set(o){this[e]=o}};return{get:i,set(o){let p=i?.call(this);a?.call(this,o),this.requestUpdate(t,p,s)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??Le}static _$Ei(){if(this.hasOwnProperty(pt("elementProperties")))return;let t=Ss(this);t.finalize(),t.l!==void 0&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(pt("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(pt("properties"))){let e=this.properties,s=[...Ts(e),...$s(e)];for(let i of s)this.createProperty(i,e[i])}let t=this[Symbol.metadata];if(t!==null){let e=litPropertyMetadata.get(t);if(e!==void 0)for(let[s,i]of e)this.elementProperties.set(s,i)}this._$Eh=new Map;for(let[e,s]of this.elementProperties){let i=this._$Eu(e,s);i!==void 0&&this._$Eh.set(i,e)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){let e=[];if(Array.isArray(t)){let s=new Set(t.flat(1/0).reverse());for(let i of s)e.unshift(Zt(i))}else t!==void 0&&e.push(Zt(t));return e}static _$Eu(t,e){let s=e.attribute;return s===!1?void 0:typeof s=="string"?s:typeof t=="string"?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??(this._$EO=new Set)).add(t),this.renderRoot!==void 0&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){let t=new Map,e=this.constructor.elementProperties;for(let s of e.keys())this.hasOwnProperty(s)&&(t.set(s,this[s]),delete this[s]);t.size>0&&(this._$Ep=t)}createRenderRoot(){let t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return Ie(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??(this.renderRoot=this.createRenderRoot()),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,s){this._$AK(t,s)}_$ET(t,e){let s=this.constructor.elementProperties.get(t),i=this.constructor._$Eu(t,s);if(i!==void 0&&s.reflect===!0){let a=(s.converter?.toAttribute!==void 0?s.converter:Xt).toAttribute(e,s.type);this._$Em=t,a==null?this.removeAttribute(i):this.setAttribute(i,a),this._$Em=null}}_$AK(t,e){let s=this.constructor,i=s._$Eh.get(t);if(i!==void 0&&this._$Em!==i){let a=s.getPropertyOptions(i),o=typeof a.converter=="function"?{fromAttribute:a.converter}:a.converter?.fromAttribute!==void 0?a.converter:Xt;this._$Em=i;let p=o.fromAttribute(e,a.type);this[i]=p??this._$Ej?.get(i)??p,this._$Em=null}}requestUpdate(t,e,s,i=!1,a){if(t!==void 0){let o=this.constructor;if(i===!1&&(a=this[t]),s??(s=o.getPropertyOptions(t)),!((s.hasChanged??De)(a,e)||s.useDefault&&s.reflect&&a===this._$Ej?.get(t)&&!this.hasAttribute(o._$Eu(t,s))))return;this.C(t,e,s)}this.isUpdatePending===!1&&(this._$ES=this._$EP())}C(t,e,{useDefault:s,reflect:i,wrapped:a},o){s&&!(this._$Ej??(this._$Ej=new Map)).has(t)&&(this._$Ej.set(t,o??e??this[t]),a!==!0||o!==void 0)||(this._$AL.has(t)||(this.hasUpdated||s||(e=void 0),this._$AL.set(t,e)),i===!0&&this._$Em!==t&&(this._$Eq??(this._$Eq=new Set)).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(e){Promise.reject(e)}let t=this.scheduleUpdate();return t!=null&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??(this.renderRoot=this.createRenderRoot()),this._$Ep){for(let[i,a]of this._$Ep)this[i]=a;this._$Ep=void 0}let s=this.constructor.elementProperties;if(s.size>0)for(let[i,a]of s){let{wrapped:o}=a,p=this[i];o!==!0||this._$AL.has(i)||p===void 0||this.C(i,void 0,a,p)}}let t=!1,e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(s=>s.hostUpdate?.()),this.update(e)):this._$EM()}catch(s){throw t=!1,this._$EM(),s}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(e=>e.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&(this._$Eq=this._$Eq.forEach(e=>this._$ET(e,this[e]))),this._$EM()}updated(t){}firstUpdated(t){}};I.elementStyles=[],I.shadowRootOptions={mode:"open"},I[pt("elementProperties")]=new Map,I[pt("finalized")]=new Map,Ns?.({ReactiveElement:I}),(H.reactiveElementVersions??(H.reactiveElementVersions=[])).push("2.1.2");var ut=globalThis,He=n=>n,Lt=ut.trustedTypes,Ue=Lt?Lt.createPolicy("lit-html",{createHTML:n=>n}):void 0,Ve="$lit$",U=`lit$${Math.random().toFixed(9).slice(2)}$`,je="?"+U,Is=`<${je}>`,Q=document,mt=()=>Q.createComment(""),gt=n=>n===null||typeof n!="object"&&typeof n!="function",ae=Array.isArray,Ms=n=>ae(n)||typeof n?.[Symbol.iterator]=="function",Jt=`[ 	
+\f\r]`,_t=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,Ge=/-->/g,Pe=/>/g,j=RegExp(`>|${Jt}(?:([^\\s"'>=/]+)(${Jt}*=${Jt}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`,"g"),Fe=/'/g,ze=/"/g,We=/^(?:script|style|textarea|title)$/i,re=n=>(t,...e)=>({_$litType$:n,strings:t,values:e}),r=re(1),ii=re(2),ni=re(3),M=Symbol.for("lit-noChange"),v=Symbol.for("lit-nothing"),Be=new WeakMap,W=Q.createTreeWalker(Q,129);function Qe(n,t){if(!ae(n)||!n.hasOwnProperty("raw"))throw Error("invalid template strings array");return Ue!==void 0?Ue.createHTML(t):t}var Ls=(n,t)=>{let e=n.length-1,s=[],i,a=t===2?"<svg>":t===3?"<math>":"",o=_t;for(let p=0;p<e;p++){let l=n[p],m,u,_=-1,f=0;for(;f<l.length&&(o.lastIndex=f,u=o.exec(l),u!==null);)f=o.lastIndex,o===_t?u[1]==="!--"?o=Ge:u[1]!==void 0?o=Pe:u[2]!==void 0?(We.test(u[2])&&(i=RegExp("</"+u[2],"g")),o=j):u[3]!==void 0&&(o=j):o===j?u[0]===">"?(o=i??_t,_=-1):u[1]===void 0?_=-2:(_=o.lastIndex-u[2].length,m=u[1],o=u[3]===void 0?j:u[3]==='"'?ze:Fe):o===ze||o===Fe?o=j:o===Ge||o===Pe?o=_t:(o=j,i=void 0);let y=o===j&&n[p+1].startsWith("/>")?" ":"";a+=o===_t?l+Is:_>=0?(s.push(m),l.slice(0,_)+Ve+l.slice(_)+U+y):l+U+(_===-2?p:y)}return[Qe(n,a+(n[e]||"<?>")+(t===2?"</svg>":t===3?"</math>":"")),s]},ft=class n{constructor({strings:t,_$litType$:e},s){let i;this.parts=[];let a=0,o=0,p=t.length-1,l=this.parts,[m,u]=Ls(t,e);if(this.el=n.createElement(m,s),W.currentNode=this.el.content,e===2||e===3){let _=this.el.content.firstChild;_.replaceWith(..._.childNodes)}for(;(i=W.nextNode())!==null&&l.length<p;){if(i.nodeType===1){if(i.hasAttributes())for(let _ of i.getAttributeNames())if(_.endsWith(Ve)){let f=u[o++],y=i.getAttribute(_).split(U),R=/([.?@])?(.*)/.exec(f);l.push({type:1,index:a,name:R[2],strings:y,ctor:R[1]==="."?ee:R[1]==="?"?se:R[1]==="@"?ie:et}),i.removeAttribute(_)}else _.startsWith(U)&&(l.push({type:6,index:a}),i.removeAttribute(_));if(We.test(i.tagName)){let _=i.textContent.split(U),f=_.length-1;if(f>0){i.textContent=Lt?Lt.emptyScript:"";for(let y=0;y<f;y++)i.append(_[y],mt()),W.nextNode(),l.push({type:2,index:++a});i.append(_[f],mt())}}}else if(i.nodeType===8)if(i.data===je)l.push({type:2,index:a});else{let _=-1;for(;(_=i.data.indexOf(U,_+1))!==-1;)l.push({type:7,index:a}),_+=U.length-1}a++}}static createElement(t,e){let s=Q.createElement("template");return s.innerHTML=t,s}};function tt(n,t,e=n,s){if(t===M)return t;let i=s!==void 0?e._$Co?.[s]:e._$Cl,a=gt(t)?void 0:t._$litDirective$;return i?.constructor!==a&&(i?._$AO?.(!1),a===void 0?i=void 0:(i=new a(n),i._$AT(n,e,s)),s!==void 0?(e._$Co??(e._$Co=[]))[s]=i:e._$Cl=i),i!==void 0&&(t=tt(n,i._$AS(n,t.values),i,s)),t}var te=class{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){let{el:{content:e},parts:s}=this._$AD,i=(t?.creationScope??Q).importNode(e,!0);W.currentNode=i;let a=W.nextNode(),o=0,p=0,l=s[0];for(;l!==void 0;){if(o===l.index){let m;l.type===2?m=new bt(a,a.nextSibling,this,t):l.type===1?m=new l.ctor(a,l.name,l.strings,this,t):l.type===6&&(m=new ne(a,this,t)),this._$AV.push(m),l=s[++p]}o!==l?.index&&(a=W.nextNode(),o++)}return W.currentNode=Q,i}p(t){let e=0;for(let s of this._$AV)s!==void 0&&(s.strings!==void 0?(s._$AI(t,s,e),e+=s.strings.length-2):s._$AI(t[e])),e++}},bt=class n{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,s,i){this.type=2,this._$AH=v,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=s,this.options=i,this._$Cv=i?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode,e=this._$AM;return e!==void 0&&t?.nodeType===11&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=tt(this,t,e),gt(t)?t===v||t==null||t===""?(this._$AH!==v&&this._$AR(),this._$AH=v):t!==this._$AH&&t!==M&&this._(t):t._$litType$!==void 0?this.$(t):t.nodeType!==void 0?this.T(t):Ms(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==v&&gt(this._$AH)?this._$AA.nextSibling.data=t:this.T(Q.createTextNode(t)),this._$AH=t}$(t){let{values:e,_$litType$:s}=t,i=typeof s=="number"?this._$AC(t):(s.el===void 0&&(s.el=ft.createElement(Qe(s.h,s.h[0]),this.options)),s);if(this._$AH?._$AD===i)this._$AH.p(e);else{let a=new te(i,this),o=a.u(this.options);a.p(e),this.T(o),this._$AH=a}}_$AC(t){let e=Be.get(t.strings);return e===void 0&&Be.set(t.strings,e=new ft(t)),e}k(t){ae(this._$AH)||(this._$AH=[],this._$AR());let e=this._$AH,s,i=0;for(let a of t)i===e.length?e.push(s=new n(this.O(mt()),this.O(mt()),this,this.options)):s=e[i],s._$AI(a),i++;i<e.length&&(this._$AR(s&&s._$AB.nextSibling,i),e.length=i)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){let s=He(t).nextSibling;He(t).remove(),t=s}}setConnected(t){this._$AM===void 0&&(this._$Cv=t,this._$AP?.(t))}},et=class{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,s,i,a){this.type=1,this._$AH=v,this._$AN=void 0,this.element=t,this.name=e,this._$AM=i,this.options=a,s.length>2||s[0]!==""||s[1]!==""?(this._$AH=Array(s.length-1).fill(new String),this.strings=s):this._$AH=v}_$AI(t,e=this,s,i){let a=this.strings,o=!1;if(a===void 0)t=tt(this,t,e,0),o=!gt(t)||t!==this._$AH&&t!==M,o&&(this._$AH=t);else{let p=t,l,m;for(t=a[0],l=0;l<a.length-1;l++)m=tt(this,p[s+l],e,l),m===M&&(m=this._$AH[l]),o||(o=!gt(m)||m!==this._$AH[l]),m===v?t=v:t!==v&&(t+=(m??"")+a[l+1]),this._$AH[l]=m}o&&!i&&this.j(t)}j(t){t===v?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}},ee=class extends et{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===v?void 0:t}},se=class extends et{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==v)}},ie=class extends et{constructor(t,e,s,i,a){super(t,e,s,i,a),this.type=5}_$AI(t,e=this){if((t=tt(this,t,e,0)??v)===M)return;let s=this._$AH,i=t===v&&s!==v||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,a=t!==v&&(s===v||i);i&&this.element.removeEventListener(this.name,this,s),a&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){typeof this._$AH=="function"?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}},ne=class{constructor(t,e,s){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=s}get _$AU(){return this._$AM._$AU}_$AI(t){tt(this,t)}};var Ds=ut.litHtmlPolyfillSupport;Ds?.(ft,bt),(ut.litHtmlVersions??(ut.litHtmlVersions=[])).push("3.3.2");var Ye=(n,t,e)=>{let s=e?.renderBefore??t,i=s._$litPart$;if(i===void 0){let a=e?.renderBefore??null;s._$litPart$=i=new bt(t.insertBefore(mt(),a),a,void 0,e??{})}return i._$AI(n),i};var Et=globalThis,A=class extends I{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){var e;let t=super.createRenderRoot();return(e=this.renderOptions).renderBefore??(e.renderBefore=t.firstChild),t}update(t){let e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=Ye(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return M}};A._$litElement$=!0,A.finalized=!0,Et.litElementHydrateSupport?.({LitElement:A});var Hs=Et.litElementPolyfillSupport;Hs?.({LitElement:A});(Et.litElementVersions??(Et.litElementVersions=[])).push("4.2.2");var Ke={ATTRIBUTE:1,CHILD:2,PROPERTY:3,BOOLEAN_ATTRIBUTE:4,EVENT:5,ELEMENT:6},qe=n=>(...t)=>({_$litDirective$:n,values:t}),Dt=class{constructor(t){}get _$AU(){return this._$AM._$AU}_$AT(t,e,s){this._$Ct=t,this._$AM=e,this._$Ci=s}_$AS(t,e){return this.update(t,e)}update(t,e){return this.render(...e)}};var vt=class extends Dt{constructor(t){if(super(t),this.it=v,t.type!==Ke.CHILD)throw Error(this.constructor.directiveName+"() can only be used in child bindings")}render(t){if(t===v||t==null)return this._t=void 0,this.it=t;if(t===M)return t;if(typeof t!="string")throw Error(this.constructor.directiveName+"() called with a non-string value");if(t===this.it)return this._t;this.it=t;let e=[t];return e.raw=e,this._t={_$litType$:this.constructor.resultType,strings:e,values:[]}}};vt.directiveName="unsafeHTML",vt.resultType=1;var h=qe(vt);var G=C`
   :host {
     display: block;
     font-family: 'Gotham', 'Gill Sans', 'Century Gothic', system-ui, -apple-system, sans-serif;
@@ -108,7 +108,7 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
     font-weight: 400;
     color: rgba(255,255,255,0.4);
   }
-`,Ge=k`
+`,Ze=C`
   .charger-menu {
     display: flex;
     flex-direction: column;
@@ -241,7 +241,21 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
 
   .chg-port-btn:hover { color: rgba(255,255,255,0.85); }
 
-`,ze=k`
+  /* Read-only charging info rows (integrations without limit/amps controls) */
+  .chg-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.92em;
+  }
+
+  .chg-info-row:last-child { border-bottom: none; }
+  .chg-info-label { color: rgba(255,255,255,0.5); }
+  .chg-info-value { color: #fff; font-weight: 500; }
+
+`,Xe=C`
   .climate-menu {
     display: flex;
     flex-direction: column;
@@ -767,7 +781,7 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
     font-size: 0.8em;
   }
 
-`,Fe=k`
+`,Je=C`
   .controls-menu {
     display: flex;
     flex-direction: column;
@@ -1000,7 +1014,7 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
   }
 
 
-`,Be=k`
+`,ts=C`
   ha-card {
     display: block;
     background: var(--ha-card-background, #161719);
@@ -1650,7 +1664,7 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
     color: #ffffff;
     font-weight: 600;
   }
-`;var dt={BATTERY_LEVEL:"sensor.{car_name}_battery_level",BATTERY_RANGE:"sensor.{car_name}_battery_range",CHARGE_RATE:"sensor.{car_name}_charge_rate",CHARGE_LIMIT:"number.{car_name}_charge_limit",CHARGING_STATE:"sensor.{car_name}_charging",TEMPERATURE_INSIDE:"sensor.{car_name}_inside_temperature",TEMPERATURE_OUTSIDE:"sensor.{car_name}_outside_temperature",SPEED:"sensor.{car_name}_speed",ODOMETER:"sensor.{car_name}_odometer",CHARGING:"switch.{car_name}_charge",PLUGGED_IN:"binary_sensor.{car_name}_charge_cable",PARKING_BRAKE:null,FRUNK:null,TRUNK:null,DOORS:null,WINDOWS:null,LOCKED:null,ONLINE:"binary_sensor.{car_name}_status",SENTRY_MODE:"switch.{car_name}_sentry_mode",DOOR_DRIVER_FRONT:"binary_sensor.{car_name}_front_driver_door",DOOR_DRIVER_REAR:"binary_sensor.{car_name}_rear_driver_door",DOOR_PASSENGER_FRONT:"binary_sensor.{car_name}_front_passenger_door",DOOR_PASSENGER_REAR:"binary_sensor.{car_name}_rear_passenger_door",WINDOW_DRIVER_FRONT:"binary_sensor.{car_name}_front_driver_window",WINDOW_DRIVER_REAR:"binary_sensor.{car_name}_rear_driver_window",WINDOW_PASSENGER_FRONT:"binary_sensor.{car_name}_front_passenger_window",WINDOW_PASSENGER_REAR:"binary_sensor.{car_name}_rear_passenger_window",DOOR_LOCK:"lock.{car_name}_lock",CHARGER_SWITCH:"switch.{car_name}_charge",SENTRY_MODE_SWITCH:"switch.{car_name}_sentry_mode",DEFROST_SWITCH:"switch.{car_name}_defrost",CAMP_MODE:null,DOG_MODE:null,CABIN_OVERHEAT:"climate.{car_name}_cabin_overheat_protection",HEATED_SEAT_LEFT:"select.{car_name}_seat_heater_front_left",HEATED_SEAT_RIGHT:"select.{car_name}_seat_heater_front_right",HEATED_SEAT_REAR_LEFT:"select.{car_name}_seat_heater_rear_left",HEATED_SEAT_REAR_CENTER:"select.{car_name}_seat_heater_rear_center",HEATED_SEAT_REAR_RIGHT:"select.{car_name}_seat_heater_rear_right",STEERING_WHEEL_HEATER:"select.{car_name}_steering_wheel_heater",AUTO_STEERING_WHEEL_HEATER:"switch.{car_name}_auto_steering_wheel_heater",CLIMATE:"climate.{car_name}_climate",CHARGE_LIMIT_NUMBER:"number.{car_name}_charge_limit",CHARGING_AMPS_NUMBER:"number.{car_name}_charge_current",CHARGE_PORT_OPEN:"cover.{car_name}_charge_port_door",CHARGE_PORT_CLOSE:"cover.{car_name}_charge_port_door",HORN:"button.{car_name}_honk_horn",FLASH_LIGHTS:"button.{car_name}_flash_lights",REMOTE_START:"button.{car_name}_keyless_driving",OPEN_FRUNK:"cover.{car_name}_froot",OPEN_TRUNK:"cover.{car_name}_boot",FORCE_UPDATE:"button.{car_name}_wake",WINDOWS_COVER:"cover.{car_name}_vent_windows",FRUNK_COVER:"cover.{car_name}_froot",CHARGER_DOOR:"cover.{car_name}_charge_port_door",ENERGY_ADDED:"sensor.{car_name}_charge_energy_added",TYRE_FL:"sensor.{car_name}_tyre_pressure_front_left",TYRE_FR:"sensor.{car_name}_tyre_pressure_front_right",TYRE_RL:"sensor.{car_name}_tyre_pressure_rear_left",TYRE_RR:"sensor.{car_name}_tyre_pressure_rear_right",TIME_TO_FULL_CHARGE:"sensor.{car_name}_time_to_full_charge",DISTANCE_TO_ARRIVAL:"sensor.{car_name}_distance_to_arrival",TIME_TO_ARRIVAL:"sensor.{car_name}_time_to_arrival",LOCATION:"device_tracker.{car_name}_location",ROUTE:"device_tracker.{car_name}_route"},$s={BATTERY_LEVEL:"sensor.{car_name}_battery",BATTERY_RANGE:"sensor.{car_name}_battery_range",CHARGE_RATE:"sensor.{car_name}_charge_rate",CHARGE_LIMIT:"sensor.{car_name}_charge_limit",CHARGING_STATE:"sensor.{car_name}_charging_state",TEMPERATURE_INSIDE:"sensor.{car_name}_temperature_inside",TEMPERATURE_OUTSIDE:"sensor.{car_name}_temperature_outside",SPEED:"sensor.{car_name}_speed",ODOMETER:"sensor.{car_name}_odometer",CHARGING:"binary_sensor.{car_name}_charging",PLUGGED_IN:"binary_sensor.{car_name}_plugged_in",PARKING_BRAKE:"binary_sensor.{car_name}_parking_brake",FRUNK:"binary_sensor.{car_name}_frunk",TRUNK:"binary_sensor.{car_name}_trunk",DOORS:"binary_sensor.{car_name}_doors",WINDOWS:"binary_sensor.{car_name}_windows",LOCKED:"binary_sensor.{car_name}_locked",ONLINE:"binary_sensor.{car_name}_online",SENTRY_MODE:"binary_sensor.{car_name}_sentry_mode",DOOR_DRIVER_FRONT:null,DOOR_DRIVER_REAR:null,DOOR_PASSENGER_FRONT:null,DOOR_PASSENGER_REAR:null,WINDOW_DRIVER_FRONT:null,WINDOW_DRIVER_REAR:null,WINDOW_PASSENGER_FRONT:null,WINDOW_PASSENGER_REAR:null,DOOR_LOCK:"lock.{car_name}_doors",CHARGER_SWITCH:"switch.{car_name}_charger",SENTRY_MODE_SWITCH:"switch.{car_name}_sentry_mode",DEFROST_SWITCH:"switch.{car_name}_defrost",CAMP_MODE:"switch.{car_name}_camp_mode",DOG_MODE:"switch.{car_name}_dog_mode",STEERING_WHEEL_HEATER:null,AUTO_STEERING_WHEEL_HEATER:null,CABIN_OVERHEAT:"select.{car_name}_cabin_overheat_protection",HEATED_SEAT_LEFT:"select.{car_name}_heated_seat_left",HEATED_SEAT_RIGHT:"select.{car_name}_heated_seat_right",HEATED_SEAT_REAR_LEFT:"select.{car_name}_heated_seat_rear_left",HEATED_SEAT_REAR_CENTER:"select.{car_name}_heated_seat_rear_center",HEATED_SEAT_REAR_RIGHT:"select.{car_name}_heated_seat_rear_right",CLIMATE:"climate.{car_name}_hvac_climate_system",CHARGE_LIMIT_NUMBER:"number.{car_name}_charge_limit",CHARGING_AMPS_NUMBER:"number.{car_name}_charging_amps",CHARGE_PORT_OPEN:"button.{car_name}_charge_port_open",CHARGE_PORT_CLOSE:"button.{car_name}_charge_port_close",HORN:"button.{car_name}_horn",FLASH_LIGHTS:"button.{car_name}_flash_lights",REMOTE_START:"button.{car_name}_remote_start",OPEN_FRUNK:"button.{car_name}_frunk",OPEN_TRUNK:"button.{car_name}_trunk",FORCE_UPDATE:"button.{car_name}_force_data_update",WINDOWS_COVER:"cover.{car_name}_windows",FRUNK_COVER:"cover.{car_name}_frunk",CHARGER_DOOR:"cover.{car_name}_charger_door",ENERGY_ADDED:"sensor.{car_name}_energy_added",TYRE_FL:null,TYRE_FR:null,TYRE_RL:null,TYRE_RR:null,TIME_TO_FULL_CHARGE:"sensor.{car_name}_time_to_full_charge",DISTANCE_TO_ARRIVAL:null,TIME_TO_ARRIVAL:null,LOCATION:"device_tracker.{car_name}_location_tracker",ROUTE:null},Cs={fleet:dt,custom:$s},Zt=[{label:"Sensors",keys:[{key:"BATTERY_LEVEL",label:"Battery Level",domain:"sensor"},{key:"BATTERY_RANGE",label:"Battery Range",domain:"sensor"},{key:"CHARGING_STATE",label:"Charging State",domain:"sensor"},{key:"CHARGE_RATE",label:"Charge Rate",domain:"sensor"},{key:"TEMPERATURE_INSIDE",label:"Inside Temperature",domain:"sensor"},{key:"TEMPERATURE_OUTSIDE",label:"Outside Temperature",domain:"sensor"},{key:"ODOMETER",label:"Odometer",domain:"sensor"},{key:"ENERGY_ADDED",label:"Energy Added",domain:"sensor"}]},{label:"Status",keys:[{key:"ONLINE",label:"Online Status",domain:"binary_sensor"},{key:"PLUGGED_IN",label:"Plugged In",domain:"binary_sensor"},{key:"CHARGING",label:"Charge Switch",domain:"switch"},{key:"SENTRY_MODE",label:"Sentry Mode",domain:"switch"}]},{label:"Doors",keys:[{key:"DOOR_DRIVER_FRONT",label:"Driver Front",domain:"binary_sensor"},{key:"DOOR_DRIVER_REAR",label:"Driver Rear",domain:"binary_sensor"},{key:"DOOR_PASSENGER_FRONT",label:"Passenger Front",domain:"binary_sensor"},{key:"DOOR_PASSENGER_REAR",label:"Passenger Rear",domain:"binary_sensor"}]},{label:"Windows",keys:[{key:"WINDOW_DRIVER_FRONT",label:"Driver Front",domain:"binary_sensor"},{key:"WINDOW_DRIVER_REAR",label:"Driver Rear",domain:"binary_sensor"},{key:"WINDOW_PASSENGER_FRONT",label:"Passenger Front",domain:"binary_sensor"},{key:"WINDOW_PASSENGER_REAR",label:"Passenger Rear",domain:"binary_sensor"}]},{label:"Lock",keys:[{key:"DOOR_LOCK",label:"Door Lock",domain:"lock"}]},{label:"Climate",keys:[{key:"CLIMATE",label:"Climate",domain:"climate"},{key:"DEFROST_SWITCH",label:"Defrost",domain:"switch"},{key:"HEATED_SEAT_LEFT",label:"Heated Seat Front Left",domain:"select"},{key:"HEATED_SEAT_RIGHT",label:"Heated Seat Front Right",domain:"select"},{key:"HEATED_SEAT_REAR_LEFT",label:"Heated Seat Rear Left",domain:"select"},{key:"HEATED_SEAT_REAR_CENTER",label:"Heated Seat Rear Center",domain:"select"},{key:"HEATED_SEAT_REAR_RIGHT",label:"Heated Seat Rear Right",domain:"select"},{key:"STEERING_WHEEL_HEATER",label:"Steering Wheel Heater",domain:"select"},{key:"AUTO_STEERING_WHEEL_HEATER",label:"Auto Steering Wheel Heater",domain:"switch"},{key:"CABIN_OVERHEAT",label:"Cabin Overheat Protection",domain:"climate"},{key:"WINDOWS_COVER",label:"Windows (vent/close)",domain:"cover"}]},{label:"Charging",keys:[{key:"CHARGE_LIMIT_NUMBER",label:"Charge Limit",domain:"number"},{key:"CHARGING_AMPS_NUMBER",label:"Charging Amps",domain:"number"},{key:"CHARGER_DOOR",label:"Charge Port Door",domain:"cover"}]},{label:"Covers & Buttons",keys:[{key:"OPEN_FRUNK",label:"Frunk",domain:"cover"},{key:"OPEN_TRUNK",label:"Trunk",domain:"cover"},{key:"HORN",label:"Horn",domain:"button"},{key:"FLASH_LIGHTS",label:"Flash Lights",domain:"button"},{key:"REMOTE_START",label:"Remote Start",domain:"button"},{key:"FORCE_UPDATE",label:"Wake / Refresh",domain:"button"}]},{label:"Tyre Pressure",keys:[{key:"TYRE_FL",label:"Front Left",domain:"sensor"},{key:"TYRE_FR",label:"Front Right",domain:"sensor"},{key:"TYRE_RL",label:"Rear Left",domain:"sensor"},{key:"TYRE_RR",label:"Rear Right",domain:"sensor"}]},{label:"Navigation & Location",keys:[{key:"SPEED",label:"Speed",domain:"sensor"},{key:"DISTANCE_TO_ARRIVAL",label:"Distance to Arrival",domain:"sensor"},{key:"TIME_TO_ARRIVAL",label:"Time to Arrival",domain:"sensor"},{key:"LOCATION",label:"Location Tracker",domain:"device_tracker"},{key:"ROUTE",label:"Route Tracker",domain:"device_tracker"}]}],Ve={CHARGER_SWITCH:"CHARGING",SENTRY_MODE_SWITCH:"SENTRY_MODE",FRUNK_COVER:"OPEN_FRUNK",CHARGE_LIMIT:"CHARGE_LIMIT_NUMBER",CHARGE_PORT_OPEN:"CHARGER_DOOR",CHARGE_PORT_CLOSE:"CHARGER_DOOR"},Ss=new Set(Zt.flatMap(r=>r.keys.map(t=>t.key))),At={};for(let[r,t]of Object.entries(dt))t&&Ss.has(r)&&(At[t]=r);for(let[r,t]of Object.entries(dt))t&&!At[t]&&(At[t]=r);function Rt(r="fleet"){return r==="entities"?dt:Cs[r]||dt}function W(r,t,e){if(!r)return null;if(e){let s=At[r];if(s&&!e[s]&&Ve[s]&&(s=Ve[s]),s&&e[s])return e[s]}return r.replace("{car_name}",(t??"").toLowerCase())}var Y={"cover.{car_name}_froot":"cover.{car_name}_frunk","cover.{car_name}_frunk":"cover.{car_name}_froot","cover.{car_name}_boot":"cover.{car_name}_trunk","cover.{car_name}_trunk":"cover.{car_name}_boot","cover.{car_name}_vent_windows":"cover.{car_name}_windows","cover.{car_name}_windows":"cover.{car_name}_vent_windows"};var l={lock:`<svg viewBox="24 13 54 67" fill="currentColor" stroke="none">
+`;var yt={BATTERY_LEVEL:"sensor.{car_name}_battery_level",BATTERY_RANGE:"sensor.{car_name}_battery_range",CHARGE_RATE:"sensor.{car_name}_charge_rate",CHARGE_LIMIT:"number.{car_name}_charge_limit",CHARGING_STATE:"sensor.{car_name}_charging",TEMPERATURE_INSIDE:"sensor.{car_name}_inside_temperature",TEMPERATURE_OUTSIDE:"sensor.{car_name}_outside_temperature",SPEED:"sensor.{car_name}_speed",ODOMETER:"sensor.{car_name}_odometer",CHARGING:"switch.{car_name}_charge",PLUGGED_IN:"binary_sensor.{car_name}_charge_cable",PARKING_BRAKE:null,FRUNK:null,TRUNK:null,DOORS:null,WINDOWS:null,LOCKED:null,ONLINE:"binary_sensor.{car_name}_status",SENTRY_MODE:"switch.{car_name}_sentry_mode",DOOR_DRIVER_FRONT:"binary_sensor.{car_name}_front_driver_door",DOOR_DRIVER_REAR:"binary_sensor.{car_name}_rear_driver_door",DOOR_PASSENGER_FRONT:"binary_sensor.{car_name}_front_passenger_door",DOOR_PASSENGER_REAR:"binary_sensor.{car_name}_rear_passenger_door",WINDOW_DRIVER_FRONT:"binary_sensor.{car_name}_front_driver_window",WINDOW_DRIVER_REAR:"binary_sensor.{car_name}_rear_driver_window",WINDOW_PASSENGER_FRONT:"binary_sensor.{car_name}_front_passenger_window",WINDOW_PASSENGER_REAR:"binary_sensor.{car_name}_rear_passenger_window",DOOR_LOCK:"lock.{car_name}_lock",CHARGER_SWITCH:"switch.{car_name}_charge",SENTRY_MODE_SWITCH:"switch.{car_name}_sentry_mode",DEFROST_SWITCH:"switch.{car_name}_defrost",CAMP_MODE:null,DOG_MODE:null,CABIN_OVERHEAT:"climate.{car_name}_cabin_overheat_protection",HEATED_SEAT_LEFT:"select.{car_name}_seat_heater_front_left",HEATED_SEAT_RIGHT:"select.{car_name}_seat_heater_front_right",HEATED_SEAT_REAR_LEFT:"select.{car_name}_seat_heater_rear_left",HEATED_SEAT_REAR_CENTER:"select.{car_name}_seat_heater_rear_center",HEATED_SEAT_REAR_RIGHT:"select.{car_name}_seat_heater_rear_right",STEERING_WHEEL_HEATER:"select.{car_name}_steering_wheel_heater",AUTO_STEERING_WHEEL_HEATER:"switch.{car_name}_auto_steering_wheel_heater",CLIMATE:"climate.{car_name}_climate",CHARGE_LIMIT_NUMBER:"number.{car_name}_charge_limit",CHARGING_AMPS_NUMBER:"number.{car_name}_charge_current",CHARGE_PORT_OPEN:"cover.{car_name}_charge_port_door",CHARGE_PORT_CLOSE:"cover.{car_name}_charge_port_door",HORN:"button.{car_name}_honk_horn",FLASH_LIGHTS:"button.{car_name}_flash_lights",REMOTE_START:"button.{car_name}_keyless_driving",OPEN_FRUNK:"cover.{car_name}_froot",OPEN_TRUNK:"cover.{car_name}_boot",FORCE_UPDATE:"button.{car_name}_wake",WINDOWS_COVER:"cover.{car_name}_vent_windows",FRUNK_COVER:"cover.{car_name}_froot",CHARGER_DOOR:"cover.{car_name}_charge_port_door",ENERGY_ADDED:"sensor.{car_name}_charge_energy_added",TYRE_FL:"sensor.{car_name}_tyre_pressure_front_left",TYRE_FR:"sensor.{car_name}_tyre_pressure_front_right",TYRE_RL:"sensor.{car_name}_tyre_pressure_rear_left",TYRE_RR:"sensor.{car_name}_tyre_pressure_rear_right",TIME_TO_FULL_CHARGE:"sensor.{car_name}_time_to_full_charge",DISTANCE_TO_ARRIVAL:"sensor.{car_name}_distance_to_arrival",TIME_TO_ARRIVAL:"sensor.{car_name}_time_to_arrival",LOCATION:"device_tracker.{car_name}_location",ROUTE:"device_tracker.{car_name}_route"},Us={BATTERY_LEVEL:"sensor.{car_name}_battery",BATTERY_RANGE:"sensor.{car_name}_battery_range",CHARGE_RATE:"sensor.{car_name}_charge_rate",CHARGE_LIMIT:"sensor.{car_name}_charge_limit",CHARGING_STATE:"sensor.{car_name}_charging_state",TEMPERATURE_INSIDE:"sensor.{car_name}_temperature_inside",TEMPERATURE_OUTSIDE:"sensor.{car_name}_temperature_outside",SPEED:"sensor.{car_name}_speed",ODOMETER:"sensor.{car_name}_odometer",CHARGING:"binary_sensor.{car_name}_charging",PLUGGED_IN:"binary_sensor.{car_name}_plugged_in",PARKING_BRAKE:"binary_sensor.{car_name}_parking_brake",FRUNK:"binary_sensor.{car_name}_frunk",TRUNK:"binary_sensor.{car_name}_trunk",DOORS:"binary_sensor.{car_name}_doors",WINDOWS:"binary_sensor.{car_name}_windows",LOCKED:"binary_sensor.{car_name}_locked",ONLINE:"binary_sensor.{car_name}_online",SENTRY_MODE:"binary_sensor.{car_name}_sentry_mode",DOOR_DRIVER_FRONT:null,DOOR_DRIVER_REAR:null,DOOR_PASSENGER_FRONT:null,DOOR_PASSENGER_REAR:null,WINDOW_DRIVER_FRONT:null,WINDOW_DRIVER_REAR:null,WINDOW_PASSENGER_FRONT:null,WINDOW_PASSENGER_REAR:null,DOOR_LOCK:"lock.{car_name}_doors",CHARGER_SWITCH:"switch.{car_name}_charger",SENTRY_MODE_SWITCH:"switch.{car_name}_sentry_mode",DEFROST_SWITCH:"switch.{car_name}_defrost",CAMP_MODE:"switch.{car_name}_camp_mode",DOG_MODE:"switch.{car_name}_dog_mode",STEERING_WHEEL_HEATER:null,AUTO_STEERING_WHEEL_HEATER:null,CABIN_OVERHEAT:"select.{car_name}_cabin_overheat_protection",HEATED_SEAT_LEFT:"select.{car_name}_heated_seat_left",HEATED_SEAT_RIGHT:"select.{car_name}_heated_seat_right",HEATED_SEAT_REAR_LEFT:"select.{car_name}_heated_seat_rear_left",HEATED_SEAT_REAR_CENTER:"select.{car_name}_heated_seat_rear_center",HEATED_SEAT_REAR_RIGHT:"select.{car_name}_heated_seat_rear_right",CLIMATE:"climate.{car_name}_hvac_climate_system",CHARGE_LIMIT_NUMBER:"number.{car_name}_charge_limit",CHARGING_AMPS_NUMBER:"number.{car_name}_charging_amps",CHARGE_PORT_OPEN:"button.{car_name}_charge_port_open",CHARGE_PORT_CLOSE:"button.{car_name}_charge_port_close",HORN:"button.{car_name}_horn",FLASH_LIGHTS:"button.{car_name}_flash_lights",REMOTE_START:"button.{car_name}_remote_start",OPEN_FRUNK:"button.{car_name}_frunk",OPEN_TRUNK:"button.{car_name}_trunk",FORCE_UPDATE:"button.{car_name}_force_data_update",WINDOWS_COVER:"cover.{car_name}_windows",FRUNK_COVER:"cover.{car_name}_frunk",CHARGER_DOOR:"cover.{car_name}_charger_door",ENERGY_ADDED:"sensor.{car_name}_energy_added",TYRE_FL:null,TYRE_FR:null,TYRE_RL:null,TYRE_RR:null,TIME_TO_FULL_CHARGE:"sensor.{car_name}_time_to_full_charge",DISTANCE_TO_ARRIVAL:null,TIME_TO_ARRIVAL:null,LOCATION:"device_tracker.{car_name}_location_tracker",ROUTE:null},is={BATTERY_LEVEL:"sensor.@battery",BATTERY_RANGE:"sensor.@range",CHARGE_RATE:"sensor.@charge_power",CHARGE_LIMIT:null,CHARGING_STATE:"sensor.@charge_state",CHARGE_MODE:"sensor.@charge_mode",CHARGE_MINUTES_LEFT:"sensor.@charge_remaining",ENERGY_LEFT:"sensor.@energy_left",TEMPERATURE_INSIDE:null,TEMPERATURE_OUTSIDE:null,SPEED:"sensor.@speed",ODOMETER:"sensor.@odometer",CHARGING:"binary_sensor.@charging",PLUGGED_IN:null,PARKING_BRAKE:null,FRUNK:null,TRUNK:null,DOORS:null,WINDOWS:null,LOCKED:null,ONLINE:"binary_sensor.@online",SENTRY_MODE:null,DOOR_DRIVER_FRONT:"binary_sensor.@door_driver",DOOR_DRIVER_REAR:"binary_sensor.@door_rear_left",DOOR_PASSENGER_FRONT:"binary_sensor.@door_passenger",DOOR_PASSENGER_REAR:"binary_sensor.@door_rear_right",WINDOW_DRIVER_FRONT:null,WINDOW_DRIVER_REAR:null,WINDOW_PASSENGER_FRONT:null,WINDOW_PASSENGER_REAR:null,DOOR_LOCK:"lock.@lock",CHARGER_SWITCH:null,SENTRY_MODE_SWITCH:null,DEFROST_SWITCH:"switch.@defrost_cmd",CAMP_MODE:null,DOG_MODE:null,AIR_PURIFY:"switch.@purify",WINDSHIELD_HEAT:"switch.@windshield_heat",CABIN_OVERHEAT:null,HEATED_SEAT_LEFT:"select.@seat_heat_l",HEATED_SEAT_RIGHT:"select.@seat_heat_r",HEATED_SEAT_REAR_LEFT:"select.@seat_heat_lr",HEATED_SEAT_REAR_CENTER:null,HEATED_SEAT_REAR_RIGHT:"select.@seat_heat_rr",VENT_SEAT_LEFT:"select.@seat_vent_l",VENT_SEAT_RIGHT:"select.@seat_vent_r",STEERING_WHEEL_HEATER:"switch.@steer_heat",AUTO_STEERING_WHEEL_HEATER:null,CLIMATE:"climate.@climate",QUICK_COOL:"button.@quick_cool",QUICK_HEAT:"button.@quick_heat",CHARGE_LIMIT_NUMBER:null,CHARGING_AMPS_NUMBER:null,CHARGE_PORT_OPEN:null,CHARGE_PORT_CLOSE:null,CHARGE_STOP:"button.@charge_stop",HORN:null,FLASH_LIGHTS:"button.@find",REMOTE_START:null,OPEN_FRUNK:null,OPEN_TRUNK:"cover.@liftgate",FORCE_UPDATE:null,WINDOWS_VENT:"button.@windows_vent",WINDOWS_COVER:"cover.@windows",SUNROOF_COVER:"cover.@sunroof",FRUNK_COVER:null,CHARGER_DOOR:null,ENERGY_ADDED:null,TYRE_FL:"sensor.@tyre_fl",TYRE_FR:"sensor.@tyre_fr",TYRE_RL:"sensor.@tyre_rl",TYRE_RR:"sensor.@tyre_rr",TIME_TO_FULL_CHARGE:null,DISTANCE_TO_ARRIVAL:null,TIME_TO_ARRIVAL:null,LOCATION:"device_tracker.@location",ROUTE:null,IMAGE_FRONT:"image.@vehicle_front",IMAGE_SIDE:"image.@vehicle_side",IMAGE_TOP:"image.@vehicle_top"},Gs={fleet:yt,custom:Us,carlinko:is},Ps="carlinko";function Ut(n){return typeof n=="string"&&n.includes(".@")}var es=new WeakMap;function ns(n){let t=es.get(n);if(t)return t;t=new Map;for(let e of Object.values(n)){if(e.platform!==Ps||!e.translation_key||!e.device_id)continue;t.has(e.device_id)||t.set(e.device_id,new Map);let s=e.entity_id.split(".")[0];t.get(e.device_id).set(`${s}.${e.translation_key}`,e.entity_id)}return es.set(n,t),t}function le(n){return n?.entities?[...ns(n.entities).keys()].map(t=>{let e=n.devices?.[t];return{id:t,name:e?.name_by_user||e?.name||t}}).sort((t,e)=>t.name.localeCompare(e.name)):[]}function Gt(n,t,e,s){if(!n)return null;if(s){let p=oe[n];if(p&&s[p])return s[p]}if(!t?.entities)return null;let[i,a]=n.split(".@"),o=e||le(t)[0]?.id;return ns(t.entities).get(o)?.get(`${i}.${a}`)??null}var ce=[{label:"Sensors",keys:[{key:"BATTERY_LEVEL",label:"Battery Level",domain:"sensor"},{key:"BATTERY_RANGE",label:"Battery Range",domain:"sensor"},{key:"CHARGING_STATE",label:"Charging State",domain:"sensor"},{key:"CHARGE_RATE",label:"Charge Rate",domain:"sensor"},{key:"TEMPERATURE_INSIDE",label:"Inside Temperature",domain:"sensor"},{key:"TEMPERATURE_OUTSIDE",label:"Outside Temperature",domain:"sensor"},{key:"ODOMETER",label:"Odometer",domain:"sensor"},{key:"ENERGY_ADDED",label:"Energy Added",domain:"sensor"}]},{label:"Status",keys:[{key:"ONLINE",label:"Online Status",domain:"binary_sensor"},{key:"PLUGGED_IN",label:"Plugged In",domain:"binary_sensor"},{key:"CHARGING",label:"Charge Switch",domain:"switch"},{key:"SENTRY_MODE",label:"Sentry Mode",domain:"switch"}]},{label:"Doors",keys:[{key:"DOOR_DRIVER_FRONT",label:"Driver Front",domain:"binary_sensor"},{key:"DOOR_DRIVER_REAR",label:"Driver Rear",domain:"binary_sensor"},{key:"DOOR_PASSENGER_FRONT",label:"Passenger Front",domain:"binary_sensor"},{key:"DOOR_PASSENGER_REAR",label:"Passenger Rear",domain:"binary_sensor"}]},{label:"Windows",keys:[{key:"WINDOW_DRIVER_FRONT",label:"Driver Front",domain:"binary_sensor"},{key:"WINDOW_DRIVER_REAR",label:"Driver Rear",domain:"binary_sensor"},{key:"WINDOW_PASSENGER_FRONT",label:"Passenger Front",domain:"binary_sensor"},{key:"WINDOW_PASSENGER_REAR",label:"Passenger Rear",domain:"binary_sensor"}]},{label:"Lock",keys:[{key:"DOOR_LOCK",label:"Door Lock",domain:"lock"}]},{label:"Climate",keys:[{key:"CLIMATE",label:"Climate",domain:"climate"},{key:"DEFROST_SWITCH",label:"Defrost",domain:"switch"},{key:"HEATED_SEAT_LEFT",label:"Heated Seat Front Left",domain:"select"},{key:"HEATED_SEAT_RIGHT",label:"Heated Seat Front Right",domain:"select"},{key:"HEATED_SEAT_REAR_LEFT",label:"Heated Seat Rear Left",domain:"select"},{key:"HEATED_SEAT_REAR_CENTER",label:"Heated Seat Rear Center",domain:"select"},{key:"HEATED_SEAT_REAR_RIGHT",label:"Heated Seat Rear Right",domain:"select"},{key:"STEERING_WHEEL_HEATER",label:"Steering Wheel Heater",domain:"select"},{key:"AUTO_STEERING_WHEEL_HEATER",label:"Auto Steering Wheel Heater",domain:"switch"},{key:"CABIN_OVERHEAT",label:"Cabin Overheat Protection",domain:"climate"},{key:"WINDOWS_COVER",label:"Windows (vent/close)",domain:"cover"}]},{label:"Charging",keys:[{key:"CHARGE_LIMIT_NUMBER",label:"Charge Limit",domain:"number"},{key:"CHARGING_AMPS_NUMBER",label:"Charging Amps",domain:"number"},{key:"CHARGER_DOOR",label:"Charge Port Door",domain:"cover"}]},{label:"Covers & Buttons",keys:[{key:"OPEN_FRUNK",label:"Frunk",domain:"cover"},{key:"OPEN_TRUNK",label:"Trunk",domain:"cover"},{key:"HORN",label:"Horn",domain:"button"},{key:"FLASH_LIGHTS",label:"Flash Lights",domain:"button"},{key:"REMOTE_START",label:"Remote Start",domain:"button"},{key:"FORCE_UPDATE",label:"Wake / Refresh",domain:"button"}]},{label:"Tyre Pressure",keys:[{key:"TYRE_FL",label:"Front Left",domain:"sensor"},{key:"TYRE_FR",label:"Front Right",domain:"sensor"},{key:"TYRE_RL",label:"Rear Left",domain:"sensor"},{key:"TYRE_RR",label:"Rear Right",domain:"sensor"}]},{label:"Navigation & Location",keys:[{key:"SPEED",label:"Speed",domain:"sensor"},{key:"DISTANCE_TO_ARRIVAL",label:"Distance to Arrival",domain:"sensor"},{key:"TIME_TO_ARRIVAL",label:"Time to Arrival",domain:"sensor"},{key:"LOCATION",label:"Location Tracker",domain:"device_tracker"},{key:"ROUTE",label:"Route Tracker",domain:"device_tracker"}]}],ss={CHARGER_SWITCH:"CHARGING",SENTRY_MODE_SWITCH:"SENTRY_MODE",FRUNK_COVER:"OPEN_FRUNK",CHARGE_LIMIT:"CHARGE_LIMIT_NUMBER",CHARGE_PORT_OPEN:"CHARGER_DOOR",CHARGE_PORT_CLOSE:"CHARGER_DOOR"},as=new Set(ce.flatMap(n=>n.keys.map(t=>t.key))),Ht={};for(let[n,t]of Object.entries(yt))t&&as.has(n)&&(Ht[t]=n);for(let[n,t]of Object.entries(yt))t&&!Ht[t]&&(Ht[t]=n);var oe={};for(let[n,t]of Object.entries(is))t&&(as.has(n)||!oe[t])&&(oe[t]=n);function Pt(n="fleet"){return n==="entities"?yt:Gs[n]||yt}function st(n,t,e){if(!n)return null;if(e){let s=Ht[n];if(s&&!e[s]&&ss[s]&&(s=ss[s]),s&&e[s])return e[s]}return n.replace("{car_name}",(t??"").toLowerCase())}var it={"cover.{car_name}_froot":"cover.{car_name}_frunk","cover.{car_name}_frunk":"cover.{car_name}_froot","cover.{car_name}_boot":"cover.{car_name}_trunk","cover.{car_name}_trunk":"cover.{car_name}_boot","cover.{car_name}_vent_windows":"cover.{car_name}_windows","cover.{car_name}_windows":"cover.{car_name}_vent_windows"};var c={lock:`<svg viewBox="24 13 54 67" fill="currentColor" stroke="none">
     <path fill-rule="evenodd" d="
       M 51.01 15.62 C 60.29 15.63 67.36 22.81 67.39 32.00 Q 67.40 35.66 67.40 38.23 A 0.67 0.67 0.0 0 0 67.91 38.89 C 71.02 39.64 73.19 39.67 74.78 42.99 Q 75.53 44.58 75.53 49.12 Q 75.51 69.54 75.50 69.97 Q 75.34 74.60 72.13 76.54 Q 70.63 77.45 64.65 77.48 Q 57.83 77.51 50.99 77.50 Q 44.15 77.50 37.32 77.47 Q 31.35 77.44 29.85 76.52 Q 26.64 74.58 26.48 69.95 Q 26.47 69.52 26.47 49.10 Q 26.47 44.56 27.22 42.97 C 28.81 39.65 30.98 39.63 34.09 38.88 A 0.67 0.67 0.0 0 0 34.60 38.22 Q 34.61 35.65 34.62 31.99 C 34.65 22.80 41.74 15.62 51.01 15.62 Z
       M 39.95 39.00 L 62.05 39.00 A 0.57 0.57 0.0 0 0 62.62 38.43 L 62.62 32.80 A 12.30 11.49 90.0 0 0 51.13 20.50 L 50.87 20.50 A 12.30 11.49 -90.0 0 0 39.38 32.80 L 39.38 38.43 A 0.57 0.57 0.0 0 0 39.95 39.00 Z"/>
@@ -1942,8 +1956,38 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14" />
     <path d="M10 16v-8h2.667c.736 0 1.333 .895 1.333 2s-.597 2 -1.333 2h-2.667" />
-  </svg>`};var $t={models:[{id:"3",name:"Model 3",variants:[{id:"3.1",label:"2017\u20132023",colours:[{id:"red_multi_coat",name:"Red Multi-Coat",swatch:"#c41e28",hasImages:!0},{id:"deep_blue_metallic",name:"Deep Blue Metallic",swatch:"#223873",hasImages:!0},{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"silver_metallic",name:"Silver Metallic",swatch:"#c0c0c0"}]},{id:"3.2",label:"2024+ Highland",colours:[{id:"pearl_white",name:"Pearl White",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"quicksilver",name:"Quicksilver",swatch:"#9e9a91"},{id:"ultra_red",name:"Ultra Red",swatch:"#c41e28"},{id:"midnight_cherry_red",name:"Midnight Cherry Red",swatch:"#850029"},{id:"stealth_grey",name:"Stealth Grey",swatch:"#515356"}]}]},{id:"Y",name:"Model Y",variants:[{id:"Y.1",label:"2020\u20132024",colours:[{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"deep_blue_metallic",name:"Deep Blue Metallic",swatch:"#223873",hasImages:!0},{id:"red_multi_coat",name:"Red Multi-Coat",swatch:"#c41e28"},{id:"midnight_cherry_red",name:"Midnight Cherry Red",swatch:"#850029"},{id:"quicksilver",name:"Quicksilver",swatch:"#9e9a91"},{id:"stealth_grey",name:"Stealth Grey",swatch:"#515356"}]},{id:"Y.2",label:"2025+ Juniper",colours:[{id:"pearl_white",name:"Pearl White",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"quicksilver",name:"Quicksilver",swatch:"#9e9a91"},{id:"ultra_red",name:"Ultra Red",swatch:"#c41e28"},{id:"midnight_cherry_red",name:"Midnight Cherry Red",swatch:"#850029"},{id:"stealth_grey",name:"Stealth Grey",swatch:"#515356"}]}]},{id:"S",name:"Model S",variants:[{id:"S.1",label:"2012\u20132021",colours:[{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"deep_blue_metallic",name:"Deep Blue Metallic",swatch:"#223873"},{id:"red_multi_coat",name:"Red Multi-Coat",swatch:"#c41e28"},{id:"silver_metallic",name:"Silver Metallic",swatch:"#c0c0c0"}]},{id:"S.2",label:"2021+ Refresh",colours:[{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"ultra_red",name:"Ultra Red",swatch:"#c41e28"},{id:"midnight_cherry_red",name:"Midnight Cherry Red",swatch:"#850029"},{id:"quicksilver",name:"Quicksilver",swatch:"#9e9a91"},{id:"stealth_grey",name:"Stealth Grey",swatch:"#515356"}]}]},{id:"X",name:"Model X",variants:[{id:"X.1",label:"2015\u20132021",colours:[{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"deep_blue_metallic",name:"Deep Blue Metallic",swatch:"#223873"},{id:"red_multi_coat",name:"Red Multi-Coat",swatch:"#c41e28"},{id:"silver_metallic",name:"Silver Metallic",swatch:"#c0c0c0"}]},{id:"X.2",label:"2021+ Refresh",colours:[{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"ultra_red",name:"Ultra Red",swatch:"#c41e28"},{id:"midnight_cherry_red",name:"Midnight Cherry Red",swatch:"#850029"},{id:"quicksilver",name:"Quicksilver",swatch:"#9e9a91"},{id:"stealth_grey",name:"Stealth Grey",swatch:"#515356"}]}]},{id:"CT",name:"Cybertruck",variants:[{id:"CT.1",label:"2024+",colours:[{id:"stainless_steel",name:"Stainless Steel",swatch:"#b0b0b0"},{id:"satin_black",name:"Satin Black",swatch:"#1a1a1a"}]}]}]};var Xt=new Map;for(let r of $t.models)for(let t of r.variants)for(let e of t.colours)Xt.has(e.id)||Xt.set(e.id,{name:e.name,dir:e.id,swatch:e.swatch});var Ct=Array.from(Xt.values());var L=$t.models.map(r=>({id:r.id,name:r.name,variants:r.variants.map(t=>({id:t.id,label:t.label,colours:["neutral",...t.colours.filter(e=>e.hasImages).map(e=>e.id)],factoryColours:t.colours}))}));function Jt(r,t){let e=L.find(i=>i.id===r);return e?e.variants.find(i=>i.id===t)?.colours??["neutral"]:["neutral"]}function te(r){return L.find(e=>e.id===r)?.variants??[]}var ee=class extends E{static get properties(){return{hass:{type:Object},config:{type:Object}}}setConfig(t){this.config=t}_valueChanged(t){if(!this.config||!this.hass)return;let e=t.target,s={...this.config,[e.name]:e.value};this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:s}}))}_modelChanged(t){if(!this.config||!this.hass)return;let e=t.target.value,i=te(e)[0]?.id??"",a={...this.config,car_model:e,car_variant:i};this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:a}}))}_integrationChanged(t){if(!this.config||!this.hass)return;let e={...this.config,integration:t.target.value};t.target.value==="entities"&&!e.car_name&&(e.car_name="custom"),this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:e}}))}_entityOverrideInput(t,e){if(!this.config||!this.hass)return;let s=e.target.value.trim(),i={...this.config.entity_overrides??{}};s?i[t]=s:delete i[t];let a={...this.config,entity_overrides:i};this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:a}}))}_overrideCount(t){let e=this.config.entity_overrides??{};return t.keys.filter(s=>e[s.key]).length}_entitiesForDomain(t){return this.hass?.states?Object.keys(this.hass.states).filter(e=>e.startsWith(t+".")).sort():[]}render(){if(!this.config)return o``;let t=this.config.car_model??"3",e=te(t),s=this.config.integration??"fleet",i=s==="entities",a=this.config.entity_overrides??{};return o`
+  </svg>`};var Ft={models:[{id:"3",name:"Model 3",variants:[{id:"3.1",label:"2017\u20132023",colours:[{id:"red_multi_coat",name:"Red Multi-Coat",swatch:"#c41e28",hasImages:!0},{id:"deep_blue_metallic",name:"Deep Blue Metallic",swatch:"#223873",hasImages:!0},{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"silver_metallic",name:"Silver Metallic",swatch:"#c0c0c0"}]},{id:"3.2",label:"2024+ Highland",colours:[{id:"pearl_white",name:"Pearl White",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"quicksilver",name:"Quicksilver",swatch:"#9e9a91"},{id:"ultra_red",name:"Ultra Red",swatch:"#c41e28"},{id:"midnight_cherry_red",name:"Midnight Cherry Red",swatch:"#850029"},{id:"stealth_grey",name:"Stealth Grey",swatch:"#515356"}]}]},{id:"Y",name:"Model Y",variants:[{id:"Y.1",label:"2020\u20132024",colours:[{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"deep_blue_metallic",name:"Deep Blue Metallic",swatch:"#223873",hasImages:!0},{id:"red_multi_coat",name:"Red Multi-Coat",swatch:"#c41e28"},{id:"midnight_cherry_red",name:"Midnight Cherry Red",swatch:"#850029"},{id:"quicksilver",name:"Quicksilver",swatch:"#9e9a91"},{id:"stealth_grey",name:"Stealth Grey",swatch:"#515356"}]},{id:"Y.2",label:"2025+ Juniper",colours:[{id:"pearl_white",name:"Pearl White",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"quicksilver",name:"Quicksilver",swatch:"#9e9a91"},{id:"ultra_red",name:"Ultra Red",swatch:"#c41e28"},{id:"midnight_cherry_red",name:"Midnight Cherry Red",swatch:"#850029"},{id:"stealth_grey",name:"Stealth Grey",swatch:"#515356"}]}]},{id:"S",name:"Model S",variants:[{id:"S.1",label:"2012\u20132021",colours:[{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"deep_blue_metallic",name:"Deep Blue Metallic",swatch:"#223873"},{id:"red_multi_coat",name:"Red Multi-Coat",swatch:"#c41e28"},{id:"silver_metallic",name:"Silver Metallic",swatch:"#c0c0c0"}]},{id:"S.2",label:"2021+ Refresh",colours:[{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"ultra_red",name:"Ultra Red",swatch:"#c41e28"},{id:"midnight_cherry_red",name:"Midnight Cherry Red",swatch:"#850029"},{id:"quicksilver",name:"Quicksilver",swatch:"#9e9a91"},{id:"stealth_grey",name:"Stealth Grey",swatch:"#515356"}]}]},{id:"X",name:"Model X",variants:[{id:"X.1",label:"2015\u20132021",colours:[{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"deep_blue_metallic",name:"Deep Blue Metallic",swatch:"#223873"},{id:"red_multi_coat",name:"Red Multi-Coat",swatch:"#c41e28"},{id:"silver_metallic",name:"Silver Metallic",swatch:"#c0c0c0"}]},{id:"X.2",label:"2021+ Refresh",colours:[{id:"pearl_white_multi_coat",name:"Pearl White Multi-Coat",swatch:"#f2f2f2"},{id:"solid_black",name:"Solid Black",swatch:"#141414"},{id:"midnight_silver_metallic",name:"Midnight Silver Metallic",swatch:"#71757a"},{id:"ultra_red",name:"Ultra Red",swatch:"#c41e28"},{id:"midnight_cherry_red",name:"Midnight Cherry Red",swatch:"#850029"},{id:"quicksilver",name:"Quicksilver",swatch:"#9e9a91"},{id:"stealth_grey",name:"Stealth Grey",swatch:"#515356"}]}]},{id:"CT",name:"Cybertruck",variants:[{id:"CT.1",label:"2024+",colours:[{id:"stainless_steel",name:"Stainless Steel",swatch:"#b0b0b0"},{id:"satin_black",name:"Satin Black",swatch:"#1a1a1a"}]}]}]};var he=new Map;for(let n of Ft.models)for(let t of n.variants)for(let e of t.colours)he.has(e.id)||he.set(e.id,{name:e.name,dir:e.id,swatch:e.swatch});var zt=Array.from(he.values());var P=Ft.models.map(n=>({id:n.id,name:n.name,variants:n.variants.map(t=>({id:t.id,label:t.label,colours:["neutral",...t.colours.filter(e=>e.hasImages).map(e=>e.id)],factoryColours:t.colours}))}));function de(n,t){let e=P.find(i=>i.id===n);return e?e.variants.find(i=>i.id===t)?.colours??["neutral"]:["neutral"]}function pe(n){return P.find(e=>e.id===n)?.variants??[]}var _e=class extends A{static get properties(){return{hass:{type:Object},config:{type:Object}}}setConfig(t){this.config=t}_valueChanged(t){if(!this.config||!this.hass)return;let e=t.target,s={...this.config,[e.name]:e.value};this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:s}}))}_modelChanged(t){if(!this.config||!this.hass)return;let e=t.target.value,i=pe(e)[0]?.id??"",a={...this.config,car_model:e,car_variant:i};this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:a}}))}_integrationChanged(t){if(!this.config||!this.hass)return;let e={...this.config,integration:t.target.value};t.target.value==="entities"&&!e.car_name&&(e.car_name="custom"),this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:e}}))}_entityOverrideInput(t,e){if(!this.config||!this.hass)return;let s=e.target.value.trim(),i={...this.config.entity_overrides??{}};s?i[t]=s:delete i[t];let a={...this.config,entity_overrides:i};this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:a}}))}_overrideCount(t){let e=this.config.entity_overrides??{};return t.keys.filter(s=>e[s.key]).length}_entitiesForDomain(t){return this.hass?.states?Object.keys(this.hass.states).filter(e=>e.startsWith(t+".")).sort():[]}render(){if(!this.config)return r``;let t=this.config.car_model??"3",e=pe(t),s=this.config.integration??"carlinko",i=s==="entities",a=s==="carlinko",o=this.config.entity_overrides??{},p=a?le(this.hass):[];return r`
       <div class="editor">
+        <label>
+          Integration
+          <select name="integration" .value=${s} @change=${l=>this._integrationChanged(l)}>
+            <option value="carlinko" ?selected=${a}>CarLinko (Jaecoo / Chery / Omoda)</option>
+            <option value="fleet" ?selected=${s==="fleet"}>Tesla Fleet (official)</option>
+            <option value="custom" ?selected=${s==="custom"}>Tesla Custom (alandtse)</option>
+            <option value="entities" ?selected=${s==="entities"}>Custom Entities</option>
+          </select>
+        </label>
+        ${a?r`
+        <label>
+          Vehicle
+          <select name="device_id" .value=${this.config.device_id??""} @change=${this._valueChanged}>
+            <option value="" ?selected=${!this.config.device_id}>First CarLinko vehicle</option>
+            ${p.map(l=>r`
+              <option value="${l.id}" ?selected=${l.id===this.config.device_id}>${l.name}</option>
+            `)}
+          </select>
+          ${p.length?"":r`<span class="entity-hint">No CarLinko vehicles found — install the ha-carlinko integration first.</span>`}
+        </label>
+        <label>
+          Display Name
+          <input
+            name="name"
+            .value=${this.config.name??""}
+            @change=${this._valueChanged}
+            placeholder="Jaecoo J5 EV"
+          />
+        </label>
+        `:r`
         <label>
           Car Name (entity prefix)${i?"":" *"}
           <input
@@ -1956,34 +2000,26 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
         <label>
           Model
           <select name="car_model" .value=${t} @change=${this._modelChanged}>
-            ${L.map(n=>o`
-              <option value="${n.id}" ?selected=${n.id===t}>${n.name}</option>
+            ${P.map(l=>r`
+              <option value="${l.id}" ?selected=${l.id===t}>${l.name}</option>
             `)}
           </select>
         </label>
         <label>
           Variant
           <select name="car_variant" .value=${this.config.car_variant??""} @change=${this._valueChanged}>
-            ${e.map(n=>o`
-              <option value="${n.id}" ?selected=${n.id===this.config.car_variant}>${n.label}</option>
+            ${e.map(l=>r`
+              <option value="${l.id}" ?selected=${l.id===this.config.car_variant}>${l.label}</option>
             `)}
-          </select>
-        </label>
-        <label>
-          Integration
-          <select name="integration" .value=${s} @change=${n=>this._integrationChanged(n)}>
-            <option value="fleet" ?selected=${s==="fleet"}>Tesla Fleet (official)</option>
-            <option value="custom" ?selected=${s==="custom"}>Tesla Custom (alandtse)</option>
-            <option value="entities" ?selected=${s==="entities"}>Custom Entities</option>
           </select>
         </label>
         <label>
           Image Path
           <input
             name="image_path"
-            .value=${this.config.image_path??"/hacsfiles/homeassistant-fe-tesla"}
+            .value=${this.config.image_path??"/hacsfiles/homeassistant-fe-jaecoo"}
             @change=${this._valueChanged}
-            placeholder="/hacsfiles/homeassistant-fe-tesla"
+            placeholder="/hacsfiles/homeassistant-fe-jaecoo"
           />
         </label>
         <label>
@@ -1995,31 +2031,32 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
             placeholder="My Tesla"
           />
         </label>
+        `}
 
-        ${i?o`
+        ${i?r`
           <div class="entity-section-header">Entity Configuration</div>
           <div class="entity-hint">Map each function to an entity in your Home Assistant. Leave blank to skip.</div>
           <div class="entity-groups">
-            ${Zt.map(n=>{let p=this._overrideCount(n),h=n.keys.length;return o`
+            ${ce.map(l=>{let m=this._overrideCount(l),u=l.keys.length;return r`
                 <details class="entity-group">
                   <summary class="entity-group-header">
-                    <span class="entity-group-label">${n.label}</span>
-                    <span class="entity-group-count${p>0?" has-overrides":""}">${p}/${h}</span>
+                    <span class="entity-group-label">${l.label}</span>
+                    <span class="entity-group-count${m>0?" has-overrides":""}">${m}/${u}</span>
                   </summary>
                   <div class="entity-group-body">
-                    ${n.keys.map(_=>{let u=`el-${_.key}`,m=this._entitiesForDomain(_.domain);return o`
+                    ${l.keys.map(_=>{let f=`el-${_.key}`,y=this._entitiesForDomain(_.domain);return r`
                         <div class="entity-row">
                           <span class="entity-row-label">${_.label}</span>
                           <input
                             class="entity-input"
                             type="text"
-                            list=${u}
-                            .value=${a[_.key]??""}
+                            list=${f}
+                            .value=${o[_.key]??""}
                             placeholder="${_.domain}."
-                            @change=${g=>this._entityOverrideInput(_.key,g)}
+                            @change=${R=>this._entityOverrideInput(_.key,R)}
                           />
-                          <datalist id=${u}>
-                            ${m.map(g=>o`<option value=${g}></option>`)}
+                          <datalist id=${f}>
+                            ${y.map(R=>r`<option value=${R}></option>`)}
                           </datalist>
                         </div>
                       `})}
@@ -2029,7 +2066,7 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
           </div>
         `:""}
       </div>
-    `}static get styles(){return k`
+    `}static get styles(){return C`
       .editor {
         display: flex;
         flex-direction: column;
@@ -2141,112 +2178,131 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
         width: 100%;
         box-sizing: border-box;
       }
-    `}};customElements.define("tesla-card-editor",ee);var K=class K extends E{static get properties(){return{hass:{type:Object},config:{type:Object},customColour:{type:Object},layout:{type:String},tyreUnit:{type:String}}}get E(){return Rt(this.config?.integration)}_eid(t){let e=W(t,this.config.car_name,this.config.entity_overrides);if(e&&!this.hass?.states[e]&&Y[t]){let s=W(Y[t],this.config.car_name,this.config.entity_overrides);if(s&&this.hass?.states[s])return s}return e}_state(t){let e=this._eid(t);return e?this.hass?.states[e]:void 0}_val(t){return this._state(t)?.state}_attr(t,e){return this._state(t)?.attributes?.[e]}_nattr(t,e){let s=this._attr(t,e);return s!=null?Number(s):null}_imgUrl(t){let{image_path:e,car_model:s,car_variant:i,car_color:a}=this.config;return`${e}/${s}/${i}/${a}/${t}?v=${K._imgVer}`}_btnUrl(t){return`${this.config.image_path}/buttons/${t}?v=${K._imgVer}`}_maskUrl(t){let{image_path:e,car_model:s,car_variant:i}=this.config,a=t.replace(".png","-mask.png");return`${e}/${s}/${i}/neutral/${a}?v=${K._imgVer}`}get _hasCustomOverlay(){return!!this.customColour&&this.customColour.s>0}_customOverlayStyleFor(t){let e=this.customColour;if(!e||e.s===0)return"";let s=Math.round(Number(e.h)||0),i=Math.round(Number(e.s)||0);if(i===0)return"";let a=this._maskUrl(t);return`position:absolute;inset:0;pointer-events:none;background:hsl(${s},${i}%,50%);mix-blend-mode:color;-webkit-mask-image:url(${a});mask-image:url(${a});-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;`}_domainOf(t){return t?t.split(".")[0]:null}_activate(t){let e=this._domainOf(t);if(e==="cover"){let s=this._val(t)==="open";return this._svc("cover",s?"close_cover":"open_cover",t)}return this._svc(e,"press",t)}_openClose(t,e,s){let i=s?e:t,a=this._domainOf(i);return a==="cover"?this._svc("cover",s?"close_cover":"open_cover",i):this._svc(a,"press",i)}async _svc(t,e,s,i={}){if(s)try{await this.hass.callService(t,e,{entity_id:this._eid(s),...i})}catch(a){console.error("[tesla-card] service error",t,e,a)}}_close(){this.dispatchEvent(new CustomEvent("close-menu",{bubbles:!0,composed:!0}))}};Et(K,"_imgVer",Date.now());var N=K;var se=class extends N{static get properties(){return{...super.properties,_pendingLimit:{state:!0},_pendingAmps:{state:!0}}}static get styles(){return[M,Ge]}constructor(){super(),this._pendingLimit=null,this._pendingAmps=null}_pct(t,e,s){return Math.round((t-e)/(s-e)*100)}_onLimitInput(t){t.target.style.setProperty("--pct",`${this._pct(+t.target.value,+t.target.min,+t.target.max)}%`),this._pendingLimit=+t.target.value}_onLimitChange(t){this._pendingLimit=null,this._svc("number","set_value",this.E.CHARGE_LIMIT_NUMBER,{value:+t.target.value})}_onAmpsInput(t){t.target.style.setProperty("--pct",`${this._pct(+t.target.value,+t.target.min,+t.target.max)}%`),this._pendingAmps=+t.target.value}_onAmpsChange(t){this._pendingAmps=null,this._svc("number","set_value",this.E.CHARGING_AMPS_NUMBER,{value:+t.target.value})}_adjustAmps(t){let e=this._nattr(this.E.CHARGING_AMPS_NUMBER,"step")??1,s=this._nattr(this.E.CHARGING_AMPS_NUMBER,"min")??5,i=this._nattr(this.E.CHARGING_AMPS_NUMBER,"max")??32,a=this._pendingAmps??Number(this._val(this.E.CHARGING_AMPS_NUMBER)??16);this._pendingAmps=Math.max(s,Math.min(i,a+t*e)),clearTimeout(this._ampsTimer),this._ampsTimer=setTimeout(()=>{this._svc("number","set_value",this.E.CHARGING_AMPS_NUMBER,{value:this._pendingAmps}),this._pendingAmps=null},800)}render(){if(!this.config||!this.hass)return o``;let t=this._val(this.E.BATTERY_RANGE),e=this._attr(this.E.BATTERY_RANGE,"unit_of_measurement")??"km",s=t!=null?`${Math.round(Number(t))} ${e}`:null,i=this._val(this.E.CHARGER_DOOR)==="open"||this._val(this.E.PLUGGED_IN)==="on",a=this._pendingLimit??Number(this._val(this.E.CHARGE_LIMIT_NUMBER)??80),n=this._nattr(this.E.CHARGE_LIMIT_NUMBER,"min")??50,p=this._nattr(this.E.CHARGE_LIMIT_NUMBER,"max")??100,h=this._nattr(this.E.CHARGE_LIMIT_NUMBER,"step")??1,_=this._pct(a,n,p),u=this._pendingAmps??Number(this._val(this.E.CHARGING_AMPS_NUMBER)??16),m=this._nattr(this.E.CHARGING_AMPS_NUMBER,"min")??5,g=this._nattr(this.E.CHARGING_AMPS_NUMBER,"max")??32,b=this._attr(this.E.ENERGY_ADDED,"added_range");return o`
+    `}};customElements.define("jaecoo-card-editor",_e);var nt=class nt extends A{static get properties(){return{hass:{type:Object},config:{type:Object},customColour:{type:Object},layout:{type:String},tyreUnit:{type:String}}}get E(){return Pt(this.config?.integration)}get _isCarlinko(){return this.config?.integration==="carlinko"}_eid(t){if(Ut(t))return Gt(t,this.hass,this.config.device_id,this.config.entity_overrides);let e=st(t,this.config.car_name,this.config.entity_overrides);if(e&&!this.hass?.states[e]&&it[t]){let s=st(it[t],this.config.car_name,this.config.entity_overrides);if(s&&this.hass?.states[s])return s}return e}_state(t){let e=this._eid(t);return e?this.hass?.states[e]:void 0}_val(t){return this._state(t)?.state}_attr(t,e){return this._state(t)?.attributes?.[e]}_nattr(t,e){let s=this._attr(t,e);return s!=null?Number(s):null}_fmt(t){let e=this._state(t);if(e)try{return this.hass.formatEntityState?.(e)??e.state}catch{return e.state}}_picture(t){return this._attr(t,"entity_picture")??null}_imgUrl(t){let{image_path:e,car_model:s,car_variant:i,car_color:a}=this.config;return`${e}/${s}/${i}/${a}/${t}?v=${nt._imgVer}`}_btnUrl(t){return`${this.config.image_path}/buttons/${t}?v=${nt._imgVer}`}_maskUrl(t){let{image_path:e,car_model:s,car_variant:i}=this.config,a=t.replace(".png","-mask.png");return`${e}/${s}/${i}/neutral/${a}?v=${nt._imgVer}`}get _hasCustomOverlay(){return!!this.customColour&&this.customColour.s>0}_customOverlayStyleFor(t){let e=this.customColour;if(!e||e.s===0)return"";let s=Math.round(Number(e.h)||0),i=Math.round(Number(e.s)||0);if(i===0)return"";let a=this._maskUrl(t);return`position:absolute;inset:0;pointer-events:none;background:hsl(${s},${i}%,50%);mix-blend-mode:color;-webkit-mask-image:url(${a});mask-image:url(${a});-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;`}_domainOf(t){return t?t.split(".")[0]:null}_activate(t){let e=this._domainOf(t);if(e==="cover"){let s=this._val(t)==="open";return this._svc("cover",s?"close_cover":"open_cover",t)}return this._svc(e,"press",t)}_openClose(t,e,s){let i=s?e:t,a=this._domainOf(i);return a==="cover"?this._svc("cover",s?"close_cover":"open_cover",i):this._svc(a,"press",i)}_toggleWindows(t){return!t&&this._state(this.E.WINDOWS_VENT)?this._svc("button","press",this.E.WINDOWS_VENT):this._svc("cover",t?"close_cover":"open_cover",this.E.WINDOWS_COVER)}async _svc(t,e,s,i={}){if(s)try{await this.hass.callService(t,e,{entity_id:this._eid(s),...i})}catch(a){console.error("[jaecoo-card] service error",t,e,a)}}_close(){this.dispatchEvent(new CustomEvent("close-menu",{bubbles:!0,composed:!0}))}};Nt(nt,"_imgVer",Date.now());var F=nt;var ue=class extends F{static get properties(){return{...super.properties,_pendingLimit:{state:!0},_pendingAmps:{state:!0}}}static get styles(){return[G,Ze]}constructor(){super(),this._pendingLimit=null,this._pendingAmps=null}_pct(t,e,s){return Math.round((t-e)/(s-e)*100)}_onLimitInput(t){t.target.style.setProperty("--pct",`${this._pct(+t.target.value,+t.target.min,+t.target.max)}%`),this._pendingLimit=+t.target.value}_onLimitChange(t){this._pendingLimit=null,this._svc("number","set_value",this.E.CHARGE_LIMIT_NUMBER,{value:+t.target.value})}_onAmpsInput(t){t.target.style.setProperty("--pct",`${this._pct(+t.target.value,+t.target.min,+t.target.max)}%`),this._pendingAmps=+t.target.value}_onAmpsChange(t){this._pendingAmps=null,this._svc("number","set_value",this.E.CHARGING_AMPS_NUMBER,{value:+t.target.value})}_adjustAmps(t){let e=this._nattr(this.E.CHARGING_AMPS_NUMBER,"step")??1,s=this._nattr(this.E.CHARGING_AMPS_NUMBER,"min")??5,i=this._nattr(this.E.CHARGING_AMPS_NUMBER,"max")??32,a=this._pendingAmps??Number(this._val(this.E.CHARGING_AMPS_NUMBER)??16);this._pendingAmps=Math.max(s,Math.min(i,a+t*e)),clearTimeout(this._ampsTimer),this._ampsTimer=setTimeout(()=>{this._svc("number","set_value",this.E.CHARGING_AMPS_NUMBER,{value:this._pendingAmps}),this._pendingAmps=null},800)}render(){if(!this.config||!this.hass)return r``;let t=this._val(this.E.BATTERY_RANGE),e=this._attr(this.E.BATTERY_RANGE,"unit_of_measurement")??"km",s=t!=null?`${Math.round(Number(t))} ${e}`:null,i=this._val(this.E.CHARGER_DOOR)==="open"||this._val(this.E.PLUGGED_IN)==="on",a=this._pendingLimit??Number(this._val(this.E.CHARGE_LIMIT_NUMBER)??80),o=this._nattr(this.E.CHARGE_LIMIT_NUMBER,"min")??50,p=this._nattr(this.E.CHARGE_LIMIT_NUMBER,"max")??100,l=this._nattr(this.E.CHARGE_LIMIT_NUMBER,"step")??1,m=this._pct(a,o,p),u=this._pendingAmps??Number(this._val(this.E.CHARGING_AMPS_NUMBER)??16),_=this._nattr(this.E.CHARGING_AMPS_NUMBER,"min")??5,f=this._nattr(this.E.CHARGING_AMPS_NUMBER,"max")??32,y=this._attr(this.E.ENERGY_ADDED,"added_range"),R=!!this._state(this.E.CHARGE_LIMIT_NUMBER),T=!!this._state(this.E.CHARGING_AMPS_NUMBER),L=!!(this._state(this.E.CHARGE_PORT_OPEN)||this._state(this.E.CHARGER_DOOR)),x=this._val(this.E.CHARGING)==="on",k=g=>{let E=this._val(g);if(E==null||E==="unknown"||E==="unavailable")return null;let O=this._attr(g,"unit_of_measurement");return O?`${E} ${O}`:this._fmt(g)},w=Number(this._val(this.E.CHARGE_MINUTES_LEFT)),D=this._isCarlinko?[["Status",this._state(this.E.CHARGING_STATE)?this._fmt(this.E.CHARGING_STATE):null],["Power",x?k(this.E.CHARGE_RATE):null],["Charger",x?k(this.E.CHARGE_MODE):null],["Time to full",x&&isFinite(w)&&w>0?`${Math.floor(w/60)}h ${Math.round(w%60)}m`:null],["Energy in battery",k(this.E.ENERGY_LEFT)]].filter(([,g])=>g!=null&&g!=="unknown"&&g!=="unavailable"):[];return r`
       <div class="charger-menu${this.layout==="landscape"?" landscape":""}">
 
         <!-- Header: "Charging" + range subtitle -->
         <div class="panel-header">
           <button class="panel-back" @click=${this._close}>
-            <span class="icon">${c(l["chevron-left"])}</span>
+            <span class="icon">${h(c["chevron-left"])}</span>
           </button>
           <div class="panel-title-block">
             <span class="panel-title">Charging</span>
-            ${s?o`<span class="panel-subtitle">${s}</span>`:""}
+            ${s?r`<span class="panel-subtitle">${s}</span>`:""}
           </div>
         </div>
 
+        ${D.length?r`
+          <div class="chg-card">
+            ${D.map(([g,E])=>r`
+              <div class="chg-info-row">
+                <span class="chg-info-label">${g}</span>
+                <span class="chg-info-value">${E}</span>
+              </div>`)}
+          </div>`:""}
+
         <!-- Charge limit card + amps stepper -->
+        ${R||T?r`
         <div class="chg-card">
           <div class="chg-limit-header">
             <span class="chg-limit-title">Charge limit: ${a}%</span>
-            ${b?o`
-              <p class="chg-limit-sub">${b} km added during last charging session</p>`:""}
+            ${y?r`
+              <p class="chg-limit-sub">${y} km added during last charging session</p>`:""}
           </div>
 
           <!-- Green pill slider for charge limit -->
-          <input type="range" class="chg-slider" style="--pct:${_}%"
-            min=${n} max=${p} step=${h}
+          <input type="range" class="chg-slider" style="--pct:${m}%"
+            min=${o} max=${p} step=${l}
             .value=${String(a)}
             @input=${this._onLimitInput} @change=${this._onLimitChange}/>
 
           <!-- Amps stepper row -->
           <div class="chg-amps-row">
             <button class="chg-amps-btn"
-              ?disabled=${u<=m}
+              ?disabled=${u<=_}
               @click=${()=>this._adjustAmps(-1)}>
-              <span class="icon">${c(l["chevron-left"])}</span>
+              <span class="icon">${h(c["chevron-left"])}</span>
             </button>
             <span class="chg-amps-value">${u} A</span>
             <button class="chg-amps-btn"
-              ?disabled=${u>=g}
+              ?disabled=${u>=f}
               @click=${()=>this._adjustAmps(1)}>
-              <span class="icon">${c(l["chevron-right"])}</span>
+              <span class="icon">${h(c["chevron-right"])}</span>
             </button>
           </div>
-        </div>
+        </div>`:""}
 
         <!-- Open / Close Charge Port — plain text link -->
+        ${L?r`
         <button class="chg-port-btn"
           @click=${()=>this._openClose(this.E.CHARGE_PORT_OPEN,this.E.CHARGE_PORT_CLOSE,i)}>
           ${i?"Close Charge Port":"Open Charge Port"}
-        </button>
+        </button>`:""}
+
+        ${x&&this._state(this.E.CHARGE_STOP)?r`
+        <button class="chg-port-btn"
+          @click=${()=>this._svc("button","press",this.E.CHARGE_STOP)}>
+          Stop Charging
+        </button>`:""}
 
       </div>
-    `}};customElements.define("tesla-menu-charger",se);var ie=class extends N{static get properties(){return{...super.properties,_pendingTemp:{state:!0},_climExpanded:{state:!0}}}static get styles(){return[M,ze]}constructor(){super(),this._pendingTemp=null,this._climExpanded=!1}_adjustTemp(t){let e=Number(this._attr(this.E.CLIMATE,"target_temp_step")??.5),s=Number(this._attr(this.E.CLIMATE,"min_temp")??15),i=Number(this._attr(this.E.CLIMATE,"max_temp")??28),a=this._pendingTemp??(this._attr(this.E.CLIMATE,"temperature")!=null?Number(this._attr(this.E.CLIMATE,"temperature")):22);this._pendingTemp=Math.max(s,Math.min(i,Math.round((a+t*e)/e)*e)),clearTimeout(this._tempTimer),this._tempTimer=setTimeout(()=>{this._svc("climate","set_temperature",this.E.CLIMATE,{temperature:this._pendingTemp}),this._pendingTemp=null},800)}_seatHeatFile(t){if(!t)return"Tesla_Heated_Seat_Off.svg";let e=t.toLowerCase();if(e==="off")return"Tesla_Heated_Seat_Off.svg";if(e==="low")return"Tesla_Heated_Seat_1.svg";if(e==="medium")return"Tesla_Heated_Seat_2.svg";if(e==="high")return"Tesla_Heated_Seat_3.svg";let s=parseInt(t);return!isNaN(s)&&s>=1&&s<=3?`Tesla_Heated_Seat_${s}.svg`:"Tesla_Heated_Seat_Off.svg"}_steeringHeatFile(t){return t==="low"?"Tesla_Climate_Heated_Wheel_Low.svg":t==="high"?"Tesla_Climate_Heated_Wheel_High.svg":"Tesla_Climate_Heated_Wheel_Off.svg"}_setCabinOverheat(t){if(this._domainOf(this.E.CABIN_OVERHEAT)==="climate"){let i={Off:"off","No A/C":"fan_only",On:"cool"}[t]??"off";i==="off"?this._svc("climate","turn_off",this.E.CABIN_OVERHEAT):this._svc("climate","set_hvac_mode",this.E.CABIN_OVERHEAT,{hvac_mode:i})}else this._svc("select","select_option",this.E.CABIN_OVERHEAT,{option:t})}_togglePresetOrSwitch(t,e,s){return s?this._svc("switch",e?"turn_off":"turn_on",s):this._svc("climate","set_preset_mode",this.E.CLIMATE,{preset_mode:e?"off":t})}_close(){this._climExpanded=!1,super._close()}render(){if(!this.config||!this.hass)return o``;let t=this._val(this.E.CLIMATE),e=t!=null&&t!=="off"&&t!=="unavailable",s=this._attr(this.E.CLIMATE,"temperature"),i=s!=null?Number(s):null,a=this._pendingTemp??i,n=a!=null?a.toFixed(1):"\u2014",p=this._val(this.E.DEFROST_SWITCH)==="on",h=this._val(this.E.HEATED_SEAT_LEFT),_=this._val(this.E.HEATED_SEAT_RIGHT),u=!!this._state(this.E.HEATED_SEAT_REAR_LEFT),m=!!this._state(this.E.HEATED_SEAT_REAR_CENTER),g=!!this._state(this.E.HEATED_SEAT_REAR_RIGHT),b=u?this._val(this.E.HEATED_SEAT_REAR_LEFT):null,x=m?this._val(this.E.HEATED_SEAT_REAR_CENTER):null,I=g?this._val(this.E.HEATED_SEAT_REAR_RIGHT):null,pt=this._val(this.E.TEMPERATURE_INSIDE),Tt=this._attr(this.E.TEMPERATURE_INSIDE,"unit_of_measurement")??"\xB0C",C=pt!=null?`${Math.round(Number(pt))}${Tt}`:null,mt=this._val(this.E.TEMPERATURE_OUTSIDE),y=this._attr(this.E.TEMPERATURE_OUTSIDE,"unit_of_measurement")??"\xB0C",v=mt!=null?`${Math.round(Number(mt))}${y}`:null,A=this._val(this.E.WINDOWS_COVER)==="open",q=this._attr(this.E.CLIMATE,"preset_modes")??[],ut=this._attr(this.E.CLIMATE,"preset_mode")??"off",_t=!!this.E.CAMP_MODE||q.includes("camp"),D=!!this.E.DOG_MODE||q.includes("dog"),Z=this.E.CAMP_MODE?this._val(this.E.CAMP_MODE)==="on":ut==="camp",gt=this.E.DOG_MODE?this._val(this.E.DOG_MODE)==="on":ut==="dog",S=!!this.E.CABIN_OVERHEAT,ft=this._val(this.E.CABIN_OVERHEAT)??"Off",Ot=S&&this._domainOf(this.E.CABIN_OVERHEAT)==="climate"?{off:"Off",fan_only:"No A/C",cool:"On"}[ft]??"Off":ft,X=!!this._state(this.E.STEERING_WHEEL_HEATER),F=X?(this._val(this.E.STEERING_WHEEL_HEATER)??"off").toLowerCase():"off",H=this._val(this.E.AUTO_STEERING_WHEEL_HEATER)==="on"?"Auto":F==="off"?"Off":F==="low"?"Low":"High",J=this._val(this.E.PLUGGED_IN)==="on"?"climate-bg-charging.png":"climate-bg.png";return o`
+    `}};customElements.define("jaecoo-menu-charger",ue);var me=class extends F{static get properties(){return{...super.properties,_pendingTemp:{state:!0},_climExpanded:{state:!0}}}static get styles(){return[G,Xe]}constructor(){super(),this._pendingTemp=null,this._climExpanded=!1}_adjustTemp(t){let e=Number(this._attr(this.E.CLIMATE,"target_temp_step")??.5),s=Number(this._attr(this.E.CLIMATE,"min_temp")??15),i=Number(this._attr(this.E.CLIMATE,"max_temp")??28),a=this._pendingTemp??(this._attr(this.E.CLIMATE,"temperature")!=null?Number(this._attr(this.E.CLIMATE,"temperature")):22);this._pendingTemp=Math.max(s,Math.min(i,Math.round((a+t*e)/e)*e)),clearTimeout(this._tempTimer),this._tempTimer=setTimeout(()=>{this._svc("climate","set_temperature",this.E.CLIMATE,{temperature:this._pendingTemp}),this._pendingTemp=null},800)}_seatHeatFile(t){if(!t)return"Tesla_Heated_Seat_Off.svg";let e=t.toLowerCase();if(e==="off")return"Tesla_Heated_Seat_Off.svg";if(e==="low"||e==="l1")return"Tesla_Heated_Seat_1.svg";if(e==="medium"||e==="l2")return"Tesla_Heated_Seat_2.svg";if(e==="high"||e==="l3")return"Tesla_Heated_Seat_3.svg";let s=parseInt(t);return!isNaN(s)&&s>=1&&s<=3?`Tesla_Heated_Seat_${s}.svg`:"Tesla_Heated_Seat_Off.svg"}_steeringHeatFile(t){return t==="low"?"Tesla_Climate_Heated_Wheel_Low.svg":t==="high"?"Tesla_Climate_Heated_Wheel_High.svg":"Tesla_Climate_Heated_Wheel_Off.svg"}_toggleSteeringHeat(t){return this._domainOf(this.E.STEERING_WHEEL_HEATER)==="switch"?this._svc("switch",t==="off"?"turn_on":"turn_off",this.E.STEERING_WHEEL_HEATER):this._svc("select","select_next",this.E.STEERING_WHEEL_HEATER,{cycle:!0})}_cycleSelect(t){return this._svc("select","select_next",t,{cycle:!0})}_toggleSwitch(t){return this._svc("switch",this._val(t)==="on"?"turn_off":"turn_on",t)}_setCabinOverheat(t){if(this._domainOf(this.E.CABIN_OVERHEAT)==="climate"){let i={Off:"off","No A/C":"fan_only",On:"cool"}[t]??"off";i==="off"?this._svc("climate","turn_off",this.E.CABIN_OVERHEAT):this._svc("climate","set_hvac_mode",this.E.CABIN_OVERHEAT,{hvac_mode:i})}else this._svc("select","select_option",this.E.CABIN_OVERHEAT,{option:t})}_togglePresetOrSwitch(t,e,s){return s?this._svc("switch",e?"turn_off":"turn_on",s):this._svc("climate","set_preset_mode",this.E.CLIMATE,{preset_mode:e?"off":t})}_close(){this._climExpanded=!1,super._close()}render(){if(!this.config||!this.hass)return r``;let t=this._val(this.E.CLIMATE),e=t!=null&&t!=="off"&&t!=="unavailable",s=this._attr(this.E.CLIMATE,"temperature"),i=s!=null?Number(s):null,a=this._pendingTemp??i,o=a!=null?a.toFixed(1):"\u2014",p=this._val(this.E.DEFROST_SWITCH)==="on",l=!!this._state(this.E.HEATED_SEAT_LEFT),m=!!this._state(this.E.HEATED_SEAT_RIGHT),u=this._val(this.E.HEATED_SEAT_LEFT),_=this._val(this.E.HEATED_SEAT_RIGHT),f=b=>this._fmt(b)??"Off",y=!!this._state(this.E.HEATED_SEAT_REAR_LEFT),R=!!this._state(this.E.HEATED_SEAT_REAR_CENTER),T=!!this._state(this.E.HEATED_SEAT_REAR_RIGHT),L=y?this._val(this.E.HEATED_SEAT_REAR_LEFT):null,x=R?this._val(this.E.HEATED_SEAT_REAR_CENTER):null,k=T?this._val(this.E.HEATED_SEAT_REAR_RIGHT):null,w=this._val(this.E.TEMPERATURE_INSIDE),D=this._attr(this.E.TEMPERATURE_INSIDE,"unit_of_measurement")??"\xB0C",g=w!=null?`${Math.round(Number(w))}${D}`:null,E=this._val(this.E.TEMPERATURE_OUTSIDE),O=this._attr(this.E.TEMPERATURE_OUTSIDE,"unit_of_measurement")??"\xB0C",z=E!=null?`${Math.round(Number(E))}${O}`:null,K=this._val(this.E.WINDOWS_COVER)==="open",Rt=this._attr(this.E.CLIMATE,"preset_modes")??[],B=this._attr(this.E.CLIMATE,"preset_mode")??"off",kt=!!this.E.CAMP_MODE||Rt.includes("camp"),Vt=!!this.E.DOG_MODE||Rt.includes("dog"),N=this.E.CAMP_MODE?this._val(this.E.CAMP_MODE)==="on":B==="camp",at=this.E.DOG_MODE?this._val(this.E.DOG_MODE)==="on":B==="dog",At=!!this.E.CABIN_OVERHEAT,xt=this._val(this.E.CABIN_OVERHEAT)??"Off",wt=At&&this._domainOf(this.E.CABIN_OVERHEAT)==="climate"?{off:"Off",fan_only:"No A/C",cool:"On"}[xt]??"Off":xt,rt=!!this._state(this.E.STEERING_WHEEL_HEATER),$=rt?(this._val(this.E.STEERING_WHEEL_HEATER)??"off").toLowerCase():"off",q=$==="on"?"high":$,Ct=this._val(this.E.AUTO_STEERING_WHEEL_HEATER)==="on"?"Auto":$==="on"?"On":q==="off"?"Off":q==="low"?"Low":"High",ot=!!this._state(this.E.DEFROST_SWITCH),Z=!!(this._state(this.E.WINDOWS_COVER)||this._state(this.E.WINDOWS_VENT)),Tt=[[this.E.QUICK_COOL,"Quick Cool",c["climate-fan"]],[this.E.QUICK_HEAT,"Quick Heat",c["heated-seat"]]].filter(([b])=>this._state(b)),lt=[[this.E.WINDSHIELD_HEAT,"Windshield Heat",c.defrost],[this.E.AIR_PURIFY,"Air Purify",c.fan]].filter(([b])=>this._state(b)),$t=[[this.E.VENT_SEAT_LEFT,"Driver Seat Ventilation"],[this.E.VENT_SEAT_RIGHT,"Passenger Seat Ventilation"]].filter(([b])=>this._state(b)),X=this._val(this.E.PLUGGED_IN)==="on"?"climate-bg-charging.png":"climate-bg.png";return r`
       <div class="climate-menu${this.layout==="landscape"?" landscape":""}">
 
         <!-- Car area: outer clips, inner sizes to image, seats overlay image -->
         <div class="clim-car-area${this._climExpanded?" clim-car-collapsed":""}">
           <div class="clim-car-inner">
             <img class="clim-car-bg"
-              src="${this._imgUrl(J)}"
+              src="${this._isCarlinko?this._picture(this.E.IMAGE_TOP)??this.config.image_top??"":this._imgUrl(X)}"
               alt="Car interior view" />
-            ${this._hasCustomOverlay?o`
-              <div style="${this._customOverlayStyleFor(J)}"></div>`:""}
+            ${this._hasCustomOverlay?r`
+              <div style="${this._customOverlayStyleFor(X)}"></div>`:""}
 
             <!-- Steering wheel heater -->
-            ${X?o`
+            ${rt?r`
               <button class="clim-steering-zone"
-                @click=${()=>this._svc("select","select_next",this.E.STEERING_WHEEL_HEATER,{cycle:!0})}>
-                <img class="btn-img" src="${this._btnUrl(this._steeringHeatFile(F))}" alt="" />
-                <span class="clim-seat-label">${H}</span>
+                @click=${()=>this._toggleSteeringHeat($)}>
+                <img class="btn-img" src="${this._btnUrl(this._steeringHeatFile(q))}" alt="" />
+                <span class="clim-seat-label">${Ct}</span>
               </button>`:""}
 
             <!-- Front seats -->
+            ${l?r`
             <button class="clim-seat-zone clim-seat-fl"
               @click=${()=>this._svc("select","select_next",this.E.HEATED_SEAT_LEFT,{cycle:!0})}>
-              <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(h??"Off"))}" alt="" />
-              <span class="clim-seat-label">${h??"Off"}</span>
-            </button>
+              <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(u??"Off"))}" alt="" />
+              <span class="clim-seat-label">${f(this.E.HEATED_SEAT_LEFT)}</span>
+            </button>`:""}
+            ${m?r`
             <button class="clim-seat-zone clim-seat-fr"
               @click=${()=>this._svc("select","select_next",this.E.HEATED_SEAT_RIGHT,{cycle:!0})}>
               <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(_??"Off"))}" alt="" />
-              <span class="clim-seat-label">${_??"Off"}</span>
-            </button>
+              <span class="clim-seat-label">${f(this.E.HEATED_SEAT_RIGHT)}</span>
+            </button>`:""}
             <!-- Rear seats (only if entities exist) -->
-            ${u?o`
+            ${y?r`
               <button class="clim-seat-zone clim-seat-rl"
                 @click=${()=>this._svc("select","select_next",this.E.HEATED_SEAT_REAR_LEFT,{cycle:!0})}>
-                <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(b??"Off"))}" alt="" />
-                <span class="clim-seat-label">${b??"Off"}</span>
+                <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(L??"Off"))}" alt="" />
+                <span class="clim-seat-label">${f(this.E.HEATED_SEAT_REAR_LEFT)}</span>
               </button>`:""}
-            ${m?o`
+            ${R?r`
               <button class="clim-seat-zone clim-seat-rc"
                 @click=${()=>this._svc("select","select_next",this.E.HEATED_SEAT_REAR_CENTER,{cycle:!0})}>
                 <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(x??"Off"))}" alt="" />
-                <span class="clim-seat-label">${x??"Off"}</span>
+                <span class="clim-seat-label">${f(this.E.HEATED_SEAT_REAR_CENTER)}</span>
               </button>`:""}
-            ${g?o`
+            ${T?r`
               <button class="clim-seat-zone clim-seat-rr"
                 @click=${()=>this._svc("select","select_next",this.E.HEATED_SEAT_REAR_RIGHT,{cycle:!0})}>
-                <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(I??"Off"))}" alt="" />
-                <span class="clim-seat-label">${I??"Off"}</span>
+                <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(k??"Off"))}" alt="" />
+                <span class="clim-seat-label">${f(this.E.HEATED_SEAT_REAR_RIGHT)}</span>
               </button>`:""}
           </div>
 
           <!-- Floating back button (positioned in outer container) -->
           <button class="clim-back-btn" @click=${this._close}>
-            <span class="icon">${c(l["chevron-left"])}</span>
+            <span class="icon">${h(c["chevron-left"])}</span>
           </button>
         </div>
 
@@ -2260,61 +2316,97 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
           </button>
 
           <!-- Interior · Exterior temps -->
-          ${C||v?o`
+          ${g||z?r`
             <div class="clim-temp-info">
-              ${C?o`Interior ${C}`:""}
-              ${C&&v?" \xB7 ":""}
-              ${v?o`Exterior ${v}`:""}
+              ${g?r`Interior ${g}`:""}
+              ${g&&z?" \xB7 ":""}
+              ${z?r`Exterior ${z}`:""}
             </div>`:""}
 
           <!-- Main control row: [Power/Off] [← 20.0° →] [Vent] -->
           <div class="clim-main-row">
             <button class="clim-icon-btn${e?" clim-active":""}"
               @click=${()=>this._svc("climate",e?"turn_off":"turn_on",this.E.CLIMATE)}>
-              <span class="icon">${c(l.power)}</span>
+              <span class="icon">${h(c.power)}</span>
               <span>${e?"On":"Off"}</span>
             </button>
 
             <div class="clim-temp-control">
               <button class="clim-arrow-btn" @click=${()=>this._adjustTemp(-1)}>
-                <span class="icon">${c(l["chevron-left"])}</span>
+                <span class="icon">${h(c["chevron-left"])}</span>
               </button>
-              <span class="clim-temp-value">${n}°</span>
+              <span class="clim-temp-value">${o}°</span>
               <button class="clim-arrow-btn" @click=${()=>this._adjustTemp(1)}>
-                <span class="icon">${c(l["chevron-right"])}</span>
+                <span class="icon">${h(c["chevron-right"])}</span>
               </button>
             </div>
 
-            <button class="clim-icon-btn${A?" clim-active":""}"
-              @click=${()=>this._svc("cover",A?"close_cover":"open_cover",this.E.WINDOWS_COVER)}>
-              <span class="icon">${c(A?l["vent-close"]:l["vent-open"])}</span>
-              <span>${A?"Close":"Vent"}</span>
-            </button>
+            ${Z?r`
+            <button class="clim-icon-btn${K?" clim-active":""}"
+              @click=${()=>this._toggleWindows(K)}>
+              <span class="icon">${h(K?c["vent-close"]:c["vent-open"])}</span>
+              <span>${K?"Close":"Vent"}</span>
+            </button>`:r`<span style="width:56px"></span>`}
           </div>
 
           <!-- Always-visible: Defrost Car -->
+          ${ot?r`
           <button class="clim-full-btn${p?" active":""}"
             @click=${()=>this._svc("switch",p?"turn_off":"turn_on",this.E.DEFROST_SWITCH)}>
-            <span class="icon">${c(l.defrost)}</span>
+            <span class="icon">${h(c.defrost)}</span>
             <span>Defrost Car</span>
-          </button>
+          </button>`:""}
 
           <!-- Expanded section — Camp Mode / Dog Mode + Cabin Overheat Protection -->
           <div class="clim-expanded-content">
 
-            <!-- Camp Mode + Dog Mode -->
-            ${_t||D?o`
+            <!-- Quick cool / heat, windshield heat, air purify (CarLinko) -->
+            ${Tt.length||lt.length?r`
               <div class="clim-list-group">
-                ${_t?o`
-                  <button class="clim-list-item${Z?" hot":""}"
-                    @click=${()=>this._togglePresetOrSwitch("camp",Z,this.E.CAMP_MODE)}>
-                    <img class="clim-list-img" src="${this._btnUrl(Z?"Tesla_Climate_Campmode_On.svg":"Tesla_Climate_Campmode_Off.svg")}" alt="" />
+                ${Tt.map(([b,V,ct])=>r`
+                  <button class="clim-list-item"
+                    @click=${()=>this._svc("button","press",b)}>
+                    <span class="icon clim-list-icon">${h(ct)}</span>
+                    <span class="clim-list-label">${V}</span>
+                  </button>`)}
+                ${lt.map(([b,V,ct])=>r`
+                  <button class="clim-list-item${this._val(b)==="on"?" hot":""}"
+                    @click=${()=>this._toggleSwitch(b)}>
+                    <span class="icon clim-list-icon">${h(ct)}</span>
+                    <span class="clim-list-label">${V}</span>
+                    <span class="clim-list-value">${this._fmt(b)}</span>
+                  </button>`)}
+              </div>
+              <div class="clim-separator"></div>
+            `:""}
+
+            <!-- Seat ventilation (CarLinko) -->
+            ${$t.length?r`
+              <div class="clim-list-group">
+                ${$t.map(([b,V])=>r`
+                  <button class="clim-list-item${this._val(b)&&this._val(b)!=="off"?" hot":""}"
+                    @click=${()=>this._cycleSelect(b)}>
+                    <span class="icon clim-list-icon">${h(c.fan)}</span>
+                    <span class="clim-list-label">${V}</span>
+                    <span class="clim-list-value">${this._fmt(b)}</span>
+                  </button>`)}
+              </div>
+              <div class="clim-separator"></div>
+            `:""}
+
+            <!-- Camp Mode + Dog Mode -->
+            ${kt||Vt?r`
+              <div class="clim-list-group">
+                ${kt?r`
+                  <button class="clim-list-item${N?" hot":""}"
+                    @click=${()=>this._togglePresetOrSwitch("camp",N,this.E.CAMP_MODE)}>
+                    <img class="clim-list-img" src="${this._btnUrl(N?"Tesla_Climate_Campmode_On.svg":"Tesla_Climate_Campmode_Off.svg")}" alt="" />
                     <span class="clim-list-label">Camp Mode</span>
                   </button>`:""}
-                ${D?o`
-                  <button class="clim-list-item${gt?" hot":""}"
-                    @click=${()=>this._togglePresetOrSwitch("dog",gt,this.E.DOG_MODE)}>
-                    <img class="clim-list-img" src="${this._btnUrl(gt?"Tesla_Climate_Dogmode_On.svg":"Tesla_Climate_Dogmode_Off.svg")}" alt="" />
+                ${Vt?r`
+                  <button class="clim-list-item${at?" hot":""}"
+                    @click=${()=>this._togglePresetOrSwitch("dog",at,this.E.DOG_MODE)}>
+                    <img class="clim-list-img" src="${this._btnUrl(at?"Tesla_Climate_Dogmode_On.svg":"Tesla_Climate_Dogmode_Off.svg")}" alt="" />
                     <span class="clim-list-label">Dog Mode</span>
                   </button>`:""}
               </div>
@@ -2322,13 +2414,13 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
             `:""}
 
             <!-- Cabin Overheat Protection -->
-            ${S?o`
+            ${At?r`
               <div class="clim-section-title">Cabin Overheat Protection</div>
               <div class="clim-list-group clim-segment-group clim-list-group--last">
-                ${["Off","No A/C","On"].map(B=>o`
-                  <button class="clim-segment-btn${Ot===B?" selected":""}"
-                    @click=${()=>this._setCabinOverheat(B)}>
-                    ${B}
+                ${["Off","No A/C","On"].map(b=>r`
+                  <button class="clim-segment-btn${wt===b?" selected":""}"
+                    @click=${()=>this._setCabinOverheat(b)}>
+                    ${b}
                   </button>`)}
               </div>
             `:""}
@@ -2337,14 +2429,14 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
 
         </div><!-- /clim-sheet -->
       </div>
-    `}};customElements.define("tesla-menu-climate",ie);var ae=class extends N{static get properties(){return{...super.properties,_showTyres:{state:!0}}}static get styles(){return[M,Fe]}constructor(){super(),this._showTyres=!1}_formatPressure(t,e,s){if(t==null||t==="unknown"||t==="unavailable")return"\u2014";let i=Number(t);return e==="psi"&&s==="bar"?i=i*.0689476:e==="bar"&&s==="psi"&&(i=i/.0689476),i.toFixed(1)}render(){if(!this.config||!this.hass)return o``;let e=this._val(this.E.DOOR_LOCK)==="locked",s=this._val(this.E.FRUNK_COVER)==="open"||this._val(this.E.FRUNK)==="on",i=this._val(this.E.TRUNK)==="on",a=this._val(this.E.PLUGGED_IN)==="on",n=this._val(this.E.CHARGER_DOOR)==="open"||a,p=this._val(this.E.WINDOWS_COVER)==="open",h=a?"controls-bg-charging.png":"controls-bg.png",_=!!this._state(this.E.TYRE_FL),u=this._attr(this.E.TYRE_FL,"unit_of_measurement")??"psi",m=this.tyreUnit??"psi",g=this._formatPressure(this._val(this.E.TYRE_FL),u,m),b=this._formatPressure(this._val(this.E.TYRE_FR),u,m),x=this._formatPressure(this._val(this.E.TYRE_RL),u,m),I=this._formatPressure(this._val(this.E.TYRE_RR),u,m);return o`
+    `}};customElements.define("jaecoo-menu-climate",me);var ge=class extends F{static get properties(){return{...super.properties,_showTyres:{state:!0}}}static get styles(){return[G,Je]}constructor(){super(),this._showTyres=!1}_formatPressure(t,e,s){if(t==null||t==="unknown"||t==="unavailable")return"\u2014";let i=Number(t);return e==="psi"&&s==="bar"?i=i*.0689476:e==="bar"&&s==="psi"&&(i=i/.0689476),i.toFixed(1)}render(){if(!this.config||!this.hass)return r``;let e=this._val(this.E.DOOR_LOCK)==="locked",s=this._val(this.E.FRUNK_COVER)==="open"||this._val(this.E.FRUNK)==="on",i=this._val(this.E.TRUNK)==="on"||this._val(this.E.OPEN_TRUNK)==="open",a=!!this._state(this.E.FRUNK_COVER),o=!!this._state(this.E.OPEN_TRUNK),p=!!(this._state(this.E.CHARGE_PORT_OPEN)||this._state(this.E.CHARGER_DOOR)),l=!!this._state(this.E.SUNROOF_COVER),m=this._val(this.E.SUNROOF_COVER)==="open",u=this._val(this.E.PLUGGED_IN)==="on",_=this._val(this.E.CHARGER_DOOR)==="open"||u,f=this._val(this.E.WINDOWS_COVER)==="open",y=!!(this._state(this.E.WINDOWS_COVER)||this._state(this.E.WINDOWS_VENT)),R=u?"controls-bg-charging.png":"controls-bg.png",T=this._isCarlinko?this._picture(this.E.IMAGE_TOP)??this.config.image_top??"":this._imgUrl(R),L=!!this._state(this.E.TYRE_FL),x=this._attr(this.E.TYRE_FL,"unit_of_measurement")??"psi",k=this.tyreUnit??"psi",w=this._formatPressure(this._val(this.E.TYRE_FL),x,k),D=this._formatPressure(this._val(this.E.TYRE_FR),x,k),g=this._formatPressure(this._val(this.E.TYRE_RL),x,k),E=this._formatPressure(this._val(this.E.TYRE_RR),x,k);return r`
       <div class="controls-menu${this.layout==="landscape"?" landscape":""}">
         <div class="panel-header">
           <button class="panel-back" @click=${this._close}>
-            <span class="icon">${c(l["chevron-left"])}</span>
+            <span class="icon">${h(c["chevron-left"])}</span>
           </button>
           <span class="panel-title">Controls</span>
-          ${_?o`
+          ${L?r`
             <button class="panel-header-btn${this._showTyres?" active":""}"
               @click=${()=>{this._showTyres=!this._showTyres}}>
               <img class="panel-header-img" src="${this._btnUrl("Tesla_TPMS.svg")}" alt="TPMS" />
@@ -2352,77 +2444,90 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
         </div>
         <div class="ctrl-car-area">
           <img class="ctrl-car-bg"
-            src="${this._imgUrl(h)}"
+            src="${T}"
             alt="Car top view" />
-          ${this._hasCustomOverlay?o`
-            <div style="${this._customOverlayStyleFor(h)}"></div>`:""}
+          ${this._hasCustomOverlay?r`
+            <div style="${this._customOverlayStyleFor(R)}"></div>`:""}
 
-          ${this._showTyres?o`
+          ${this._showTyres?r`
             <!-- Tyre pressure overlays -->
             <div class="tyre-label tyre-fl">
-              <span class="tyre-value">${g}</span>
-              <span class="tyre-unit">${m}</span>
+              <span class="tyre-value">${w}</span>
+              <span class="tyre-unit">${k}</span>
             </div>
             <div class="tyre-label tyre-fr">
-              <span class="tyre-value">${b}</span>
-              <span class="tyre-unit">${m}</span>
+              <span class="tyre-value">${D}</span>
+              <span class="tyre-unit">${k}</span>
             </div>
             <div class="tyre-label tyre-rl">
-              <span class="tyre-value">${x}</span>
-              <span class="tyre-unit">${m}</span>
+              <span class="tyre-value">${g}</span>
+              <span class="tyre-unit">${k}</span>
             </div>
             <div class="tyre-label tyre-rr">
-              <span class="tyre-value">${I}</span>
-              <span class="tyre-unit">${m}</span>
+              <span class="tyre-value">${E}</span>
+              <span class="tyre-unit">${k}</span>
             </div>
-          `:o`
+          `:r`
             <!-- Frunk — text only, top centre (open only, must be closed physically) -->
+            ${a?r`
             <button class="ctrl-zone ctrl-frunk"
               @click=${()=>this._activate(this.E.FRUNK_COVER)}
               ?disabled=${s}>
               ${"Open"}
-            </button>
+            </button>`:""}
             <!-- Lock — icon only, car centre -->
             <button class="ctrl-zone ctrl-lock"
               @click=${()=>this._svc("lock",e?"unlock":"lock",this.E.DOOR_LOCK)}>
-              <span class="icon">${c(e?l.lock:l.unlock)}</span>
+              <span class="icon">${h(e?c.lock:c.unlock)}</span>
             </button>
             <!-- Trunk — text only, bottom centre -->
+            ${o?r`
             <button class="ctrl-zone ctrl-trunk"
               @click=${()=>this._activate(this.E.OPEN_TRUNK)}>
               ${i?"Close":"Open"}
-            </button>
+            </button>`:""}
             <!-- Charge port — icon only, bottom left -->
-            <button class="ctrl-zone ctrl-port ${n?"port-open":""}"
-              @click=${()=>this._openClose(this.E.CHARGE_PORT_OPEN,this.E.CHARGE_PORT_CLOSE,n)}>
-              <span class="icon">${c(l["charge-bolt"])}</span>
-            </button>
+            ${p?r`
+            <button class="ctrl-zone ctrl-port ${_?"port-open":""}"
+              @click=${()=>this._openClose(this.E.CHARGE_PORT_OPEN,this.E.CHARGE_PORT_CLOSE,_)}>
+              <span class="icon">${h(c["charge-bolt"])}</span>
+            </button>`:""}
           `}
         </div>
         <div class="ctrl-actions">
+          ${this._state(this.E.FLASH_LIGHTS)?r`
           <button class="ctrl-action-btn"
             @click=${()=>this._svc("button","press",this.E.FLASH_LIGHTS)}>
-            <span class="icon">${c(l["flash-lights"])}</span>
-            <span>Flash</span>
-          </button>
+            <span class="icon">${h(c["flash-lights"])}</span>
+            <span>${this._isCarlinko?"Find":"Flash"}</span>
+          </button>`:""}
+          ${this._state(this.E.HORN)?r`
           <button class="ctrl-action-btn"
             @click=${()=>this._svc("button","press",this.E.HORN)}>
-            <span class="icon">${c(l.horn)}</span>
+            <span class="icon">${h(c.horn)}</span>
             <span>Horn</span>
-          </button>
+          </button>`:""}
+          ${this._state(this.E.REMOTE_START)?r`
           <button class="ctrl-action-btn"
             @click=${()=>this._svc("button","press",this.E.REMOTE_START)}>
-            <span class="icon">${c(l["remote-start"])}</span>
+            <span class="icon">${h(c["remote-start"])}</span>
             <span>Start</span>
-          </button>
+          </button>`:""}
+          ${l?r`
           <button class="ctrl-action-btn"
-            @click=${()=>this._svc("cover",p?"close_cover":"open_cover",this.E.WINDOWS_COVER)}>
-            <span class="icon">${c(p?l["vent-close"]:l["vent-open"])}</span>
-            <span>${p?"Close":"Vent"}</span>
-          </button>
+            @click=${()=>this._svc("cover",m?"close_cover":"open_cover",this.E.SUNROOF_COVER)}>
+            <span class="icon">${h(c["vent-open"])}</span>
+            <span>${m?"Close roof":"Sunroof"}</span>
+          </button>`:""}
+          ${y?r`
+          <button class="ctrl-action-btn"
+            @click=${()=>this._toggleWindows(f)}>
+            <span class="icon">${h(f?c["vent-close"]:c["vent-open"])}</span>
+            <span>${f?"Close":"Vent"}</span>
+          </button>`:""}
         </div>
       </div>
-    `}};customElements.define("tesla-menu-controls",ae);var re=class extends E{static get properties(){return{selected:{type:String},available:{type:Array},showBack:{type:Boolean},customH:{type:Number},customS:{type:Number},slideFrom:{type:String,reflect:!0,attribute:"slide-from"},_showCustom:{state:!0},_hue:{state:!0},_sat:{state:!0}}}static get styles(){return k`
+    `}};customElements.define("jaecoo-menu-controls",ge);var fe=class extends A{static get properties(){return{selected:{type:String},available:{type:Array},showBack:{type:Boolean},customH:{type:Number},customS:{type:Number},slideFrom:{type:String,reflect:!0,attribute:"slide-from"},_showCustom:{state:!0},_hue:{state:!0},_sat:{state:!0}}}static get styles(){return C`
       :host {
         display: block;
         font-family: system-ui, -apple-system, sans-serif;
@@ -2709,21 +2814,21 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
       }
 
       .picker-reset:hover { color: rgba(255,255,255,0.7); }
-    `}constructor(){super(),this.selected="neutral",this.available=["neutral"],this.showBack=!1,this.customH=0,this.customS=80,this._showCustom=!1,this._hue=0,this._sat=80}willUpdate(t){(t.has("selected")||t.has("customH")||t.has("customS"))&&this.selected==="custom"&&(this._showCustom=!0,this._hue=this.customH??0,this._sat=this.customS??80)}_selectColour(t){this._showCustom=!1,this.dispatchEvent(new CustomEvent("colour-changed",{detail:{dir:t.dir,name:t.name},bubbles:!0,composed:!0})),this._close()}_openCustom(){this._showCustom=!0}_onHueInput(t){this._hue=Number(t.target.value),this._fireCustomChange()}_onSatInput(t){this._sat=Number(t.target.value),this._fireCustomChange()}_fireCustomChange(){this.dispatchEvent(new CustomEvent("colour-changed",{detail:{dir:"custom",name:"Custom",h:this._hue,s:this._sat},bubbles:!0,composed:!0}))}_reset(){this._showCustom=!1,this.dispatchEvent(new CustomEvent("colour-changed",{detail:null,bubbles:!0,composed:!0})),this._close()}_back(){this.dispatchEvent(new CustomEvent("picker-back",{bubbles:!0,composed:!0}))}_close(){this.dispatchEvent(new CustomEvent("picker-close",{bubbles:!0,composed:!0}))}_onOverlayClick(t){t.target===t.currentTarget&&this._close()}render(){let t=this.available??["neutral"],e=this.selected==="custom";return o`
+    `}constructor(){super(),this.selected="neutral",this.available=["neutral"],this.showBack=!1,this.customH=0,this.customS=80,this._showCustom=!1,this._hue=0,this._sat=80}willUpdate(t){(t.has("selected")||t.has("customH")||t.has("customS"))&&this.selected==="custom"&&(this._showCustom=!0,this._hue=this.customH??0,this._sat=this.customS??80)}_selectColour(t){this._showCustom=!1,this.dispatchEvent(new CustomEvent("colour-changed",{detail:{dir:t.dir,name:t.name},bubbles:!0,composed:!0})),this._close()}_openCustom(){this._showCustom=!0}_onHueInput(t){this._hue=Number(t.target.value),this._fireCustomChange()}_onSatInput(t){this._sat=Number(t.target.value),this._fireCustomChange()}_fireCustomChange(){this.dispatchEvent(new CustomEvent("colour-changed",{detail:{dir:"custom",name:"Custom",h:this._hue,s:this._sat},bubbles:!0,composed:!0}))}_reset(){this._showCustom=!1,this.dispatchEvent(new CustomEvent("colour-changed",{detail:null,bubbles:!0,composed:!0})),this._close()}_back(){this.dispatchEvent(new CustomEvent("picker-back",{bubbles:!0,composed:!0}))}_close(){this.dispatchEvent(new CustomEvent("picker-close",{bubbles:!0,composed:!0}))}_onOverlayClick(t){t.target===t.currentTarget&&this._close()}render(){let t=this.available??["neutral"],e=this.selected==="custom";return r`
       <div class="picker-overlay" @click=${this._onOverlayClick}>
         <div class="picker-panel">
 
           <div class="picker-header">
-            ${this.showBack?o`
+            ${this.showBack?r`
               <button class="picker-back" @click=${this._back}>
-                <span class="icon">${c(l["chevron-left"])}</span>
+                <span class="icon">${h(c["chevron-left"])}</span>
               </button>`:""}
             <span class="picker-title">Colour</span>
             <button class="picker-close" @click=${this._close}>&times;</button>
           </div>
 
           <div class="picker-swatches">
-            ${Ct.map(s=>{let i=t.includes(s.dir),a=this.selected===s.dir;return o`
+            ${zt.map(s=>{let i=t.includes(s.dir),a=this.selected===s.dir;return r`
                 <button
                   class="swatch-btn${i?"":" unavailable"}"
                   @click=${i?()=>this._selectColour(s):null}>
@@ -2737,7 +2842,7 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
             </button>
           </div>
 
-          ${this._showCustom?o`
+          ${this._showCustom?r`
             <div class="picker-custom" style="--picker-hue:${this._hue}">
               <div class="slider-row">
                 <span class="slider-label">Hue</span>
@@ -2760,7 +2865,7 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
 
         </div>
       </div>
-    `}};customElements.define("tesla-colour-picker",re);var ne=class extends E{static get properties(){return{model:{type:String},variant:{type:String},slideFrom:{type:String,reflect:!0,attribute:"slide-from"}}}static get styles(){return k`
+    `}};customElements.define("jaecoo-colour-picker",fe);var be=class extends A{static get properties(){return{model:{type:String},variant:{type:String},slideFrom:{type:String,reflect:!0,attribute:"slide-from"}}}static get styles(){return C`
       :host {
         display: block;
         font-family: system-ui, -apple-system, sans-serif;
@@ -2976,32 +3081,32 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
         font-style: italic;
         margin-left: 8px;
       }
-    `}_select(t,e){this.dispatchEvent(new CustomEvent("model-changed",{detail:{model:t,variant:e},bubbles:!0,composed:!0}))}_back(){this.dispatchEvent(new CustomEvent("picker-back",{bubbles:!0,composed:!0}))}_close(){this.dispatchEvent(new CustomEvent("picker-close",{bubbles:!0,composed:!0}))}_onOverlayClick(t){t.target===t.currentTarget&&this._close()}render(){return o`
+    `}_select(t,e){this.dispatchEvent(new CustomEvent("model-changed",{detail:{model:t,variant:e},bubbles:!0,composed:!0}))}_back(){this.dispatchEvent(new CustomEvent("picker-back",{bubbles:!0,composed:!0}))}_close(){this.dispatchEvent(new CustomEvent("picker-close",{bubbles:!0,composed:!0}))}_onOverlayClick(t){t.target===t.currentTarget&&this._close()}render(){return r`
       <div class="picker-overlay" @click=${this._onOverlayClick}>
         <div class="picker-panel">
           <div class="picker-header">
             <button class="picker-back" @click=${this._back}>
-              <span class="icon">${c(l["chevron-left"])}</span>
+              <span class="icon">${h(c["chevron-left"])}</span>
             </button>
             <span class="picker-title">Model</span>
             <button class="picker-close" @click=${this._close}>&times;</button>
           </div>
           <div class="model-list">
-            ${L.map(t=>o`
+            ${P.map(t=>r`
               <div class="model-section">
                 <div class="model-section-title">${t.name}</div>
                 <div class="model-group">
-                  ${t.variants.map(e=>{let s=e.id===this.variant,a=e.colours.length>1||e.colours[0]!=="neutral"||s;return o`
+                  ${t.variants.map(e=>{let s=e.id===this.variant,a=e.colours.length>1||e.colours[0]!=="neutral"||s;return r`
                       <button class="model-item${s?" selected":""}${a?"":" unavailable"}"
                         @click=${a?()=>this._select(t.id,e.id):null}>
                         <span class="model-icon">
-                          <span class="icon">${c(l.car)}</span>
+                          <span class="icon">${h(c.car)}</span>
                         </span>
                         <span class="model-label">${e.label}</span>
-                        ${a?"":o`<span class="model-no-images">no images</span>`}
-                        ${s?o`
+                        ${a?"":r`<span class="model-no-images">no images</span>`}
+                        ${s?r`
                           <span class="model-check">
-                            <span class="icon">${c(l.check)}</span>
+                            <span class="icon">${h(c.check)}</span>
                           </span>`:""}
                       </button>`})}
                 </div>
@@ -3010,77 +3115,84 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
           </div>
         </div>
       </div>
-    `}};customElements.define("tesla-model-picker",ne);var Os=["chargeport","frunk","fr","ff","nr","nf"],je={"nf+nr":"nf-nr-combined-overlay.png","ff+fr":"ff-fr-combined-overlay.png"},Qe="all-doors-overlay.png",We="oncharge-all-doors-overlay.png",Ms=["fr"],Ls=["frunk","nf","nr"],Ye={"nf+nr":"oncharge-nf-nr-combined-overlay.png"},Ns="tesla-card-colour-",Is="tesla-card-model-",Ds="tesla-card-layout-",Hs="tesla-card-size-",Us="tesla-card-tyre-unit-",Ke=["small","medium","large"],qe=["psi","bar"];function St(r,t,e){let s=Number(r);return isFinite(s)?Math.max(t,Math.min(e,Math.round(s))):null}var z=class z extends E{static get properties(){return{hass:{type:Object},config:{type:Object},_menu:{state:!0},_imageError:{state:!0},_settingsView:{state:!0},_modelOverride:{state:!0},_colourOverride:{state:!0},_layout:{state:!0},_settingsSlide:{state:!0},_cardSize:{state:!0},_tyreUnit:{state:!0}}}static get styles(){return[M,Be]}get E(){return Rt(this.config?.integration)}constructor(){super(),this._menu=null,this._imageError=!1,this._settingsView=null,this._modelOverride=null,this._colourOverride=null,this._layout="portrait",this._settingsSlide=null,this._cardSize="medium",this._tyreUnit="psi",this._baseConfig=null,this._combinedAvail={},this._onchargeAvail=!1,this._cableAvail=!1,this._toggleCharger=()=>this._toggle("charger"),this._toggleClimate=()=>this._toggle("climate"),this._toggleControls=()=>this._toggle("controls"),this._handleCloseMenu=()=>{this._menu=null},this._handleColourChanged=t=>this._onColourChanged(t),this._handleModelChanged=t=>this._onModelChanged(t),this._handleModelBack=()=>{this._settingsSlide=null,this._settingsView="main"},this._handleColourBack=()=>{this._settingsSlide="left",this._settingsView="model"},this._handlePickerClose=()=>{this._settingsView=null,this._settingsSlide=null}}setConfig(t){if(!t.car_name&&t.integration!=="entities")throw new Error("car_name is required");let e=/^[a-zA-Z0-9/_.\-]+$/,s=/^[a-zA-Z0-9._\-]+$/;if(t.image_path&&!e.test(t.image_path))throw new Error("image_path contains invalid characters");if(t.car_model&&!s.test(t.car_model))throw new Error("car_model contains invalid characters");if(t.car_variant&&!s.test(t.car_variant))throw new Error("car_variant contains invalid characters");if(t.car_color&&!s.test(t.car_color))throw new Error("car_color contains invalid characters");this._baseConfig={car_model:"3",car_variant:"3.1",car_color:"red_multi_coat",image_path:"/hacsfiles/homeassistant-fe-tesla",show_speed:!0,...t},this._applyConfig()}_applyConfig(){let t={...this._baseConfig};this._modelOverride&&(t.car_model=this._modelOverride.model,t.car_variant=this._modelOverride.variant);let e=this._colourOverride;e&&(t.car_color=e.dir==="custom"?"neutral":e.dir),this.config=t,this._preloadCombinedOverlays()}_preloadCombinedOverlays(){for(let[a,n]of Object.entries(je)){let p=new Image;p.onload=()=>{this._combinedAvail[a]=!0,this.requestUpdate()},p.onerror=()=>{this._combinedAvail[a]=!1},p.src=this._overlayUrl(n)}let t=new Image;t.onload=()=>{this._onchargeAvail=!0,this.requestUpdate()},t.onerror=()=>{this._onchargeAvail=!1},t.src=this._overlayUrl("oncharge-base.png");let e=new Image;e.onload=()=>{this._cableAvail=!0,this.requestUpdate()},e.onerror=()=>{this._cableAvail=!1},e.src=this._overlayUrl("oncharge-cable-overlay.png");for(let[a,n]of Object.entries(Ye)){let p=new Image;p.onload=()=>{this._combinedAvail["oc_"+a]=!0,this.requestUpdate()},p.onerror=()=>{this._combinedAvail["oc_"+a]=!1},p.src=this._overlayUrl(n)}let s=new Image;s.onload=()=>{this._combinedAvail.all=!0,this.requestUpdate()},s.onerror=()=>{this._combinedAvail.all=!1},s.src=this._overlayUrl(Qe);let i=new Image;i.onload=()=>{this._combinedAvail.oc_all=!0,this.requestUpdate()},i.onerror=()=>{this._combinedAvail.oc_all=!1},i.src=this._overlayUrl(We)}static getConfigElement(){return document.createElement("tesla-card-editor")}static getStubConfig(){return{car_name:"",car_model:"3",car_variant:"3.1",car_color:"red_multi_coat",image_path:"/hacsfiles/homeassistant-fe-tesla"}}connectedCallback(){super.connectedCallback(),this._baseConfig&&(this._restoreModel(),this._restoreColour()),this._restoreLayout(),this._restoreSize(),this._restoreTyreUnit()}_colourLsKey(){return Ns+(this._baseConfig?.car_name??"default")}_restoreColour(){try{let t=localStorage.getItem(this._colourLsKey());if(!t)return;try{let e=JSON.parse(t);if(e&&typeof e.dir=="string")if(e.dir==="custom"){let s=St(e.h,0,360),i=St(e.s,0,100);this._colourOverride=s!==null&&i!==null?{dir:"custom",h:s,s:i}:null}else this._colourOverride={dir:e.dir}}catch{this._colourOverride={dir:t}}this._applyConfig()}catch{}}_persistColour(){try{this._colourOverride?localStorage.setItem(this._colourLsKey(),JSON.stringify(this._colourOverride)):localStorage.removeItem(this._colourLsKey())}catch{}}_onColourChanged(t){let e=t.detail;if(!e)this._colourOverride=null;else if(e.dir==="custom"){let s=St(e.h,0,360),i=St(e.s,0,100);s!==null&&i!==null&&(this._colourOverride={dir:"custom",h:s,s:i})}else this._colourOverride={dir:e.dir};this._applyConfig(),this._persistColour(),this._imageError=!1}_modelLsKey(){return Is+(this._baseConfig?.car_name??"default")}_restoreModel(){try{let t=localStorage.getItem(this._modelLsKey());if(t){let e=JSON.parse(t);e&&typeof e.model=="string"&&typeof e.variant=="string"&&(this._modelOverride={model:e.model,variant:e.variant}),this._applyConfig()}}catch{}}_persistModel(){try{this._modelOverride?localStorage.setItem(this._modelLsKey(),JSON.stringify(this._modelOverride)):localStorage.removeItem(this._modelLsKey())}catch{}}_onModelChanged(t){let{model:e,variant:s}=t.detail;this._modelOverride={model:e,variant:s};let i=this._colourOverride;i&&i.dir!=="custom"&&(Jt(e,s).includes(i.dir)||(this._colourOverride=null,this._persistColour())),this._applyConfig(),this._persistModel(),this._imageError=!1,this._settingsSlide="right",this._settingsView="colour"}_layoutLsKey(){return Ds+(this._baseConfig?.car_name??"default")}_restoreLayout(){try{localStorage.getItem(this._layoutLsKey())==="landscape"&&(this._layout="landscape")}catch{}}_persistLayout(){try{localStorage.setItem(this._layoutLsKey(),this._layout)}catch{}}_toggleLayout(){this._layout=this._layout==="landscape"?"portrait":"landscape",this._persistLayout()}_sizeLsKey(){return Hs+(this._baseConfig?.car_name??"default")}_restoreSize(){try{let t=localStorage.getItem(this._sizeLsKey());t&&Ke.includes(t)&&(this._cardSize=t)}catch{}}_persistSize(){try{localStorage.setItem(this._sizeLsKey(),this._cardSize)}catch{}}_setCardSize(t){this._cardSize!==t&&(this._cardSize=t,this._persistSize())}_tyreUnitLsKey(){return Us+(this._baseConfig?.car_name??"default")}_restoreTyreUnit(){try{let t=localStorage.getItem(this._tyreUnitLsKey());t&&qe.includes(t)&&(this._tyreUnit=t)}catch{}}_persistTyreUnit(){try{localStorage.setItem(this._tyreUnitLsKey(),this._tyreUnit)}catch{}}_setTyreUnit(t){this._tyreUnit!==t&&(this._tyreUnit=t,this._persistTyreUnit())}_imgUrl(t){let{image_path:e,car_model:s,car_variant:i,car_color:a}=this.config;return`${e}/${s}/${i}/${a}/${t}?v=${z._imgVer}`}_overlayUrl(t){let{image_path:e,car_model:s,car_variant:i,car_color:a}=this.config;return`${e}/${s}/${i}/${a}/overlays/${t}?v=${z._imgVer}`}_btnUrl(t){return`${this.config.image_path}/buttons/${t}?v=${z._imgVer}`}get _customColour(){let t=this._colourOverride;return!t||t.dir!=="custom"?null:{h:t.h,s:t.s}}get _hasCustomOverlay(){let t=this._customColour;return!!t&&t.s>0}_maskUrl(t){let{image_path:e,car_model:s,car_variant:i}=this.config,a=t.replace(".png","-mask.png");return`${e}/${s}/${i}/neutral/${a}?v=${z._imgVer}`}_customOverlayStyleFor(t){let e=this._customColour;if(!e||e.s===0)return"";let s=Math.round(e.h),i=Math.round(e.s),a=this._maskUrl(t);return`position:absolute;inset:0;pointer-events:none;background:hsl(${s},${i}%,50%);mix-blend-mode:color;-webkit-mask-image:url(${a});mask-image:url(${a});-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;`}_eid(t){let e=W(t,this.config.car_name,this.config.entity_overrides);if(e&&!this.hass?.states[e]&&Y[t]){let s=W(Y[t],this.config.car_name,this.config.entity_overrides);if(s&&this.hass?.states[s])return s}return e}_state(t){let e=this._eid(t);return e?this.hass?.states[e]:void 0}_val(t){return this._state(t)?.state}_attr(t,e){return this._state(t)?.attributes?.[e]}async _svc(t,e,s,i={}){if(s)try{await this.hass.callService(t,e,{entity_id:this._eid(s),...i})}catch(a){console.error("[tesla-card] service error",t,e,a)}}async _forceRefresh(){this._state(this.E.FORCE_UPDATE)&&await this._svc("button","press",this.E.FORCE_UPDATE);let e=[this.E.BATTERY_LEVEL,this.E.BATTERY_RANGE,this.E.CHARGING_STATE,this.E.CHARGE_RATE,this.E.CHARGING,this.E.PLUGGED_IN,this.E.ONLINE,this.E.CLIMATE,this.E.DOOR_LOCK,this.E.TEMPERATURE_INSIDE,this.E.TEMPERATURE_OUTSIDE,this.E.SENTRY_MODE,this.E.FRUNK_COVER,this.E.OPEN_TRUNK,this.E.CHARGER_DOOR,this.E.WINDOWS_COVER,this.E.CHARGE_LIMIT_NUMBER,this.E.CHARGING_AMPS_NUMBER,this.E.DOOR_DRIVER_FRONT,this.E.DOOR_DRIVER_REAR,this.E.DOOR_PASSENGER_FRONT,this.E.DOOR_PASSENGER_REAR,this.E.TIME_TO_FULL_CHARGE,this.E.SPEED,this.E.DISTANCE_TO_ARRIVAL,this.E.TIME_TO_ARRIVAL].map(s=>this._eid(s)).filter(s=>s&&this.hass?.states[s]);setTimeout(async()=>{try{await this.hass.callService("homeassistant","update_entity",{entity_id:e})}catch(s){console.error("[tesla-card] refresh error",s)}},5e3)}_toggle(t){this._menu=this._menu===t?null:t}_openSettings(){this._settingsView="main",this._settingsSlide=null}_openModelPicker(){this._settingsView="model",this._settingsSlide=null}_closeSettings(){this._settingsView=null,this._settingsSlide=null}_onSettingsOverlayClick(t){t.target===t.currentTarget&&this._closeSettings()}render(){if(!this.config||!this.hass)return o``;let t=this._menu,e=this._colourOverride,s=this._val(this.E.BATTERY_LEVEL),i=s!=null?Math.round(Number(s)):null,a=i!=null?Math.max(0,Math.min(100,i)):0,n=a>=50?"high":a>=20?"medium":"low",p=this._val(this.E.BATTERY_RANGE),h=this._attr(this.E.BATTERY_RANGE,"unit_of_measurement")??"km",_=p!=null?`${Math.round(Number(p))} ${h}`:null,u=this._val(this.E.CHARGING)==="on",m=u?"charging":n,g=this._val(this.E.ONLINE)==="on",b=this._state(this.E.ONLINE),x=this._val(this.E.TIME_TO_FULL_CHARGE),I=(()=>{if(!u||!x||x==="unavailable")return null;let d=new Date(x);if(isNaN(d))return null;let w=d-Date.now();if(w<=0)return"Complete";let V=Math.floor(w/36e5),ve=Math.round(w%36e5/6e4);return V>=24?"24+ hours remaining to charge limit":V>0?`${V}h ${ve}m remaining to charge limit`:`${ve}m remaining to charge limit`})(),pt=this._val(this.E.FRUNK_COVER)==="open"||this._val(this.E.FRUNK)==="on",Tt=this._val(this.E.OPEN_TRUNK)==="open"||this._val(this.E.TRUNK)==="on",C=this._val(this.E.PLUGGED_IN)==="on",mt=this._val(this.E.CHARGER_DOOR)==="open"||C,y=this.E.DOOR_DRIVER_FRONT?{nf:this._val(this.E.DOOR_DRIVER_FRONT)==="on",nr:this._val(this.E.DOOR_DRIVER_REAR)==="on",ff:this._val(this.E.DOOR_PASSENGER_FRONT)==="on",fr:this._val(this.E.DOOR_PASSENGER_REAR)==="on"}:{nf:this._attr(this.E.DOORS,"driver_front")===!0,nr:this._attr(this.E.DOORS,"driver_rear")===!0,ff:this._attr(this.E.DOORS,"passenger_front")===!0,fr:this._attr(this.E.DOORS,"passenger_rear")===!0},v=C&&this._onchargeAvail,A=v?"oncharge-":"",q=`${A}base.png`,ut=v?Ls:Os,_t=v?Ms:[],D={frunk:pt,nf:y.nf,nr:y.nr,fr:y.fr};v||(D.chargeport=mt,D.ff=y.ff);let Z=v?"oc_all":"all",S=y.nf&&y.nr&&(v||y.ff)&&(v||y.fr)&&this._combinedAvail[Z],ft=v?"oc_nf+nr":"nf+nr",le=!S&&y.nf&&y.nr&&this._combinedAvail[ft],Ot=!S&&!v&&y.ff&&y.fr&&this._combinedAvail["ff+fr"],X=v?Ye:je,F=[];for(let d of _t)S&&(d==="fr"||d==="ff"||d==="nf"||d==="nr")||D[d]&&F.push(`${A}${d}-overlay.png`);let Mt=Tt?`${A}trunk-overlay.png`:null,H=[],Lt=!1,J=!1,B=!1;for(let d of ut)if(D[d]){if(S&&(d==="nf"||d==="nr"||d==="ff"||d==="fr")){if(B)continue;B=!0;continue}if((d==="nf"||d==="nr")&&le){Lt&&H.push(X["nf+nr"]),Lt=!0;continue}if((d==="ff"||d==="fr")&&Ot){J&&H.push(X["ff+fr"]),J=!0;continue}H.push(`${A}${d}-overlay.png`)}if(S){let d=v?We:Qe;H.push(d)}let Nt=this._val(this.E.DOOR_LOCK),bt=Nt==="locked",Ze=this._val(this.E.CHARGING_STATE)??"\u2014",ce=this._val(this.E.CHARGE_RATE),Xe=this._attr(this.E.CHARGE_RATE,"unit_of_measurement")??"kW",It=this._val(this.E.CLIMATE),Dt=It!=null&&It!=="off"&&It!=="unavailable",he=this._attr(this.E.CLIMATE,"temperature"),Je=this._attr(this.E.CLIMATE,"temperature_unit")??"\xB0C",ts=he!=null?Number(he).toFixed(1):"\u2014",de=this._val(this.E.SPEED)??this._attr(this.E.LOCATION,"speed"),pe=de!=null?Number(de):0,es=this._attr(this.E.SPEED,"unit_of_measurement")??"km/h",vt=g&&pe>0,me=!g&&b?"Asleep":u?"Charging":vt?`${Math.round(pe)} ${es}`:this.E.PARKING_BRAKE&&this._val(this.E.PARKING_BRAKE)==="on"||g?"Parked":null,Ht=this._val(this.E.DISTANCE_TO_ARRIVAL),Ut=this._val(this.E.TIME_TO_ARRIVAL),Ps=this._attr(this.E.ROUTE,"destination"),ue=vt&&Ht!=null&&Ht!=="unknown"&&Ut!=null&&Ut!=="unavailable"?(()=>{let d=`${Number(Ht).toFixed(1)} ${this._attr(this.E.DISTANCE_TO_ARRIVAL,"unit_of_measurement")??"km"} away`,w=new Date(Ut),V=isNaN(w)?"":w.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});return V?`${d} \xB7 ${V} arrival`:d})():null,tt=this._val(this.E.LOCATION),_e=tt&&tt!=="unknown"&&tt!=="unavailable",ss=_e?tt.charAt(0).toUpperCase()+tt.slice(1).replace(/_/g," "):null,is=ce!=null?Number(ce).toFixed(1):"\u2014",as=u?`Charging \xB7 ${is} ${Xe}`:C?"Plugged in":Ze,rs=Dt?`${ts}${Je}`:"Off",ge=Nt?bt?"Locked":"Unlocked":null,Pt=L.find(d=>d.id===this.config.car_model),fe=Pt?.variants.find(d=>d.id===this.config.car_variant),ns=Pt&&fe?`${Pt.name} \xB7 ${fe.label}`:this.config.car_model,be=e?.dir==="custom",os=be?null:Ct.find(d=>d.dir===this.config.car_color),ls=be?"Custom":os?.name??this.config.car_color,cs=Jt(this.config.car_model,this.config.car_variant),hs=this._layout==="landscape",ds=this._cardSize!=="medium"?`size-${this._cardSize}`:"";return o`
-      <ha-card class="${hs?"landscape":""} ${ds}">
+    `}};customElements.define("jaecoo-model-picker",be);var zs=["chargeport","frunk","fr","ff","nr","nf"],rs={"nf+nr":"nf-nr-combined-overlay.png","ff+fr":"ff-fr-combined-overlay.png"},os="all-doors-overlay.png",ls="oncharge-all-doors-overlay.png",Bs=["fr"],Vs=["frunk","nf","nr"],cs={"nf+nr":"oncharge-nf-nr-combined-overlay.png"},js="jaecoo-card-colour-",Ws="jaecoo-card-model-",Qs="jaecoo-card-layout-",Ys="jaecoo-card-size-",Ks="jaecoo-card-tyre-unit-",hs=["small","medium","large"],ds=["psi","bar"];function Bt(n,t,e){let s=Number(n);return isFinite(s)?Math.max(t,Math.min(e,Math.round(s))):null}var Y=class Y extends A{static get properties(){return{hass:{type:Object},config:{type:Object},_menu:{state:!0},_imageError:{state:!0},_settingsView:{state:!0},_modelOverride:{state:!0},_colourOverride:{state:!0},_layout:{state:!0},_settingsSlide:{state:!0},_cardSize:{state:!0},_tyreUnit:{state:!0}}}static get styles(){return[G,ts]}get E(){return Pt(this.config?.integration)}constructor(){super(),this._menu=null,this._imageError=!1,this._settingsView=null,this._modelOverride=null,this._colourOverride=null,this._layout="portrait",this._settingsSlide=null,this._cardSize="medium",this._tyreUnit="psi",this._baseConfig=null,this._combinedAvail={},this._onchargeAvail=!1,this._cableAvail=!1,this._toggleCharger=()=>this._toggle("charger"),this._toggleClimate=()=>this._toggle("climate"),this._toggleControls=()=>this._toggle("controls"),this._handleCloseMenu=()=>{this._menu=null},this._handleColourChanged=t=>this._onColourChanged(t),this._handleModelChanged=t=>this._onModelChanged(t),this._handleModelBack=()=>{this._settingsSlide=null,this._settingsView="main"},this._handleColourBack=()=>{this._settingsSlide="left",this._settingsView="model"},this._handlePickerClose=()=>{this._settingsView=null,this._settingsSlide=null}}setConfig(t){let e=t.integration??"carlinko";if(!t.car_name&&e!=="entities"&&e!=="carlinko")throw new Error("car_name is required");let s=/^[a-zA-Z0-9/_.\-]+$/,i=/^[a-zA-Z0-9._\-]+$/;if(t.image_path&&!s.test(t.image_path))throw new Error("image_path contains invalid characters");if(t.car_model&&!i.test(t.car_model))throw new Error("car_model contains invalid characters");if(t.car_variant&&!i.test(t.car_variant))throw new Error("car_variant contains invalid characters");if(t.car_color&&!i.test(t.car_color))throw new Error("car_color contains invalid characters");this._baseConfig={car_model:"3",car_variant:"3.1",car_color:"red_multi_coat",image_path:"/hacsfiles/homeassistant-fe-jaecoo",show_speed:!0,...t,integration:e},this._applyConfig()}_applyConfig(){let t={...this._baseConfig};this._modelOverride&&(t.car_model=this._modelOverride.model,t.car_variant=this._modelOverride.variant);let e=this._colourOverride;e&&(t.car_color=e.dir==="custom"?"neutral":e.dir),this.config=t,this._preloadCombinedOverlays()}_preloadCombinedOverlays(){if(this._isCarlinko)return;for(let[a,o]of Object.entries(rs)){let p=new Image;p.onload=()=>{this._combinedAvail[a]=!0,this.requestUpdate()},p.onerror=()=>{this._combinedAvail[a]=!1},p.src=this._overlayUrl(o)}let t=new Image;t.onload=()=>{this._onchargeAvail=!0,this.requestUpdate()},t.onerror=()=>{this._onchargeAvail=!1},t.src=this._overlayUrl("oncharge-base.png");let e=new Image;e.onload=()=>{this._cableAvail=!0,this.requestUpdate()},e.onerror=()=>{this._cableAvail=!1},e.src=this._overlayUrl("oncharge-cable-overlay.png");for(let[a,o]of Object.entries(cs)){let p=new Image;p.onload=()=>{this._combinedAvail["oc_"+a]=!0,this.requestUpdate()},p.onerror=()=>{this._combinedAvail["oc_"+a]=!1},p.src=this._overlayUrl(o)}let s=new Image;s.onload=()=>{this._combinedAvail.all=!0,this.requestUpdate()},s.onerror=()=>{this._combinedAvail.all=!1},s.src=this._overlayUrl(os);let i=new Image;i.onload=()=>{this._combinedAvail.oc_all=!0,this.requestUpdate()},i.onerror=()=>{this._combinedAvail.oc_all=!1},i.src=this._overlayUrl(ls)}static getConfigElement(){return document.createElement("jaecoo-card-editor")}static getStubConfig(){return{integration:"carlinko"}}connectedCallback(){super.connectedCallback(),this._baseConfig&&(this._restoreModel(),this._restoreColour()),this._restoreLayout(),this._restoreSize(),this._restoreTyreUnit()}_storageId(){return this._baseConfig?.car_name||this._baseConfig?.device_id||"default"}_colourLsKey(){return js+this._storageId()}_restoreColour(){try{let t=localStorage.getItem(this._colourLsKey());if(!t)return;try{let e=JSON.parse(t);if(e&&typeof e.dir=="string")if(e.dir==="custom"){let s=Bt(e.h,0,360),i=Bt(e.s,0,100);this._colourOverride=s!==null&&i!==null?{dir:"custom",h:s,s:i}:null}else this._colourOverride={dir:e.dir}}catch{this._colourOverride={dir:t}}this._applyConfig()}catch{}}_persistColour(){try{this._colourOverride?localStorage.setItem(this._colourLsKey(),JSON.stringify(this._colourOverride)):localStorage.removeItem(this._colourLsKey())}catch{}}_onColourChanged(t){let e=t.detail;if(!e)this._colourOverride=null;else if(e.dir==="custom"){let s=Bt(e.h,0,360),i=Bt(e.s,0,100);s!==null&&i!==null&&(this._colourOverride={dir:"custom",h:s,s:i})}else this._colourOverride={dir:e.dir};this._applyConfig(),this._persistColour(),this._imageError=!1}_modelLsKey(){return Ws+this._storageId()}_restoreModel(){try{let t=localStorage.getItem(this._modelLsKey());if(t){let e=JSON.parse(t);e&&typeof e.model=="string"&&typeof e.variant=="string"&&(this._modelOverride={model:e.model,variant:e.variant}),this._applyConfig()}}catch{}}_persistModel(){try{this._modelOverride?localStorage.setItem(this._modelLsKey(),JSON.stringify(this._modelOverride)):localStorage.removeItem(this._modelLsKey())}catch{}}_onModelChanged(t){let{model:e,variant:s}=t.detail;this._modelOverride={model:e,variant:s};let i=this._colourOverride;i&&i.dir!=="custom"&&(de(e,s).includes(i.dir)||(this._colourOverride=null,this._persistColour())),this._applyConfig(),this._persistModel(),this._imageError=!1,this._settingsSlide="right",this._settingsView="colour"}_layoutLsKey(){return Qs+this._storageId()}_restoreLayout(){try{localStorage.getItem(this._layoutLsKey())==="landscape"&&(this._layout="landscape")}catch{}}_persistLayout(){try{localStorage.setItem(this._layoutLsKey(),this._layout)}catch{}}_toggleLayout(){this._layout=this._layout==="landscape"?"portrait":"landscape",this._persistLayout()}_sizeLsKey(){return Ys+this._storageId()}_restoreSize(){try{let t=localStorage.getItem(this._sizeLsKey());t&&hs.includes(t)&&(this._cardSize=t)}catch{}}_persistSize(){try{localStorage.setItem(this._sizeLsKey(),this._cardSize)}catch{}}_setCardSize(t){this._cardSize!==t&&(this._cardSize=t,this._persistSize())}_tyreUnitLsKey(){return Ks+this._storageId()}_restoreTyreUnit(){try{let t=localStorage.getItem(this._tyreUnitLsKey());t&&ds.includes(t)&&(this._tyreUnit=t)}catch{}}_persistTyreUnit(){try{localStorage.setItem(this._tyreUnitLsKey(),this._tyreUnit)}catch{}}_setTyreUnit(t){this._tyreUnit!==t&&(this._tyreUnit=t,this._persistTyreUnit())}_imgUrl(t){let{image_path:e,car_model:s,car_variant:i,car_color:a}=this.config;return`${e}/${s}/${i}/${a}/${t}?v=${Y._imgVer}`}_overlayUrl(t){let{image_path:e,car_model:s,car_variant:i,car_color:a}=this.config;return`${e}/${s}/${i}/${a}/overlays/${t}?v=${Y._imgVer}`}_btnUrl(t){return`${this.config.image_path}/buttons/${t}?v=${Y._imgVer}`}get _customColour(){if(this._isCarlinko)return null;let t=this._colourOverride;return!t||t.dir!=="custom"?null:{h:t.h,s:t.s}}get _hasCustomOverlay(){let t=this._customColour;return!!t&&t.s>0}_maskUrl(t){let{image_path:e,car_model:s,car_variant:i}=this.config,a=t.replace(".png","-mask.png");return`${e}/${s}/${i}/neutral/${a}?v=${Y._imgVer}`}_customOverlayStyleFor(t){let e=this._customColour;if(!e||e.s===0)return"";let s=Math.round(e.h),i=Math.round(e.s),a=this._maskUrl(t);return`position:absolute;inset:0;pointer-events:none;background:hsl(${s},${i}%,50%);mix-blend-mode:color;-webkit-mask-image:url(${a});mask-image:url(${a});-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;`}get _isCarlinko(){return this.config?.integration==="carlinko"}_eid(t){if(Ut(t))return Gt(t,this.hass,this.config.device_id,this.config.entity_overrides);let e=st(t,this.config.car_name,this.config.entity_overrides);if(e&&!this.hass?.states[e]&&it[t]){let s=st(it[t],this.config.car_name,this.config.entity_overrides);if(s&&this.hass?.states[s])return s}return e}_state(t){let e=this._eid(t);return e?this.hass?.states[e]:void 0}_val(t){return this._state(t)?.state}_attr(t,e){return this._state(t)?.attributes?.[e]}_fmt(t){let e=this._state(t);if(e)try{return this.hass.formatEntityState?.(e)??e.state}catch{return e.state}}_picture(t){return this._attr(t,"entity_picture")??null}get _displayName(){if(this.config.name)return this.config.name;if(this._isCarlinko){let t=this.hass?.entities?.[this._eid(this.E.BATTERY_LEVEL)]?.device_id,e=t?this.hass.devices?.[t]:null;return e?e.name_by_user||e.name:"Jaecoo"}return this.config.car_name}async _svc(t,e,s,i={}){if(s)try{await this.hass.callService(t,e,{entity_id:this._eid(s),...i})}catch(a){console.error("[jaecoo-card] service error",t,e,a)}}async _forceRefresh(){this._state(this.E.FORCE_UPDATE)&&await this._svc("button","press",this.E.FORCE_UPDATE);let e=[this.E.BATTERY_LEVEL,this.E.BATTERY_RANGE,this.E.CHARGING_STATE,this.E.CHARGE_RATE,this.E.CHARGING,this.E.PLUGGED_IN,this.E.ONLINE,this.E.CLIMATE,this.E.DOOR_LOCK,this.E.TEMPERATURE_INSIDE,this.E.TEMPERATURE_OUTSIDE,this.E.SENTRY_MODE,this.E.FRUNK_COVER,this.E.OPEN_TRUNK,this.E.CHARGER_DOOR,this.E.WINDOWS_COVER,this.E.CHARGE_LIMIT_NUMBER,this.E.CHARGING_AMPS_NUMBER,this.E.DOOR_DRIVER_FRONT,this.E.DOOR_DRIVER_REAR,this.E.DOOR_PASSENGER_FRONT,this.E.DOOR_PASSENGER_REAR,this.E.TIME_TO_FULL_CHARGE,this.E.SPEED,this.E.DISTANCE_TO_ARRIVAL,this.E.TIME_TO_ARRIVAL].map(s=>this._eid(s)).filter(s=>s&&this.hass?.states[s]);setTimeout(async()=>{try{await this.hass.callService("homeassistant","update_entity",{entity_id:e})}catch(s){console.error("[jaecoo-card] refresh error",s)}},5e3)}_toggle(t){this._menu=this._menu===t?null:t}_openSettings(){this._settingsView="main",this._settingsSlide=null}_openModelPicker(){this._settingsView="model",this._settingsSlide=null}_closeSettings(){this._settingsView=null,this._settingsSlide=null}_onSettingsOverlayClick(t){t.target===t.currentTarget&&this._closeSettings()}render(){if(!this.config||!this.hass)return r``;let t=this._menu,e=this._colourOverride,s=this._val(this.E.BATTERY_LEVEL),i=s!=null?Math.round(Number(s)):null,a=i!=null?Math.max(0,Math.min(100,i)):0,o=a>=50?"high":a>=20?"medium":"low",p=this._val(this.E.BATTERY_RANGE),l=this._attr(this.E.BATTERY_RANGE,"unit_of_measurement")??"km",m=p!=null?`${Math.round(Number(p))} ${l}`:null,u=this._val(this.E.CHARGING)==="on",_=u?"charging":o,f=this._val(this.E.ONLINE)==="on",y=this._state(this.E.ONLINE),R=this._val(this.E.TIME_TO_FULL_CHARGE),T=Number(this._val(this.E.CHARGE_MINUTES_LEFT)),L=(()=>{if(u&&this.E.CHARGE_MINUTES_LEFT){if(!isFinite(T)||T<=0)return null;let $e=Math.floor(T/60),Se=Math.round(T%60);return $e>0?`${$e}h ${Se}m remaining to full`:`${Se}m remaining to full`}if(!u||!R||R==="unavailable")return null;let d=new Date(R);if(isNaN(d))return null;let S=d-Date.now();if(S<=0)return"Complete";let J=Math.floor(S/36e5),Te=Math.round(S%36e5/6e4);return J>=24?"24+ hours remaining to charge limit":J>0?`${J}h ${Te}m remaining to charge limit`:`${Te}m remaining to charge limit`})(),x=this._val(this.E.FRUNK_COVER)==="open"||this._val(this.E.FRUNK)==="on",k=this._val(this.E.OPEN_TRUNK)==="open"||this._val(this.E.TRUNK)==="on",w=this._val(this.E.PLUGGED_IN)==="on",D=this._val(this.E.CHARGER_DOOR)==="open"||w,g=this.E.DOOR_DRIVER_FRONT?{nf:this._val(this.E.DOOR_DRIVER_FRONT)==="on",nr:this._val(this.E.DOOR_DRIVER_REAR)==="on",ff:this._val(this.E.DOOR_PASSENGER_FRONT)==="on",fr:this._val(this.E.DOOR_PASSENGER_REAR)==="on"}:{nf:this._attr(this.E.DOORS,"driver_front")===!0,nr:this._attr(this.E.DOORS,"driver_rear")===!0,ff:this._attr(this.E.DOORS,"passenger_front")===!0,fr:this._attr(this.E.DOORS,"passenger_rear")===!0},E=w&&this._onchargeAvail,O=E?"oncharge-":"",z=`${O}base.png`,K=E?Vs:zs,Rt=E?Bs:[],B={frunk:x,nf:g.nf,nr:g.nr,fr:g.fr};E||(B.chargeport=D,B.ff=g.ff);let kt=E?"oc_all":"all",N=g.nf&&g.nr&&(E||g.ff)&&(E||g.fr)&&this._combinedAvail[kt],at=E?"oc_nf+nr":"nf+nr",At=!N&&g.nf&&g.nr&&this._combinedAvail[at],xt=!N&&!E&&g.ff&&g.fr&&this._combinedAvail["ff+fr"],jt=E?cs:rs,wt=[];for(let d of Rt)N&&(d==="fr"||d==="ff"||d==="nf"||d==="nr")||B[d]&&wt.push(`${O}${d}-overlay.png`);let rt=k?`${O}trunk-overlay.png`:null,$=[],q=!1,Wt=!1,Ct=!1;for(let d of K)if(B[d]){if(N&&(d==="nf"||d==="nr"||d==="ff"||d==="fr")){if(Ct)continue;Ct=!0;continue}if((d==="nf"||d==="nr")&&At){q&&$.push(jt["nf+nr"]),q=!0;continue}if((d==="ff"||d==="fr")&&xt){Wt&&$.push(jt["ff+fr"]),Wt=!0;continue}$.push(`${O}${d}-overlay.png`)}if(N){let d=E?ls:os;$.push(d)}let ot=this._val(this.E.DOOR_LOCK),Z=ot==="locked",Tt=this._fmt(this.E.CHARGING_STATE)??"\u2014",lt=this._val(this.E.CHARGE_RATE),$t=this._attr(this.E.CHARGE_RATE,"unit_of_measurement")??"kW",St=this._val(this.E.CLIMATE),X=St!=null&&St!=="off"&&St!=="unavailable",b=this._attr(this.E.CLIMATE,"temperature"),V=this._attr(this.E.CLIMATE,"temperature_unit")??"\xB0C",ct=b!=null?Number(b).toFixed(1):"\u2014",ve=this._val(this.E.SPEED)??this._attr(this.E.LOCATION,"speed"),ye=ve!=null?Number(ve):0,ps=this._attr(this.E.SPEED,"unit_of_measurement")??"km/h",Ot=f&&ye>0,Re=!f&&y?"Asleep":u?"Charging":Ot?`${Math.round(ye)} ${ps}`:this.E.PARKING_BRAKE&&this._val(this.E.PARKING_BRAKE)==="on"||f?"Parked":null,Qt=this._val(this.E.DISTANCE_TO_ARRIVAL),Yt=this._val(this.E.TIME_TO_ARRIVAL),qs=this._attr(this.E.ROUTE,"destination"),ke=Ot&&Qt!=null&&Qt!=="unknown"&&Yt!=null&&Yt!=="unavailable"?(()=>{let d=`${Number(Qt).toFixed(1)} ${this._attr(this.E.DISTANCE_TO_ARRIVAL,"unit_of_measurement")??"km"} away`,S=new Date(Yt),J=isNaN(S)?"":S.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});return J?`${d} \xB7 ${J} arrival`:d})():null,ht=this._val(this.E.LOCATION),Ae=ht&&ht!=="unknown"&&ht!=="unavailable",_s=Ae?ht.charAt(0).toUpperCase()+ht.slice(1).replace(/_/g," "):null,us=lt!=null?Number(lt).toFixed(1):"\u2014",ms=u?`Charging \xB7 ${us} ${$t}`:w?"Plugged in":Tt,gs=X?`${ct}${V}`:"Off",xe=ot?Z?"Locked":"Unlocked":null,Kt=P.find(d=>d.id===this.config.car_model),we=Kt?.variants.find(d=>d.id===this.config.car_variant),fs=Kt&&we?`${Kt.name} \xB7 ${we.label}`:this.config.car_model,Ce=e?.dir==="custom",bs=Ce?null:zt.find(d=>d.dir===this.config.car_color),Es=Ce?"Custom":bs?.name??this.config.car_color,vs=de(this.config.car_model,this.config.car_variant),ys=this._layout==="landscape",Rs=this._cardSize!=="medium"?`size-${this._cardSize}`:"";return r`
+      <ha-card class="${ys?"landscape":""} ${Rs}">
 
         <!-- ── Header (hidden when a submenu is open) ─────── -->
-        ${t?"":o`
+        ${t?"":r`
           <div class="header">
             <div class="header-left">
               <div class="car-name-row">
-                <span class="car-name">${this.config.name??this.config.car_name}</span>
-                <span class="icon name-chevron">${c(l["chevron-down"])}</span>
+                <span class="car-name">${this._displayName}</span>
+                <span class="icon name-chevron">${h(c["chevron-down"])}</span>
               </div>
               <div class="battery-summary${u?" charging":""}">
-                ${i!=null?o`
+                ${i!=null?r`
                   <div class="battery-bar-small">
-                    <div class="battery-fill-small ${m}" style="width:${a}%"></div>
+                    <div class="battery-fill-small ${_}" style="width:${a}%"></div>
                   </div>
-                  <span class="range-text">${_??"\u2014"}</span>
-                  ${u?o`<span class="icon charging-bolt">${c(l["charge-bolt"])}</span>`:""}`:""}
+                  <span class="range-text">${m??"\u2014"}</span>
+                  ${u?r`<span class="icon charging-bolt">${h(c["charge-bolt"])}</span>`:""}`:""}
               </div>
-              ${I?o`<span class="status-text charging-status">${I}</span>`:me?o`<span class="status-text">${me}</span>`:""}
+              ${L?r`<span class="status-text charging-status">${L}</span>`:Re?r`<span class="status-text">${Re}</span>`:""}
             </div>
             <div class="header-right">
               <button class="icon-btn" title="Settings"
                 @click=${()=>this._openSettings()}>
-                <span class="icon">${c(l.settings)}</span>
+                <span class="icon">${h(c.settings)}</span>
               </button>
               <button class="icon-btn" title="Refresh"
                 @click=${()=>this._forceRefresh()}>
-                <span class="icon">${c(l.refresh)}</span>
+                <span class="icon">${h(c.refresh)}</span>
               </button>
             </div>
           </div>
         `}
 
         <!-- ── Landing body (car + nav side-by-side in landscape) ── -->
-        ${t?"":o`
+        ${t?"":r`
           <div class="landing-body">
             <div class="landing-left">
               <div class="car-image-area">
-                ${this._imageError?o`
-                  <div class="car-image-placeholder">
-                    <span class="icon">${c(l.car)}</span>
-                    <span>Image not found</span>
-                  </div>`:o`
+                ${this._isCarlinko?this._picture(this.E.IMAGE_FRONT)??this.config.image?r`
                   <img class="car-image"
-                    src="${this._overlayUrl(q)}"
-                    alt="Tesla ${this.config.car_model}"
+                    src="${this._picture(this.E.IMAGE_FRONT)??this.config.image}"
+                    alt="${this._displayName}" />`:r`
+                  <div class="car-image-placeholder">
+                    <span class="icon">${h(c.car)}</span>
+                    <span>No vehicle image</span>
+                  </div>`:this._imageError?r`
+                  <div class="car-image-placeholder">
+                    <span class="icon">${h(c.car)}</span>
+                    <span>Image not found</span>
+                  </div>`:r`
+                  <img class="car-image"
+                    src="${this._overlayUrl(z)}"
+                    alt="${this._displayName}"
                     @error=${()=>{this._imageError=!0}}
                     @load=${()=>{this._imageError=!1}}
                   />
-                  ${F.map(d=>o`
+                  ${wt.map(d=>r`
                     <img class="car-overlay"
                       src="${this._overlayUrl(d)}"
                       alt="" />`)}
-                  ${Mt?o`
+                  ${rt?r`
                     <img class="car-overlay"
-                      src="${this._overlayUrl(Mt)}"
+                      src="${this._overlayUrl(rt)}"
                       alt="" />`:""}
-                  ${H.map(d=>o`
+                  ${$.map(d=>r`
                     <img class="car-overlay"
                       src="${this._overlayUrl(d)}"
                       alt="" />`)}
-                  ${u&&v&&this._cableAvail?o`
+                  ${u&&E&&this._cableAvail?r`
                     <img class="car-overlay charging-glow"
                       src="${this._overlayUrl("oncharge-cable-overlay.png")}"
                       alt="" />`:""}
                 `}
-                ${this._hasCustomOverlay?o`
+                ${this._hasCustomOverlay?r`
                   <div class="car-colour-overlay"
-                    style="${this._customOverlayStyleFor(q)}"></div>`:""}
-                ${vt?o`
+                    style="${this._customOverlayStyleFor(z)}"></div>`:""}
+                ${Ot?r`
                   <div class="driving-lines">
                     <div class="wind-line w1"></div>
                     <div class="wind-line w2"></div>
@@ -3089,95 +3201,95 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
               </div>
               <!-- Quick action icons: lock, controls, charge, climate -->
               <div class="quick-actions">
-                ${Nt?o`
-                  <button class="quick-btn ${bt?"q-locked":"q-unlocked"}"
-                    @click=${()=>this._svc("lock",bt?"unlock":"lock",this.E.DOOR_LOCK)}>
-                    <span class="icon">${c(bt?l.lock:l.unlock)}</span>
-                  </button>`:o`<span style="width:48px"></span>`}
+                ${ot?r`
+                  <button class="quick-btn ${Z?"q-locked":"q-unlocked"}"
+                    @click=${()=>this._svc("lock",Z?"unlock":"lock",this.E.DOOR_LOCK)}>
+                    <span class="icon">${h(Z?c.lock:c.unlock)}</span>
+                  </button>`:r`<span style="width:48px"></span>`}
                 <button class="quick-btn" @click=${this._toggleControls}>
-                  <span class="icon">${c(l.car)}</span>
+                  <span class="icon">${h(c.car)}</span>
                 </button>
                 <button class="quick-btn ${u?"q-active":""}" @click=${this._toggleCharger}>
-                  <span class="icon">${c(l["charge-bolt"])}</span>
+                  <span class="icon">${h(c["charge-bolt"])}</span>
                 </button>
-                <button class="quick-btn ${Dt?"q-active q-climate-on":""}" @click=${this._toggleClimate}>
-                  <span class="icon">${c(l["climate-fan"])}</span>
+                <button class="quick-btn ${X?"q-active q-climate-on":""}" @click=${this._toggleClimate}>
+                  <span class="icon">${h(c["climate-fan"])}</span>
                 </button>
               </div>
             </div>
             <div class="nav-rows">
               <button class="nav-row"
                 @click=${this._toggleControls}>
-                <span class="icon nav-icon">${c(l.car)}</span>
+                <span class="icon nav-icon">${h(c.car)}</span>
                 <div class="nav-text">
                   <span class="nav-label">Controls</span>
-                  ${ge?o`<span class="nav-sublabel">${ge}</span>`:""}
+                  ${xe?r`<span class="nav-sublabel">${xe}</span>`:""}
                 </div>
-                <span class="icon nav-chevron">${c(l["chevron-right"])}</span>
+                <span class="icon nav-chevron">${h(c["chevron-right"])}</span>
               </button>
-              <button class="nav-row${Dt?" active":""}"
+              <button class="nav-row${X?" active":""}"
                 @click=${this._toggleClimate}>
-                <span class="icon nav-icon">${c(l["climate-fan"])}</span>
+                <span class="icon nav-icon">${h(c["climate-fan"])}</span>
                 <div class="nav-text">
                   <span class="nav-label">Climate</span>
-                  <span class="nav-sublabel">${rs}</span>
+                  <span class="nav-sublabel">${gs}</span>
                 </div>
-                <span class="icon nav-chevron">${c(l["chevron-right"])}</span>
+                <span class="icon nav-chevron">${h(c["chevron-right"])}</span>
               </button>
-              ${_e?o`
+              ${Ae?r`
               <div class="nav-row nav-row-static">
-                <span class="icon nav-icon">${c(l.location)}</span>
+                <span class="icon nav-icon">${h(c.location)}</span>
                 <div class="nav-text">
                   <span class="nav-label">Location</span>
-                  <span class="nav-sublabel">${vt&&ue?ue:ss}</span>
+                  <span class="nav-sublabel">${Ot&&ke?ke:_s}</span>
                 </div>
-                <span class="icon nav-chevron">${c(l["chevron-right"])}</span>
+                <span class="icon nav-chevron">${h(c["chevron-right"])}</span>
               </div>`:""}
               <button class="nav-row"
                 @click=${this._toggleCharger}>
-                <span class="icon nav-icon">${c(l["charge-bolt"])}</span>
+                <span class="icon nav-icon">${h(c["charge-bolt"])}</span>
                 <div class="nav-text">
                   <span class="nav-label">Charging</span>
-                  <span class="nav-sublabel">${as}</span>
+                  <span class="nav-sublabel">${ms}</span>
                 </div>
-                <span class="icon nav-chevron">${c(l["chevron-right"])}</span>
+                <span class="icon nav-chevron">${h(c["chevron-right"])}</span>
               </button>
             </div>
           </div>
         `}
 
         <!-- ── Submenu panels ─────────────────────────────── -->
-        ${t==="charger"?o`
-          <tesla-menu-charger
+        ${t==="charger"?r`
+          <jaecoo-menu-charger
             .hass=${this.hass}
             .config=${this.config}
             .layout=${this._layout}
 
             @close-menu=${this._handleCloseMenu}>
-          </tesla-menu-charger>`:""}
+          </jaecoo-menu-charger>`:""}
 
-        ${t==="climate"?o`
-          <tesla-menu-climate
+        ${t==="climate"?r`
+          <jaecoo-menu-climate
             .hass=${this.hass}
             .config=${this.config}
             .customColour=${this._customColour}
             .layout=${this._layout}
 
             @close-menu=${this._handleCloseMenu}>
-          </tesla-menu-climate>`:""}
+          </jaecoo-menu-climate>`:""}
 
-        ${t==="controls"?o`
-          <tesla-menu-controls
+        ${t==="controls"?r`
+          <jaecoo-menu-controls
             .hass=${this.hass}
             .config=${this.config}
             .customColour=${this._customColour}
             .layout=${this._layout}
             .tyreUnit=${this._tyreUnit}
             @close-menu=${this._handleCloseMenu}>
-          </tesla-menu-controls>`:""}
+          </jaecoo-menu-controls>`:""}
 
         <!-- ── Settings: main menu ─────────────────────────── -->
-        ${this._settingsView==="main"?o`
+        ${this._settingsView==="main"?r`
           <div class="settings-overlay"
             @click=${d=>this._onSettingsOverlayClick(d)}>
             <div class="settings-panel">
@@ -3187,46 +3299,47 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
                   @click=${()=>this._closeSettings()}>&times;</button>
               </div>
               <div class="settings-rows">
+                ${this._isCarlinko?"":r`
                 <button class="settings-row"
                   @click=${()=>this._openModelPicker()}>
-                  <span class="icon settings-row-icon">${c(l.car)}</span>
+                  <span class="icon settings-row-icon">${h(c.car)}</span>
                   <div class="settings-row-text">
                     <span class="settings-row-label">Model & Colour</span>
-                    <span class="settings-row-sub">${ns} · ${ls}</span>
+                    <span class="settings-row-sub">${fs} · ${Es}</span>
                   </div>
-                  <span class="icon settings-row-chevron">${c(l["chevron-right"])}</span>
-                </button>
+                  <span class="icon settings-row-chevron">${h(c["chevron-right"])}</span>
+                </button>`}
                 <div class="settings-row settings-row-static">
-                  <span class="icon settings-row-icon">${c(l.resize)}</span>
+                  <span class="icon settings-row-icon">${h(c.resize)}</span>
                   <div class="settings-row-text">
                     <span class="settings-row-label">Card Size</span>
                   </div>
                   <div class="settings-size-control">
-                    ${Ke.map(d=>o`
+                    ${hs.map(d=>r`
                       <button class="settings-size-btn${this._cardSize===d?" selected":""}"
-                        @click=${w=>{w.stopPropagation(),this._setCardSize(d)}}>
+                        @click=${S=>{S.stopPropagation(),this._setCardSize(d)}}>
                         ${d==="small"?"S":d==="medium"?"M":"L"}
                       </button>`)}
                   </div>
                 </div>
                 <button class="settings-row"
                   @click=${()=>this._toggleLayout()}>
-                  <span class="icon settings-row-icon">${c(l.layout)}</span>
+                  <span class="icon settings-row-icon">${h(c.layout)}</span>
                   <div class="settings-row-text">
                     <span class="settings-row-label">Layout</span>
                     <span class="settings-row-sub">${this._layout==="landscape"?"Landscape":"Portrait"}</span>
                   </div>
-                  <span class="icon settings-row-chevron">${c(l["chevron-right"])}</span>
+                  <span class="icon settings-row-chevron">${h(c["chevron-right"])}</span>
                 </button>
                 <div class="settings-row settings-row-static">
-                  <span class="icon settings-row-icon">${c(l.tyre)}</span>
+                  <span class="icon settings-row-icon">${h(c.tyre)}</span>
                   <div class="settings-row-text">
                     <span class="settings-row-label">Tyre Units</span>
                   </div>
                   <div class="settings-size-control">
-                    ${qe.map(d=>o`
+                    ${ds.map(d=>r`
                       <button class="settings-size-btn${this._tyreUnit===d?" selected":""}"
-                        @click=${w=>{w.stopPropagation(),this._setTyreUnit(d)}}>
+                        @click=${S=>{S.stopPropagation(),this._setTyreUnit(d)}}>
                         ${d}
                       </button>`)}
                   </div>
@@ -3237,21 +3350,21 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
         `:""}
 
         <!-- ── Settings: model picker ──────────────────────── -->
-        ${this._settingsView==="model"?o`
-          <tesla-model-picker
+        ${this._settingsView==="model"?r`
+          <jaecoo-model-picker
             .model=${this.config.car_model}
             .variant=${this.config.car_variant}
             slide-from=${this._settingsSlide??"up"}
             @model-changed=${this._handleModelChanged}
             @picker-back=${this._handleModelBack}
             @picker-close=${this._handlePickerClose}>
-          </tesla-model-picker>`:""}
+          </jaecoo-model-picker>`:""}
 
         <!-- ── Settings: colour picker ─────────────────────── -->
-        ${this._settingsView==="colour"?o`
-          <tesla-colour-picker
+        ${this._settingsView==="colour"?r`
+          <jaecoo-colour-picker
             .selected=${e?.dir??this.config.car_color}
-            .available=${cs}
+            .available=${vs}
             .customH=${e?.dir==="custom"?e.h:0}
             .customS=${e?.dir==="custom"?e.s:80}
             showBack
@@ -3259,10 +3372,10 @@ var ps=Object.defineProperty;var ms=(r,t,e)=>t in r?ps(r,t,{enumerable:!0,config
             @colour-changed=${this._handleColourChanged}
             @picker-back=${this._handleColourBack}
             @picker-close=${this._handlePickerClose}>
-          </tesla-colour-picker>`:""}
+          </jaecoo-colour-picker>`:""}
 
       </ha-card>
-    `}getCardSize(){return 5}getGridOptions(){return{columns:12,min_columns:4,rows:"auto",min_rows:3}}};Et(z,"_imgVer",Date.now());var oe=z;customElements.define("tesla-card",oe);window.customCards=window.customCards||[];window.customCards.push({type:"tesla-card",name:"Tesla Card",description:"A Lovelace card for Tesla vehicles \u2014 supports both official Fleet and alandtse/tesla integrations",preview:!1});
+    `}getCardSize(){return 5}getGridOptions(){return{columns:12,min_columns:4,rows:"auto",min_rows:3}}};Nt(Y,"_imgVer",Date.now());var Ee=Y;customElements.define("jaecoo-card",Ee);window.customCards=window.customCards||[];window.customCards.push({type:"jaecoo-card",name:"Jaecoo Card",description:"A Tesla-app style Lovelace card for Jaecoo / Chery / Omoda EVs via the CarLinko integration (also supports Tesla Fleet and alandtse/tesla)",preview:!1});
 /*! Bundled license information:
 
 @lit/reactive-element/css-tag.js:

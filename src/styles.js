@@ -247,6 +247,20 @@ export const chargerStyles = css`
 
   .chg-port-btn:hover { color: rgba(255,255,255,0.85); }
 
+  /* Read-only charging info rows (integrations without limit/amps controls) */
+  .chg-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.92em;
+  }
+
+  .chg-info-row:last-child { border-bottom: none; }
+  .chg-info-label { color: rgba(255,255,255,0.5); }
+  .chg-info-value { color: #fff; font-weight: 500; }
+
 `;
 
 // ── Climate panel styles ────────────────────────────────────────────────────

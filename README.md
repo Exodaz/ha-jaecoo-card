@@ -1,4 +1,49 @@
-# Tesla Card for Home Assistant
+# Jaecoo Card for Home Assistant
+
+A Tesla-app style Lovelace card for the **Jaecoo J5 EV** (and other Chery Group / CarLinko cars),
+forked from [ds2000/homeassistant-fe-tesla](https://github.com/ds2000/homeassistant-fe-tesla) and
+adapted to the **[elad-bar/ha-carlinko](https://github.com/elad-bar/ha-carlinko)** integration.
+The original Tesla Fleet / alandtse / custom-entity modes still work.
+
+## Jaecoo / CarLinko quick start
+
+1. Install and set up [ha-carlinko](https://github.com/elad-bar/ha-carlinko).
+2. HACS → Frontend → ⋮ → Custom repositories → add `https://github.com/Exodaz/homeassistant-fe-jaecoo` (type **Dashboard**), then install **Jaecoo Card**.
+3. Add the card:
+
+```yaml
+type: custom:jaecoo-card
+# All optional:
+device_id: <carlinko device id>   # default: first CarLinko vehicle (pick it in the visual editor)
+name: Jaecoo J5 EV               # default: the HA device name (plate number)
+```
+
+**No entity IDs to configure.** CarLinko names entities after the plate number and the HA
+language, so the card finds them by the integration's `translation_key` on the chosen device.
+`entity_overrides` (same keys as below) still works if you want to point a function elsewhere.
+
+The car pictures come from CarLinko's own image entities (`Front` on the landing view,
+`Top` in Controls/Climate), so they match your car's colour. Set `image` / `image_top`
+to a URL to override them.
+
+| Card area | CarLinko entities used |
+|---|---|
+| Header | Battery, Range, Speed, Online, Charging, Charge remaining |
+| Charging | Charge state, Charge Power, Charge mode, Energy left, Stop charging |
+| Climate | Climate (on/off + temperature), Defog, Steering wheel heat, Driver/Passenger/Rear seat heat, seat ventilation, Quick cool/heat, Windshield heat, Air purify, Windows vent |
+| Controls | Lock, Liftgate, Find car, Sunroof, Windows, Tyre pressures (TPMS) |
+| Location | Location device tracker |
+
+Controls are capability-gated like the integration itself: a button only appears when the
+matching CarLinko entity exists for your car.
+
+Known gaps vs. the Tesla version: CarLinko has no charge-limit/amps, charge-port, horn, frunk,
+or interior-temperature entities, so those controls are hidden; door-open overlays on the
+car picture are Tesla-only.
+
+---
+
+## Original Tesla Card documentation
 
 A custom Lovelace card for Tesla vehicles in Home Assistant. Supports the **official [Tesla Fleet](https://www.home-assistant.io/integrations/tesla_fleet/)** integration, the **[alandtse/tesla](https://github.com/alandtse/tesla)** custom integration, and **fully custom entity mapping** for MQTT or any other integration. Control your Tesla directly from your dashboard with a clean, app-style interface.
 

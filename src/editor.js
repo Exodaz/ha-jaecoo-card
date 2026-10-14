@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { TESLA_MODELS, getVariants } from './models.js';
-import { ENTITY_GROUPS } from './entity-config.js';
+import { ENTITY_GROUPS, carlinkoDevices } from './entity-config.js';
 
 export class TeslaCardEditor extends LitElement {
   static get properties() {
@@ -70,12 +70,44 @@ export class TeslaCardEditor extends LitElement {
 
     const currentModel = this.config.car_model ?? '3';
     const variants = getVariants(currentModel);
-    const integration = this.config.integration ?? 'fleet';
+    const integration = this.config.integration ?? 'carlinko';
     const isCustomEntities = integration === 'entities';
+    const isCarlinko = integration === 'carlinko';
     const overrides = this.config.entity_overrides ?? {};
+    const vehicles = isCarlinko ? carlinkoDevices(this.hass) : [];
 
     return html`
       <div class="editor">
+        <label>
+          Integration
+          <select name="integration" .value=${integration} @change=${(e) => this._integrationChanged(e)}>
+            <option value="carlinko" ?selected=${isCarlinko}>CarLinko (Jaecoo / Chery / Omoda)</option>
+            <option value="fleet" ?selected=${integration === 'fleet'}>Tesla Fleet (official)</option>
+            <option value="custom" ?selected=${integration === 'custom'}>Tesla Custom (alandtse)</option>
+            <option value="entities" ?selected=${integration === 'entities'}>Custom Entities</option>
+          </select>
+        </label>
+        ${isCarlinko ? html`
+        <label>
+          Vehicle
+          <select name="device_id" .value=${this.config.device_id ?? ''} @change=${this._valueChanged}>
+            <option value="" ?selected=${!this.config.device_id}>First CarLinko vehicle</option>
+            ${vehicles.map(v => html`
+              <option value="${v.id}" ?selected=${v.id === this.config.device_id}>${v.name}</option>
+            `)}
+          </select>
+          ${vehicles.length ? '' : html`<span class="entity-hint">No CarLinko vehicles found — install the ha-carlinko integration first.</span>`}
+        </label>
+        <label>
+          Display Name
+          <input
+            name="name"
+            .value=${this.config.name ?? ''}
+            @change=${this._valueChanged}
+            placeholder="Jaecoo J5 EV"
+          />
+        </label>
+        ` : html`
         <label>
           Car Name (entity prefix)${isCustomEntities ? '' : ' *'}
           <input
@@ -102,20 +134,12 @@ export class TeslaCardEditor extends LitElement {
           </select>
         </label>
         <label>
-          Integration
-          <select name="integration" .value=${integration} @change=${(e) => this._integrationChanged(e)}>
-            <option value="fleet" ?selected=${integration === 'fleet'}>Tesla Fleet (official)</option>
-            <option value="custom" ?selected=${integration === 'custom'}>Tesla Custom (alandtse)</option>
-            <option value="entities" ?selected=${integration === 'entities'}>Custom Entities</option>
-          </select>
-        </label>
-        <label>
           Image Path
           <input
             name="image_path"
-            .value=${this.config.image_path ?? '/hacsfiles/homeassistant-fe-tesla'}
+            .value=${this.config.image_path ?? '/hacsfiles/homeassistant-fe-jaecoo'}
             @change=${this._valueChanged}
-            placeholder="/hacsfiles/homeassistant-fe-tesla"
+            placeholder="/hacsfiles/homeassistant-fe-jaecoo"
           />
         </label>
         <label>
@@ -127,6 +151,7 @@ export class TeslaCardEditor extends LitElement {
             placeholder="My Tesla"
           />
         </label>
+        `}
 
         ${isCustomEntities ? html`
           <div class="entity-section-header">Entity Configuration</div>
@@ -289,4 +314,4 @@ export class TeslaCardEditor extends LitElement {
   }
 }
 
-customElements.define('tesla-card-editor', TeslaCardEditor);
+customElements.define('jaecoo-card-editor', TeslaCardEditor);

@@ -45,9 +45,9 @@ class TeslaMenuClimate extends TeslaBase {
     if (!level) return 'Tesla_Heated_Seat_Off.svg';
     const l = level.toLowerCase();
     if (l === 'off')    return 'Tesla_Heated_Seat_Off.svg';
-    if (l === 'low')    return 'Tesla_Heated_Seat_1.svg';
-    if (l === 'medium') return 'Tesla_Heated_Seat_2.svg';
-    if (l === 'high')   return 'Tesla_Heated_Seat_3.svg';
+    if (l === 'low'    || l === 'l1') return 'Tesla_Heated_Seat_1.svg';
+    if (l === 'medium' || l === 'l2') return 'Tesla_Heated_Seat_2.svg';
+    if (l === 'high'   || l === 'l3') return 'Tesla_Heated_Seat_3.svg';
     const n = parseInt(level);
     if (!isNaN(n) && n >= 1 && n <= 3) return `Tesla_Heated_Seat_${n}.svg`;
     return 'Tesla_Heated_Seat_Off.svg';
@@ -59,6 +59,23 @@ class TeslaMenuClimate extends TeslaBase {
     if (level === 'low')  return 'Tesla_Climate_Heated_Wheel_Low.svg';
     if (level === 'high') return 'Tesla_Climate_Heated_Wheel_High.svg';
     return 'Tesla_Climate_Heated_Wheel_Off.svg';
+  }
+
+  // ── Steering wheel heater — select (levels) or switch (on/off) ─────────
+
+  _toggleSteeringHeat(level) {
+    if (this._domainOf(this.E.STEERING_WHEEL_HEATER) === 'switch') {
+      return this._svc('switch', level === 'off' ? 'turn_on' : 'turn_off', this.E.STEERING_WHEEL_HEATER);
+    }
+    return this._svc('select', 'select_next', this.E.STEERING_WHEEL_HEATER, { cycle: true });
+  }
+
+  _cycleSelect(t) {
+    return this._svc('select', 'select_next', t, { cycle: true });
+  }
+
+  _toggleSwitch(t) {
+    return this._svc('switch', this._val(t) === 'on' ? 'turn_off' : 'turn_on', t);
   }
 
   // ── Cabin Overheat Protection — Fleet uses climate, Custom uses select ────
@@ -111,8 +128,12 @@ class TeslaMenuClimate extends TeslaBase {
 
     const isDefrost     = this._val(this.E.DEFROST_SWITCH) === 'on';
 
+    const hasLeft       = !!this._state(this.E.HEATED_SEAT_LEFT);
+    const hasRight      = !!this._state(this.E.HEATED_SEAT_RIGHT);
     const leftSeat      = this._val(this.E.HEATED_SEAT_LEFT);
     const rightSeat     = this._val(this.E.HEATED_SEAT_RIGHT);
+    // Translated level labels (e.g. CarLinko 'l1' → 'Low')
+    const seatLabel     = (t) => this._fmt(t) ?? 'Off';
     const hasRearLeft   = !!this._state(this.E.HEATED_SEAT_REAR_LEFT);
     const hasRearCtr    = !!this._state(this.E.HEATED_SEAT_REAR_CENTER);
     const hasRearRight  = !!this._state(this.E.HEATED_SEAT_REAR_RIGHT);
@@ -148,9 +169,30 @@ class TeslaMenuClimate extends TeslaBase {
       : cabinOverheatRaw;
     // Steering wheel heater
     const hasSteeringWheel = !!this._state(this.E.STEERING_WHEEL_HEATER);
-    const steeringLevel    = hasSteeringWheel ? (this._val(this.E.STEERING_WHEEL_HEATER) ?? 'off').toLowerCase() : 'off';
+    const steeringRaw      = hasSteeringWheel ? (this._val(this.E.STEERING_WHEEL_HEATER) ?? 'off').toLowerCase() : 'off';
+    // Switch-based heaters (CarLinko) are on/off — show them as 'high' when on
+    const steeringLevel    = steeringRaw === 'on' ? 'high' : steeringRaw;
     const autoSteering     = this._val(this.E.AUTO_STEERING_WHEEL_HEATER) === 'on';
-    const steeringLabel    = autoSteering ? 'Auto' : steeringLevel === 'off' ? 'Off' : steeringLevel === 'low' ? 'Low' : 'High';
+    const steeringLabel    = autoSteering ? 'Auto'
+      : steeringRaw === 'on' ? 'On'
+      : steeringLevel === 'off' ? 'Off' : steeringLevel === 'low' ? 'Low' : 'High';
+
+    const hasDefrost    = !!this._state(this.E.DEFROST_SWITCH);
+    const hasWindows    = !!(this._state(this.E.WINDOWS_COVER) || this._state(this.E.WINDOWS_VENT));
+
+    // CarLinko extras — rendered only when the car exposes them
+    const extraButtons = [
+      [this.E.QUICK_COOL, 'Quick Cool', ICONS['climate-fan']],
+      [this.E.QUICK_HEAT, 'Quick Heat', ICONS['heated-seat']],
+    ].filter(([t]) => this._state(t));
+    const extraSwitches = [
+      [this.E.WINDSHIELD_HEAT, 'Windshield Heat', ICONS.defrost],
+      [this.E.AIR_PURIFY,      'Air Purify',      ICONS.fan],
+    ].filter(([t]) => this._state(t));
+    const ventSeats = [
+      [this.E.VENT_SEAT_LEFT,  'Driver Seat Ventilation'],
+      [this.E.VENT_SEAT_RIGHT, 'Passenger Seat Ventilation'],
+    ].filter(([t]) => this._state(t));
 
     const pluggedIn     = this._val(this.E.PLUGGED_IN) === 'on';
     const climBgFile    = pluggedIn ? 'climate-bg-charging.png' : 'climate-bg.png';
@@ -162,7 +204,7 @@ class TeslaMenuClimate extends TeslaBase {
         <div class="clim-car-area${this._climExpanded ? ' clim-car-collapsed' : ''}">
           <div class="clim-car-inner">
             <img class="clim-car-bg"
-              src="${this._imgUrl(climBgFile)}"
+              src="${this._isCarlinko ? (this._picture(this.E.IMAGE_TOP) ?? this.config.image_top ?? '') : this._imgUrl(climBgFile)}"
               alt="Car interior view" />
             ${this._hasCustomOverlay ? html`
               <div style="${this._customOverlayStyleFor(climBgFile)}"></div>` : ''}
@@ -170,40 +212,42 @@ class TeslaMenuClimate extends TeslaBase {
             <!-- Steering wheel heater -->
             ${hasSteeringWheel ? html`
               <button class="clim-steering-zone"
-                @click=${() => this._svc('select', 'select_next', this.E.STEERING_WHEEL_HEATER, { cycle: true })}>
+                @click=${() => this._toggleSteeringHeat(steeringRaw)}>
                 <img class="btn-img" src="${this._btnUrl(this._steeringHeatFile(steeringLevel))}" alt="" />
                 <span class="clim-seat-label">${steeringLabel}</span>
               </button>` : ''}
 
             <!-- Front seats -->
+            ${hasLeft ? html`
             <button class="clim-seat-zone clim-seat-fl"
               @click=${() => this._svc('select', 'select_next', this.E.HEATED_SEAT_LEFT, { cycle: true })}>
               <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(leftSeat ?? 'Off'))}" alt="" />
-              <span class="clim-seat-label">${leftSeat ?? 'Off'}</span>
-            </button>
+              <span class="clim-seat-label">${seatLabel(this.E.HEATED_SEAT_LEFT)}</span>
+            </button>` : ''}
+            ${hasRight ? html`
             <button class="clim-seat-zone clim-seat-fr"
               @click=${() => this._svc('select', 'select_next', this.E.HEATED_SEAT_RIGHT, { cycle: true })}>
               <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(rightSeat ?? 'Off'))}" alt="" />
-              <span class="clim-seat-label">${rightSeat ?? 'Off'}</span>
-            </button>
+              <span class="clim-seat-label">${seatLabel(this.E.HEATED_SEAT_RIGHT)}</span>
+            </button>` : ''}
             <!-- Rear seats (only if entities exist) -->
             ${hasRearLeft ? html`
               <button class="clim-seat-zone clim-seat-rl"
                 @click=${() => this._svc('select', 'select_next', this.E.HEATED_SEAT_REAR_LEFT, { cycle: true })}>
                 <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(rearLeftSeat ?? 'Off'))}" alt="" />
-                <span class="clim-seat-label">${rearLeftSeat ?? 'Off'}</span>
+                <span class="clim-seat-label">${seatLabel(this.E.HEATED_SEAT_REAR_LEFT)}</span>
               </button>` : ''}
             ${hasRearCtr ? html`
               <button class="clim-seat-zone clim-seat-rc"
                 @click=${() => this._svc('select', 'select_next', this.E.HEATED_SEAT_REAR_CENTER, { cycle: true })}>
                 <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(rearCtrSeat ?? 'Off'))}" alt="" />
-                <span class="clim-seat-label">${rearCtrSeat ?? 'Off'}</span>
+                <span class="clim-seat-label">${seatLabel(this.E.HEATED_SEAT_REAR_CENTER)}</span>
               </button>` : ''}
             ${hasRearRight ? html`
               <button class="clim-seat-zone clim-seat-rr"
                 @click=${() => this._svc('select', 'select_next', this.E.HEATED_SEAT_REAR_RIGHT, { cycle: true })}>
                 <img class="btn-img" src="${this._btnUrl(this._seatHeatFile(rearRightSeat ?? 'Off'))}" alt="" />
-                <span class="clim-seat-label">${rearRightSeat ?? 'Off'}</span>
+                <span class="clim-seat-label">${seatLabel(this.E.HEATED_SEAT_REAR_RIGHT)}</span>
               </button>` : ''}
           </div>
 
@@ -248,22 +292,58 @@ class TeslaMenuClimate extends TeslaBase {
               </button>
             </div>
 
+            ${hasWindows ? html`
             <button class="clim-icon-btn${windowsOpen ? ' clim-active' : ''}"
-              @click=${() => this._svc('cover', windowsOpen ? 'close_cover' : 'open_cover', this.E.WINDOWS_COVER)}>
+              @click=${() => this._toggleWindows(windowsOpen)}>
               <span class="icon">${unsafeHTML(windowsOpen ? ICONS['vent-close'] : ICONS['vent-open'])}</span>
               <span>${windowsOpen ? 'Close' : 'Vent'}</span>
-            </button>
+            </button>` : html`<span style="width:56px"></span>`}
           </div>
 
           <!-- Always-visible: Defrost Car -->
+          ${hasDefrost ? html`
           <button class="clim-full-btn${isDefrost ? ' active' : ''}"
             @click=${() => this._svc('switch', isDefrost ? 'turn_off' : 'turn_on', this.E.DEFROST_SWITCH)}>
             <span class="icon">${unsafeHTML(ICONS.defrost)}</span>
             <span>Defrost Car</span>
-          </button>
+          </button>` : ''}
 
           <!-- Expanded section — Camp Mode / Dog Mode + Cabin Overheat Protection -->
           <div class="clim-expanded-content">
+
+            <!-- Quick cool / heat, windshield heat, air purify (CarLinko) -->
+            ${extraButtons.length || extraSwitches.length ? html`
+              <div class="clim-list-group">
+                ${extraButtons.map(([t, label, icon]) => html`
+                  <button class="clim-list-item"
+                    @click=${() => this._svc('button', 'press', t)}>
+                    <span class="icon clim-list-icon">${unsafeHTML(icon)}</span>
+                    <span class="clim-list-label">${label}</span>
+                  </button>`)}
+                ${extraSwitches.map(([t, label, icon]) => html`
+                  <button class="clim-list-item${this._val(t) === 'on' ? ' hot' : ''}"
+                    @click=${() => this._toggleSwitch(t)}>
+                    <span class="icon clim-list-icon">${unsafeHTML(icon)}</span>
+                    <span class="clim-list-label">${label}</span>
+                    <span class="clim-list-value">${this._fmt(t)}</span>
+                  </button>`)}
+              </div>
+              <div class="clim-separator"></div>
+            ` : ''}
+
+            <!-- Seat ventilation (CarLinko) -->
+            ${ventSeats.length ? html`
+              <div class="clim-list-group">
+                ${ventSeats.map(([t, label]) => html`
+                  <button class="clim-list-item${this._val(t) && this._val(t) !== 'off' ? ' hot' : ''}"
+                    @click=${() => this._cycleSelect(t)}>
+                    <span class="icon clim-list-icon">${unsafeHTML(ICONS.fan)}</span>
+                    <span class="clim-list-label">${label}</span>
+                    <span class="clim-list-value">${this._fmt(t)}</span>
+                  </button>`)}
+              </div>
+              <div class="clim-separator"></div>
+            ` : ''}
 
             <!-- Camp Mode + Dog Mode -->
             ${hasCampMode || hasDogMode ? html`
@@ -304,4 +384,4 @@ class TeslaMenuClimate extends TeslaBase {
   }
 }
 
-customElements.define('tesla-menu-climate', TeslaMenuClimate);
+customElements.define('jaecoo-menu-climate', TeslaMenuClimate);

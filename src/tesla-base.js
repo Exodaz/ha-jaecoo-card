@@ -1,5 +1,5 @@
 import { LitElement } from 'lit';
-import { resolveEntityId, getEntities, FLEET_LOCALE_ALTS } from './entity-config.js';
+import { resolveEntityId, getEntities, FLEET_LOCALE_ALTS, isCarlinkoTemplate, resolveCarlinkoId } from './entity-config.js';
 
 /**
  * Shared base class for tesla-card submenu components.
@@ -25,7 +25,12 @@ export class TeslaBase extends LitElement {
 
   // ── Entity helpers ──────────────────────────────────────────────────────────
 
+  get _isCarlinko() { return this.config?.integration === 'carlinko'; }
+
   _eid(t) {
+    if (isCarlinkoTemplate(t)) {
+      return resolveCarlinkoId(t, this.hass, this.config.device_id, this.config.entity_overrides);
+    }
     const id = resolveEntityId(t, this.config.car_name, this.config.entity_overrides);
     if (id && !this.hass?.states[id] && FLEET_LOCALE_ALTS[t]) {
       const alt = resolveEntityId(FLEET_LOCALE_ALTS[t], this.config.car_name, this.config.entity_overrides);
@@ -37,6 +42,16 @@ export class TeslaBase extends LitElement {
   _val(t)      { return this._state(t)?.state; }
   _attr(t, a)  { return this._state(t)?.attributes?.[a]; }
   _nattr(t, a) { const v = this._attr(t, a); return v != null ? Number(v) : null; }
+
+  /** Translated, human-readable state (falls back to the raw state). */
+  _fmt(t) {
+    const st = this._state(t);
+    if (!st) return undefined;
+    try { return this.hass.formatEntityState?.(st) ?? st.state; } catch { return st.state; }
+  }
+
+  /** CarLinko cloud render for an image entity (e.g. this.E.IMAGE_TOP). */
+  _picture(t) { return this._attr(t, 'entity_picture') ?? null; }
 
   // ── Image URL builder ─────────────────────────────────────────────────────
 
@@ -103,6 +118,14 @@ export class TeslaBase extends LitElement {
     return this._svc(d, 'press', tpl);
   }
 
+  /** Vent/close windows — CarLinko vents via a button, Tesla via a cover */
+  _toggleWindows(isOpen) {
+    if (!isOpen && this._state(this.E.WINDOWS_VENT)) {
+      return this._svc('button', 'press', this.E.WINDOWS_VENT);
+    }
+    return this._svc('cover', isOpen ? 'close_cover' : 'open_cover', this.E.WINDOWS_COVER);
+  }
+
   // ── Service call ────────────────────────────────────────────────────────────
 
   async _svc(domain, service, entityTpl, extra = {}) {
@@ -113,7 +136,7 @@ export class TeslaBase extends LitElement {
         ...extra,
       });
     } catch (e) {
-      console.error('[tesla-card] service error', domain, service, e);
+      console.error('[jaecoo-card] service error', domain, service, e);
     }
   }
 

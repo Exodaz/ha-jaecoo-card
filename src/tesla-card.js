@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { sharedStyles, cardStyles } from './styles.js';
-import { getEntities, resolveEntityId, FLEET_LOCALE_ALTS } from './entity-config.js';
+import { getEntities, resolveEntityId, FLEET_LOCALE_ALTS, isCarlinkoTemplate, resolveCarlinkoId } from './entity-config.js';
 import { ICONS } from './icons.js';
 import { FACTORY_COLOURS } from './recolour.js';
 import { TESLA_MODELS, getVariantColours } from './models.js';
@@ -41,11 +41,11 @@ const COMBINED_OVERLAYS_ONCHARGE = {
 };
 
 // localStorage key prefixes
-const LS_COLOUR_PREFIX = 'tesla-card-colour-';
-const LS_MODEL_PREFIX  = 'tesla-card-model-';
-const LS_LAYOUT_PREFIX    = 'tesla-card-layout-';
-const LS_SIZE_PREFIX      = 'tesla-card-size-';
-const LS_TYRE_UNIT_PREFIX = 'tesla-card-tyre-unit-';
+const LS_COLOUR_PREFIX = 'jaecoo-card-colour-';
+const LS_MODEL_PREFIX  = 'jaecoo-card-model-';
+const LS_LAYOUT_PREFIX    = 'jaecoo-card-layout-';
+const LS_SIZE_PREFIX      = 'jaecoo-card-size-';
+const LS_TYRE_UNIT_PREFIX = 'jaecoo-card-tyre-unit-';
 const CARD_SIZES          = ['small', 'medium', 'large'];
 const TYRE_UNITS          = ['psi', 'bar'];
 
@@ -112,7 +112,8 @@ class TeslaCard extends LitElement {
   // ─── Config ────────────────────────────────────────────────────────────────
 
   setConfig(config) {
-    if (!config.car_name && config.integration !== 'entities') throw new Error('car_name is required');
+    const integration = config.integration ?? 'carlinko';
+    if (!config.car_name && integration !== 'entities' && integration !== 'carlinko') throw new Error('car_name is required');
     // Validate config values used in URL/CSS contexts to prevent injection
     const safePathRe = /^[a-zA-Z0-9/_.\-]+$/;
     const safeIdRe   = /^[a-zA-Z0-9._\-]+$/;
@@ -124,9 +125,10 @@ class TeslaCard extends LitElement {
       car_model:   '3',
       car_variant: '3.1',
       car_color:   'red_multi_coat',
-      image_path:  '/hacsfiles/homeassistant-fe-tesla',
+      image_path:  '/hacsfiles/homeassistant-fe-jaecoo',
       show_speed:  true,
       ...config,
+      integration,
     };
     this._applyConfig();
   }
@@ -146,6 +148,8 @@ class TeslaCard extends LitElement {
   }
 
   _preloadCombinedOverlays() {
+    // CarLinko uses the cloud render from its image entities — no overlay set
+    if (this._isCarlinko) return;
     // Offcharge combined overlays
     for (const [key, filename] of Object.entries(COMBINED_OVERLAYS)) {
       const img = new Image();
@@ -182,11 +186,11 @@ class TeslaCard extends LitElement {
   }
 
   static getConfigElement() {
-    return document.createElement('tesla-card-editor');
+    return document.createElement('jaecoo-card-editor');
   }
 
   static getStubConfig() {
-    return { car_name: '', car_model: '3', car_variant: '3.1', car_color: 'red_multi_coat', image_path: '/hacsfiles/homeassistant-fe-tesla' };
+    return { integration: 'carlinko' };
   }
 
   // ─── Persistence ───────────────────────────────────────────────────────────
@@ -204,8 +208,12 @@ class TeslaCard extends LitElement {
 
   // ── Colour ──
 
+  _storageId() {
+    return this._baseConfig?.car_name || this._baseConfig?.device_id || 'default';
+  }
+
   _colourLsKey() {
-    return LS_COLOUR_PREFIX + (this._baseConfig?.car_name ?? 'default');
+    return LS_COLOUR_PREFIX + this._storageId();
   }
 
   _restoreColour() {
@@ -262,7 +270,7 @@ class TeslaCard extends LitElement {
   // ── Model ──
 
   _modelLsKey() {
-    return LS_MODEL_PREFIX + (this._baseConfig?.car_name ?? 'default');
+    return LS_MODEL_PREFIX + this._storageId();
   }
 
   _restoreModel() {
@@ -311,7 +319,7 @@ class TeslaCard extends LitElement {
   // ── Layout ──
 
   _layoutLsKey() {
-    return LS_LAYOUT_PREFIX + (this._baseConfig?.car_name ?? 'default');
+    return LS_LAYOUT_PREFIX + this._storageId();
   }
 
   _restoreLayout() {
@@ -335,7 +343,7 @@ class TeslaCard extends LitElement {
   // ── Card Size ──
 
   _sizeLsKey() {
-    return LS_SIZE_PREFIX + (this._baseConfig?.car_name ?? 'default');
+    return LS_SIZE_PREFIX + this._storageId();
   }
 
   _restoreSize() {
@@ -360,7 +368,7 @@ class TeslaCard extends LitElement {
   // ── Tyre Unit ──
 
   _tyreUnitLsKey() {
-    return LS_TYRE_UNIT_PREFIX + (this._baseConfig?.car_name ?? 'default');
+    return LS_TYRE_UNIT_PREFIX + this._storageId();
   }
 
   _restoreTyreUnit() {
@@ -402,6 +410,7 @@ class TeslaCard extends LitElement {
 
   /** Returns { h, s } for custom colour, or null */
   get _customColour() {
+    if (this._isCarlinko) return null;
     const co = this._colourOverride;
     if (!co || co.dir !== 'custom') return null;
     return { h: co.h, s: co.s };
@@ -435,7 +444,12 @@ class TeslaCard extends LitElement {
 
   // ─── Entity helpers ────────────────────────────────────────────────────────
 
+  get _isCarlinko() { return this.config?.integration === 'carlinko'; }
+
   _eid(t) {
+    if (isCarlinkoTemplate(t)) {
+      return resolveCarlinkoId(t, this.hass, this.config.device_id, this.config.entity_overrides);
+    }
     const id = resolveEntityId(t, this.config.car_name, this.config.entity_overrides);
     if (id && !this.hass?.states[id] && FLEET_LOCALE_ALTS[t]) {
       const alt = resolveEntityId(FLEET_LOCALE_ALTS[t], this.config.car_name, this.config.entity_overrides);
@@ -447,6 +461,28 @@ class TeslaCard extends LitElement {
   _val(t)      { return this._state(t)?.state; }
   _attr(t, a)  { return this._state(t)?.attributes?.[a]; }
 
+  /** Translated, human-readable state (falls back to the raw state). */
+  _fmt(t) {
+    const st = this._state(t);
+    if (!st) return undefined;
+    try { return this.hass.formatEntityState?.(st) ?? st.state; } catch { return st.state; }
+  }
+
+  /** CarLinko cloud render for an image entity (e.g. this.E.IMAGE_FRONT). */
+  _picture(t) { return this._attr(t, 'entity_picture') ?? null; }
+
+  /** Display name: config name → HA device name (CarLinko) → car_name */
+  get _displayName() {
+    if (this.config.name) return this.config.name;
+    if (this._isCarlinko) {
+      const devId = this.hass?.entities?.[this._eid(this.E.BATTERY_LEVEL)]?.device_id;
+      const dev = devId ? this.hass.devices?.[devId] : null;
+      if (dev) return dev.name_by_user || dev.name;
+      return 'Jaecoo';
+    }
+    return this.config.car_name;
+  }
+
   // ─── Service call ──────────────────────────────────────────────────────────
 
   async _svc(domain, service, entityTpl, extra = {}) {
@@ -457,7 +493,7 @@ class TeslaCard extends LitElement {
         ...extra,
       });
     } catch (e) {
-      console.error('[tesla-card] service error', domain, service, e);
+      console.error('[jaecoo-card] service error', domain, service, e);
     }
   }
 
@@ -495,7 +531,7 @@ class TeslaCard extends LitElement {
           entity_id: entityIds,
         });
       } catch (e) {
-        console.error('[tesla-card] refresh error', e);
+        console.error('[jaecoo-card] refresh error', e);
       }
     }, 5000);
   }
@@ -539,7 +575,14 @@ class TeslaCard extends LitElement {
 
     // Time remaining to charge limit
     const timeToFullRaw = this._val(this.E.TIME_TO_FULL_CHARGE);
+    const chgMinsLeft = Number(this._val(this.E.CHARGE_MINUTES_LEFT));
     const chgTimeRemaining = (() => {
+      if (charging && this.E.CHARGE_MINUTES_LEFT) {
+        if (!isFinite(chgMinsLeft) || chgMinsLeft <= 0) return null;
+        const hrs = Math.floor(chgMinsLeft / 60);
+        const mins = Math.round(chgMinsLeft % 60);
+        return hrs > 0 ? `${hrs}h ${mins}m remaining to full` : `${mins}m remaining to full`;
+      }
       if (!charging || !timeToFullRaw || timeToFullRaw === 'unavailable') return null;
       const target = new Date(timeToFullRaw);
       if (isNaN(target)) return null;
@@ -668,7 +711,7 @@ class TeslaCard extends LitElement {
     // ── Derived display values for nav rows ──
     const lockState   = this._val(this.E.DOOR_LOCK);
     const isLocked    = lockState === 'locked';
-    const chgState    = this._val(this.E.CHARGING_STATE) ?? '—';
+    const chgState    = this._fmt(this.E.CHARGING_STATE) ?? '—';
     const chgRate     = this._val(this.E.CHARGE_RATE);
     const chgRateUnit = this._attr(this.E.CHARGE_RATE, 'unit_of_measurement') ?? 'kW';
     const climState   = this._val(this.E.CLIMATE);
@@ -740,7 +783,7 @@ class TeslaCard extends LitElement {
           <div class="header">
             <div class="header-left">
               <div class="car-name-row">
-                <span class="car-name">${this.config.name ?? this.config.car_name}</span>
+                <span class="car-name">${this._displayName}</span>
                 <span class="icon name-chevron">${unsafeHTML(ICONS['chevron-down'])}</span>
               </div>
               <div class="battery-summary${charging ? ' charging' : ''}">
@@ -772,14 +815,22 @@ class TeslaCard extends LitElement {
           <div class="landing-body">
             <div class="landing-left">
               <div class="car-image-area">
-                ${this._imageError ? html`
+                ${this._isCarlinko ? (this._picture(this.E.IMAGE_FRONT) ?? this.config.image) ? html`
+                  <img class="car-image"
+                    src="${this._picture(this.E.IMAGE_FRONT) ?? this.config.image}"
+                    alt="${this._displayName}" />` : html`
+                  <div class="car-image-placeholder">
+                    <span class="icon">${unsafeHTML(ICONS.car)}</span>
+                    <span>No vehicle image</span>
+                  </div>`
+                : this._imageError ? html`
                   <div class="car-image-placeholder">
                     <span class="icon">${unsafeHTML(ICONS.car)}</span>
                     <span>Image not found</span>
                   </div>` : html`
                   <img class="car-image"
                     src="${this._overlayUrl(baseImg)}"
-                    alt="Tesla ${this.config.car_model}"
+                    alt="${this._displayName}"
                     @error=${() => { this._imageError = true; }}
                     @load=${() => { this._imageError = false; }}
                   />
@@ -871,33 +922,33 @@ class TeslaCard extends LitElement {
 
         <!-- ── Submenu panels ─────────────────────────────── -->
         ${menu === 'charger' ? html`
-          <tesla-menu-charger
+          <jaecoo-menu-charger
             .hass=${this.hass}
             .config=${this.config}
             .layout=${this._layout}
 
             @close-menu=${this._handleCloseMenu}>
-          </tesla-menu-charger>` : ''}
+          </jaecoo-menu-charger>` : ''}
 
         ${menu === 'climate' ? html`
-          <tesla-menu-climate
+          <jaecoo-menu-climate
             .hass=${this.hass}
             .config=${this.config}
             .customColour=${this._customColour}
             .layout=${this._layout}
 
             @close-menu=${this._handleCloseMenu}>
-          </tesla-menu-climate>` : ''}
+          </jaecoo-menu-climate>` : ''}
 
         ${menu === 'controls' ? html`
-          <tesla-menu-controls
+          <jaecoo-menu-controls
             .hass=${this.hass}
             .config=${this.config}
             .customColour=${this._customColour}
             .layout=${this._layout}
             .tyreUnit=${this._tyreUnit}
             @close-menu=${this._handleCloseMenu}>
-          </tesla-menu-controls>` : ''}
+          </jaecoo-menu-controls>` : ''}
 
         <!-- ── Settings: main menu ─────────────────────────── -->
         ${this._settingsView === 'main' ? html`
@@ -910,6 +961,7 @@ class TeslaCard extends LitElement {
                   @click=${() => this._closeSettings()}>&times;</button>
               </div>
               <div class="settings-rows">
+                ${this._isCarlinko ? '' : html`
                 <button class="settings-row"
                   @click=${() => this._openModelPicker()}>
                   <span class="icon settings-row-icon">${unsafeHTML(ICONS.car)}</span>
@@ -918,7 +970,7 @@ class TeslaCard extends LitElement {
                     <span class="settings-row-sub">${modelSub} · ${colourSub}</span>
                   </div>
                   <span class="icon settings-row-chevron">${unsafeHTML(ICONS['chevron-right'])}</span>
-                </button>
+                </button>`}
                 <div class="settings-row settings-row-static">
                   <span class="icon settings-row-icon">${unsafeHTML(ICONS.resize)}</span>
                   <div class="settings-row-text">
@@ -961,18 +1013,18 @@ class TeslaCard extends LitElement {
 
         <!-- ── Settings: model picker ──────────────────────── -->
         ${this._settingsView === 'model' ? html`
-          <tesla-model-picker
+          <jaecoo-model-picker
             .model=${this.config.car_model}
             .variant=${this.config.car_variant}
             slide-from=${this._settingsSlide ?? 'up'}
             @model-changed=${this._handleModelChanged}
             @picker-back=${this._handleModelBack}
             @picker-close=${this._handlePickerClose}>
-          </tesla-model-picker>` : ''}
+          </jaecoo-model-picker>` : ''}
 
         <!-- ── Settings: colour picker ─────────────────────── -->
         ${this._settingsView === 'colour' ? html`
-          <tesla-colour-picker
+          <jaecoo-colour-picker
             .selected=${co?.dir ?? this.config.car_color}
             .available=${availColours}
             .customH=${co?.dir === 'custom' ? co.h : 0}
@@ -982,7 +1034,7 @@ class TeslaCard extends LitElement {
             @colour-changed=${this._handleColourChanged}
             @picker-back=${this._handleColourBack}
             @picker-close=${this._handlePickerClose}>
-          </tesla-colour-picker>` : ''}
+          </jaecoo-colour-picker>` : ''}
 
       </ha-card>
     `;
@@ -1001,12 +1053,12 @@ class TeslaCard extends LitElement {
   }
 }
 
-customElements.define('tesla-card', TeslaCard);
+customElements.define('jaecoo-card', TeslaCard);
 
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type:        'tesla-card',
-  name:        'Tesla Card',
-  description: 'A Lovelace card for Tesla vehicles — supports both official Fleet and alandtse/tesla integrations',
+  type:        'jaecoo-card',
+  name:        'Jaecoo Card',
+  description: 'A Tesla-app style Lovelace card for Jaecoo / Chery / Omoda EVs via the CarLinko integration (also supports Tesla Fleet and alandtse/tesla)',
   preview:     false,
 });

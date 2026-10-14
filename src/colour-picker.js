@@ -450,4 +450,4 @@ class TeslaColourPicker extends LitElement {
   }
 }
 
-customElements.define('tesla-colour-picker', TeslaColourPicker);
+customElements.define('jaecoo-colour-picker', TeslaColourPicker);
