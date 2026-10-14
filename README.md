@@ -33,6 +33,7 @@ to a URL to override them.
 | Climate | Climate (on/off + temperature), Defog, Steering wheel heat, Driver/Passenger/Rear seat heat, seat ventilation, Quick cool/heat, Windshield heat, Air purify, Windows vent |
 | Controls | Lock, Liftgate, Find car, Sunroof, Windows, Tyre pressures (TPMS) |
 | Location | Location device tracker |
+| Security | Lock, all doors, Liftgate, Windows, Sunroof, Online, 12V battery + status, Tyre status |
 
 Controls are capability-gated like the integration itself: a button only appears when the
 matching CarLinko entity exists for your car.

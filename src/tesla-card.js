@@ -9,6 +9,7 @@ import './editor.js';
 import './menu-charger.js';
 import './menu-climate.js';
 import './menu-controls.js';
+import './menu-security.js';
 import './colour-picker.js';
 import './model-picker.js';
 
@@ -101,6 +102,7 @@ class TeslaCard extends LitElement {
     this._toggleCharger       = () => this._toggle('charger');
     this._toggleClimate       = () => this._toggle('climate');
     this._toggleControls      = () => this._toggle('controls');
+    this._toggleSecurity      = () => this._toggle('security');
     this._handleCloseMenu     = () => { this._menu = null; };
     this._handleColourChanged = (e) => this._onColourChanged(e);
     this._handleModelChanged  = (e) => this._onModelChanged(e);
@@ -759,6 +761,21 @@ class TeslaCard extends LitElement {
     const climateSub  = climOn ? `${tempStr}${tempUnit}` : 'Off';
     const controlsSub = lockState ? (isLocked ? 'Locked' : 'Unlocked') : null;
 
+    // Security row — lock state plus the first open door/opening
+    const openingLabels = [
+      ['Driver door', this.E.DOOR_DRIVER_FRONT], ['Passenger door', this.E.DOOR_PASSENGER_FRONT],
+      ['Rear left door', this.E.DOOR_DRIVER_REAR], ['Rear right door', this.E.DOOR_PASSENGER_REAR],
+      ['Liftgate', this.E.OPEN_TRUNK], ['Windows', this.E.WINDOWS_COVER], ['Sunroof', this.E.SUNROOF_COVER],
+    ];
+    const hasSecurity = this._isCarlinko && !!(this._state(this.E.DOOR_LOCK) || this._state(this.E.DOOR_DRIVER_FRONT));
+    const openThings  = openingLabels.filter(([, t]) => ['on', 'open', 'opening'].includes(this._val(t)));
+    const securitySub = [
+      controlsSub,
+      openThings.length === 1 ? `${openThings[0][0]} open`
+        : openThings.length > 1 ? `${openThings.length} openings open`
+        : this._state(this.E.DOOR_DRIVER_FRONT) ? 'All closed' : null,
+    ].filter(Boolean).join(' · ');
+
     // ── Settings sublabels ──
     const curModel   = TESLA_MODELS.find(m => m.id === this.config.car_model);
     const curVariant = curModel?.variants.find(v => v.id === this.config.car_variant);
@@ -916,6 +933,16 @@ class TeslaCard extends LitElement {
                 </div>
                 <span class="icon nav-chevron">${unsafeHTML(ICONS['chevron-right'])}</span>
               </button>
+              ${hasSecurity ? html`
+              <button class="nav-row${openThings.length ? ' active' : ''}"
+                @click=${this._toggleSecurity}>
+                <span class="icon nav-icon">${unsafeHTML(ICONS.security)}</span>
+                <div class="nav-text">
+                  <span class="nav-label">Security</span>
+                  ${securitySub ? html`<span class="nav-sublabel">${securitySub}</span>` : ''}
+                </div>
+                <span class="icon nav-chevron">${unsafeHTML(ICONS['chevron-right'])}</span>
+              </button>` : ''}
             </div>
           </div>
         ` : ''}
@@ -949,6 +976,14 @@ class TeslaCard extends LitElement {
             .tyreUnit=${this._tyreUnit}
             @close-menu=${this._handleCloseMenu}>
           </jaecoo-menu-controls>` : ''}
+
+        ${menu === 'security' ? html`
+          <jaecoo-menu-security
+            .hass=${this.hass}
+            .config=${this.config}
+            .layout=${this._layout}
+            @close-menu=${this._handleCloseMenu}>
+          </jaecoo-menu-security>` : ''}
 
         <!-- ── Settings: main menu ─────────────────────────── -->
         ${this._settingsView === 'main' ? html`

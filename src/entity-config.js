@@ -237,6 +237,10 @@ const CARLINKO = {
   LOCKED:               null,
   ONLINE:               'binary_sensor.@online',
   SENTRY_MODE:          null,
+  DOOR_ANY:             'binary_sensor.@door',
+  BATTERY_12V:          'sensor.@volt12',
+  BATTERY_12V_STATUS:   'sensor.@volt12_status',
+  TYRE_STATUS:          'sensor.@tyre_status',
 
   // Individual door sensors
   DOOR_DRIVER_FRONT:      'binary_sensor.@door_driver',

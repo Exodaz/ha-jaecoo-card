@@ -8,6 +8,7 @@
 - Vehicle picker in the visual editor; car pictures from CarLinko image entities
 - Charging info rows and Stop Charging; seat ventilation, quick cool/heat, windshield heat, air purify, sunroof
 - Switch-based steering wheel heater support
+- Security menu on the landing view: lock toggle, door/liftgate/window/sunroof status, connection, 12V battery, tyres
 
 ### Changed
 - Card renamed to `custom:jaecoo-card` (`dist/jaecoo-card.js`) so it can be installed alongside the Tesla card

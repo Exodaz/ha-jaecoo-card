@@ -74,6 +74,11 @@
   add('binary_sensor', 'door_rear_left', 'off');
   add('binary_sensor', 'door_rear_right', 'off');
   add('lock', 'lock', 'locked');
+  add('binary_sensor', 'door', 'off');
+  add('sensor', 'volt12', '12.6', { unit_of_measurement: 'V' });
+  add('sensor', 'volt12_status', 'ok');
+  add('sensor', 'tyre_status', 'normal');
+  add('cover', 'sunroof', 'closed');
   add('climate', 'climate', 'off', { temperature: 22, min_temp: 16, max_temp: 30, target_temp_step: 1 });
   add('cover', 'windows', 'closed');
   add('cover', 'liftgate', 'closed');
@@ -93,7 +98,7 @@
   add('image', 'vehicle_front', 'idle', { entity_picture: pic('vehicle_front', 800, 450) });
   add('image', 'vehicle_top', 'idle', { entity_picture: pic('vehicle_top', 400, 800) });
 
-  const LEVELS = { off: 'Off', l1: 'Low', l2: 'Medium', l3: 'High', idle: 'Idle', charging: 'Charging', none: 'None', ac: 'AC' };
+  const LEVELS = { ok: 'OK', normal: 'Normal', off: 'Off', l1: 'Low', l2: 'Medium', l3: 'High', idle: 'Idle', charging: 'Charging', none: 'None', ac: 'AC' };
   const card = document.createElement('jaecoo-card');
   const push = () => {
     card.hass = {

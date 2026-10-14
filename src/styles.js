@@ -265,6 +265,50 @@ export const chargerStyles = css`
 
 // ── Climate panel styles ────────────────────────────────────────────────────
 
+// ── Security panel styles ───────────────────────────────────────────────────
+
+export const securityStyles = css`
+  .security-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 16px;
+  }
+
+  .sec-lock-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 4px 16px 0;
+    padding: 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.95em;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s ease;
+  }
+
+  .sec-lock-btn:hover { background: rgba(255,255,255,0.08); }
+  .sec-lock-btn .icon { width: 22px; height: 22px; }
+  .sec-lock-btn.unlocked { border-color: rgba(232,33,39,0.6); }
+
+  .sec-section-title {
+    margin: 4px 20px -4px;
+    font-size: 0.75em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .chg-info-value.warn { color: #e82127; }
+  .chg-info-value.ok   { color: rgba(255,255,255,0.85); }
+`;
+
 export const climateStyles = css`
   .climate-menu {
     display: flex;
