@@ -125,7 +125,7 @@ class TeslaCard extends LitElement {
       car_model:   '3',
       car_variant: '3.1',
       car_color:   'red_multi_coat',
-      image_path:  '/hacsfiles/homeassistant-fe-jaecoo',
+      image_path:  '/hacsfiles/ha-jaecoo-card',
       show_speed:  true,
       ...config,
       integration,

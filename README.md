@@ -8,7 +8,7 @@ The original Tesla Fleet / alandtse / custom-entity modes still work.
 ## Jaecoo / CarLinko quick start
 
 1. Install and set up [ha-carlinko](https://github.com/elad-bar/ha-carlinko).
-2. HACS → Frontend → ⋮ → Custom repositories → add `https://github.com/Exodaz/homeassistant-fe-jaecoo` (type **Dashboard**), then install **Jaecoo Card**.
+2. HACS → Frontend → ⋮ → Custom repositories → add `https://github.com/Exodaz/ha-jaecoo-card` (type **Dashboard**), then install **Jaecoo Card**.
 3. Add the card:
 
 ```yaml
